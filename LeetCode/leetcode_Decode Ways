@@ -1,0 +1,36 @@
+public class Solution {
+    public int numDecodings(String s) {
+         int num[]=new int[s.length()];
+        if(s.length()==0)return 0;
+        
+        if(s.charAt(s.length()-1)!='0')
+        	num[s.length()-1]=1;
+        
+        if(s.length()>=2)
+        {
+        	int temp=Integer.parseInt(s.substring(s.length()-2,s.length()));
+        	if(temp>=10 && temp<=26)
+        		num[s.length()-2]=num[s.length()-1]+1;
+        	else if(s.charAt(s.length()-2)!='0')
+        		num[s.length()-2]=num[s.length()-1];
+        	
+        	for(int i=s.length()-3;i>=0;i--)
+        	{
+        		if(s.charAt(i)!='0')
+        			num[i]=num[i+1];
+        		temp=Integer.parseInt(s.substring(i,i+2));
+        		if(temp<=26 && temp>=10)
+        			num[i]+=num[i+2];
+        	}
+        }
+        return num[0];
+    }
+}
+//basic ideas
+//start from the last element of the string
+//as long as it is not 0, there will be one way to decode.
+//Here comes the one before it. If the value of the integer made up by them is between 10 and 26, there would be one more way to decode
+//if not, it can be decoded as a single letter, so the decoding way stays the same as num[i+1]
+
+//later on, whenever we find a character that is not '0'. there should be at least one way of decoding it. So num[i]=num[i+1]
+//if num[i]*10+num[i+1] is valid, num[i]+=num[i+1] (if they separately decode a letter or they together stand for a letter)
