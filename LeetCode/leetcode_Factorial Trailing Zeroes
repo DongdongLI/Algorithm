@@ -3,6 +3,13 @@
 //10=5*2,25=5*5...
 //we need to know how many 5s,how many 25s...
 
+//for example, if n=125 and we need to count the five in 1,2,3,...,125
+//125/5 is used to count the number of figures which have at least one 5
+//125/5/5 is used to count the number of figures which have at least two 5s
+//125/5/5/5 is used to count the number of figures which have at least three 5s
+
+//Therefore, figure like 125 will be counted for three times since it has three 5s
+
 public class Solution {
     public int trailingZeroes(int n) {
        int count = 0;
