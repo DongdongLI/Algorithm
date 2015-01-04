@@ -1,0 +1,27 @@
+//This problem can be solved with HashMap. The HashMap save the elements and their times of appearance.
+
+public class Solution {
+    public int majorityElement(int[] num) {
+        HashMap<Integer,Integer> map=new HashMap<Integer,Integer>();
+		for(int i=0;i<num.length;i++)
+		{
+			if(map.containsKey(num[i]))
+			{
+				int temp=map.get(num[i]);
+				map.remove(num[i]);
+				map.put(num[i],temp+1);
+			}
+			else
+			{
+				map.put(num[i],1);
+			}
+		}
+		for(int i=0;i<num.length;i++)
+		{
+			int temp=map.get(num[i]);
+			if(temp>num.length/2)
+				return num[i];
+		}
+		return 0;
+    }
+}
