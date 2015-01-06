@@ -1,0 +1,28 @@
+public class Solution {
+    public ArrayList<String> letterCombinations(String digits) {
+        String letters[] = {"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+		ArrayList<String> list = new ArrayList<String>();
+		if(digits==null)
+			return list;
+		if(digits.length()==0)
+		{
+			list.add("");
+			return list;
+		}
+		
+		ArrayList<String> sublist=letterCombinations(digits.substring(1));
+		
+		for(String i : sublist)
+		{
+			int num=Integer.parseInt(digits.substring(0,1));
+			for(int j=0;j<letters[num].length();j++)
+			{
+				list.add(letters[num].charAt(j)+i);			}
+		}
+		return list;
+    }
+}
+//Recursively,
+//First we add "" to the list
+//later we have the last letter
+//...
