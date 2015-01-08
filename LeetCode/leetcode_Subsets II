@@ -1,0 +1,65 @@
+/*
+ Given a collection of integers that might contain duplicates, S, return all possible subsets.
+
+Note:
+
+    Elements in a subset must be in non-descending order.
+    The solution set must not contain duplicate subsets.
+
+For example,
+If S = [1,2,2], a solution is:
+
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+
+*/
+
+/*ideas:
+Based on problem subset, a little update is enough.
+In each iteration, we copy out each element in the result list and append them with the same new Integer in the array. Then, we store
+that single integer. One thing need to keep in mind is that we should check if a number is the same with the number following it.
+After all, we insert the empty list.
+*/
+
+
+public class Solution {
+    public ArrayList<ArrayList<Integer>> subsetsWithDup(int[] num) {
+        Arrays.sort(num);
+        if(num==null)return null;
+        ArrayList<ArrayList<Integer>> result=new ArrayList<ArrayList<Integer>>();
+        ArrayList<ArrayList<Integer>> temp=new ArrayList<ArrayList<Integer>>();
+        
+        for(int i=num.length-1;i>=0;i--)
+        {
+        	if(i==num.length -1|| num[i]!=num[i+1]||temp.size()==0)
+        	{
+        		temp=new ArrayList<ArrayList<Integer>>();
+        		for(int j=0;j<result.size();j++)
+        		    temp.add(new ArrayList<Integer>(result.get(j)));
+        	}
+        	for(ArrayList<Integer> a:temp)
+        	{
+        		a.add(0,num[i]);
+        	}
+        	if(i==num.length-1||num[i]!=num[i+1])
+        	{
+        		ArrayList<Integer> h=new ArrayList<Integer>();
+        		h.add(num[i]);
+        		temp.add(h);
+        	}
+        	for (ArrayList<Integer> q : temp) {
+			    result.add(new ArrayList<Integer>(q));
+        }
+        
+        
+    }
+    result.add(new ArrayList<Integer>());
+    return result;
+}
+}
