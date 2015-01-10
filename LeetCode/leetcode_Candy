@@ -1,0 +1,43 @@
+/*
+ There are N children standing in a line. Each child is assigned a rating value.
+
+You are giving candies to these children subjected to the following requirements:
+
+    Each child must have at least one candy.
+    Children with a higher rating get more candies than their neighbors.
+
+What is the minimum candies you must give? 
+*/
+/*ideas
+1. In the first round, we go through the array from left to right and set the value of candy[] according to the relationship between
+ratings[i] and ratings[i+1](we got candy[i] first and then candy[i+1])
+2. In the second round, we go through the array from right to left. There may be some element of candy[] need to be updated.
+"now" means the num of candy of i based on the relationship between ratings[i] and ratings[i+1]
+*/
+public class Solution {
+    public int candy(int[] ratings) {
+        if(ratings==null || ratings.length==0)
+			return 0;
+		int total=0;
+		int[] candy=new int[ratings.length];
+		candy[0]=1;
+		for(int i=1;i<ratings.length;i++)
+		{
+			if(ratings[i]>ratings[i-1])
+				candy[i]=candy[i-1]+1;
+			else
+				candy[i]=1;
+		}
+		total=candy[candy.length-1];
+		for(int i=ratings.length-2;i>=0;i--)
+		{
+			int now=1;
+			if(ratings[i]>ratings[i+1])
+				now=candy[i+1]+1;
+			
+			total+=Math.max(now, candy[i]);
+			candy[i]=now;
+		}
+		return total;
+    }
+}
