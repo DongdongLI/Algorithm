@@ -1,0 +1,47 @@
+/*
+For example,
+path = "/home/", => "/home"
+path = "/a/./b/../../c/", => "/c"
+
+click to show corner cases.
+Corner Cases:
+
+    Did you consider the case where path = "/../"?
+    In this case, you should return "/".
+    Another corner case is the path might contain multiple slashes '/' together, such as "/home//foo/".
+    In this case, you should ignore redundant slashes and return "/home/foo".
+*/
+/*ideas
+
+.. means go back to the parent dir, and . means to stay in current dir
+We can use a stack to store all the dir, so when we come across ".." we can remove a dir from the bottom of the stack
+*/
+public class Solution {
+    public String simplifyPath(String path) {
+        if(path==null || path.length()==0)
+			return null;
+		
+		String[] s=path.split("/");
+		//for(int i=0;i<s.length;i++)
+		//	System.out.println(s[i]);
+		LinkedList<String> stack=new LinkedList<String>();
+		String result="";
+		int start=0;
+		for(int i=0;i<s.length;i++)
+		{
+			if(!stack.isEmpty()&&s[i].equals(".."))
+				stack.removeLast();
+			else if(s[i].length()!=0&&!s[i].equals(".")&&!s[i].equals(".."))
+				stack.add(s[i]);
+		}
+		
+		if(stack.isEmpty())return "/";
+		
+		while(!stack.isEmpty())
+		{	
+			result+="/";
+			result+=stack.remove();
+		}
+		return result;
+    }
+}
