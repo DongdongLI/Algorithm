@@ -1,0 +1,53 @@
+/*
+Given a list, rotate the list to the right by k places, where k is non-negative.
+
+For example:
+Given 1->2->3->4->5->NULL and k = 2,
+return 4->5->1->2->3->NULL.
+*/
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+ 
+ /*ideas:
+ The meaning of rotation is to count n from the end of the list and exchange the position of the 2 parts.
+ 
+ point fast make n move to the new_end, and then "slow" and "fast" move together and help to find the original end and then make 
+ the connection
+ */
+public class Solution {
+    public ListNode rotateRight(ListNode head, int n) {
+         if(head==null||n==0)return head;
+        
+        ListNode fast=head;
+        ListNode slow=head;
+        while(n>0)
+        {
+        	n--;
+        	fast=fast.next;
+        	if(fast==null)
+        		fast=head;
+        }
+        if(fast==slow || fast == null)return head;
+        while(fast.next!=null)
+        {
+        	fast=fast.next;
+        	
+        	slow=slow.next;
+        }
+       ListNode newHead=slow.next;
+       slow.next=null;
+       fast.next=head;
+       
+        
+        return newHead;
+    }
+}
