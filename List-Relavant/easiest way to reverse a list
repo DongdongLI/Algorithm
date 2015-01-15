@@ -1,0 +1,17 @@
+ListNode pre=head;
+ListNode cur=head.next;
+
+while(cur!=null)
+{
+   ListNode temp=cur.next;
+   cur.next=pre;
+   pre=cur;
+   cur=temp;
+}
+head.next=null;
+
+return pre;
+
+/*
+Basically, what it does is to reverse all the next pointer
+*/
