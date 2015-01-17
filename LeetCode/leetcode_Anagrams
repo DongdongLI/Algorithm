@@ -1,0 +1,44 @@
+/*Given an array of strings, return all groups of strings that are anagrams.
+
+Note: All inputs will be in lower-case.*/
+
+/*
+Hashmap keep the recombine sorted string and its related list of anagrams
+at last, add lists of string whose size is larger than 1 to final result
+*/
+public class Solution {
+    public ArrayList<String> anagrams(String[] strs) {
+        ArrayList<String> result=new ArrayList<String>();
+		 if (strs==null||strs.length==0){
+		 return result;
+		 } 
+        
+        HashMap<String,ArrayList<String>> count=new HashMap<String,ArrayList<String>>();
+        for(int i=0;i<strs.length;i++)
+        {
+        	char[] temp=strs[i].toCharArray();
+        	Arrays.sort(temp);
+        	String reunited=String.valueOf(temp);
+        	
+        	if(count.containsKey(reunited))
+        	{
+        		count.get(reunited).add(strs[i]);
+        	}
+        	else
+        	{
+        		ArrayList<String> add=new ArrayList<String>();
+        		add.add(strs[i]);
+        		count.put(reunited, add);
+        	}
+        }
+        for(ArrayList<String> i:count.values())
+        {
+        	if(i.size()>1)
+        	{
+        		result.addAll(i);
+        		
+        	}
+        }
+        return result;
+    }
+}
