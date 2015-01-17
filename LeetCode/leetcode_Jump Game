@@ -1,0 +1,38 @@
+/*
+ Given an array of non-negative integers, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Determine if you are able to reach the last index.
+
+For example:
+A = [2,3,1,1,4], return true.
+
+A = [3,2,1,0,4], return false. 
+*/
+
+/*ideas:
+1.maxreach records the furthest index you can go
+2.step let you know how many steps you can move from current position, and it minus 1 at the beginning of each loop indicating the 
+move
+*/
+public class Solution {
+    public boolean canJump(int[] A) {
+        if(A.length==1)
+			return true;
+		int move=1;
+		int maxreach=0;
+		for(int i=0;i<A.length;i++)
+		{
+			move--;
+			if(A[i]+i>maxreach)
+			{
+				maxreach=A[i]+i;
+				move=A[i];
+			}
+			if(move==0&&i<A.length-1)
+				return false;
+		}
+		return true;
+    }
+}
