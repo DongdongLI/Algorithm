@@ -1,0 +1,39 @@
+
+/*
+ Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+For example, given n = 3, a solution set is:
+
+"((()))", "(()())", "(())()", "()(())", "()()()"
+
+
+*/
+/*Ideas:
+DFS is quite obvious.
+All of the invalid parentheses have one common similarity: at a moment of forming it, the number of remaining ( is larger than ).
+For example "())". So if we can take them out we will be fine.
+*/
+
+
+public class Solution {
+    public ArrayList<String> generateParenthesis(int n) {
+        ArrayList<String> result=new ArrayList<String>();
+        if(n<=0)return result;
+        String temp="";
+        DFS(n, n, result, temp);
+        return result;
+    }
+	
+	public void DFS(int left,int right,ArrayList<String> result,String temp)
+	{
+		if(left>right)return;
+		if(left==0 && right==0)
+		{
+			result.add(new String(temp));
+		}
+		if(left>0)
+			DFS(left-1, right, result, temp+"(");
+		if(right>0)
+			DFS(left,right-1,result,temp+")");
+	}
+}
