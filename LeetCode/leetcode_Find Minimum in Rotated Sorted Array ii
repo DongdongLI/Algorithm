@@ -1,0 +1,63 @@
+/*
+
+
+    Follow up for "Find Minimum in Rotated Sorted Array":
+    What if duplicates are allowed?
+
+    Would this affect the run-time complexity? How and why?
+
+Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+
+(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+
+Find the minimum element.
+
+The array may contain duplicates.
+*/
+
+/*
+Dealing with duplicates, we need to add a case that num[l]==num[mid]==num[r]. In this case we need to traverse the rest of the array
+from l to r.
+*/
+
+public class Solution {
+    public int findMin(int[] num) {
+     if(num.length==1)
+			return num[0];
+		
+		int l=0;
+		int r=num.length-1;
+		if(num[l]<num[r])
+			return num[l];
+		else
+		while(l<r)
+		{
+			if(l+1==r)
+				return num[r];
+			
+			int mid=(l+r)/2;
+			
+			if(num[l]==num[mid] && num[mid]==num[r])
+			{
+				int min=l;
+				for(int i=l;i<=r;i++)
+				{
+					if(num[i]<=num[min])
+					{
+						min=i;
+					}
+				}
+				return num[min];
+			}
+			
+			if(num[mid]>=num[l])
+			{
+				l=mid;
+			}
+			else if(num[mid]<=num[l])
+				r=mid;
+				
+		}
+		return num[r];   
+    }
+}
