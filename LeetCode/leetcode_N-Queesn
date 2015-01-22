@@ -1,0 +1,78 @@
+/*Given an integer n, return all distinct solutions to the n-queens puzzle.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space respectively.
+
+For example,
+There exist two distinct solutions to the 4-queens puzzle:
+
+[
+ [".Q..",  // Solution 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // Solution 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+*/
+
+/*
+I use array posOfQueen[] to store the position of the queen in each row.
+Careful about the "isValid" method
+DFS: If one partial solution is tempory valid, put the queen in the next column of current row and then keep recursion.
+*/
+
+public class Solution {
+    public ArrayList<String[]> solveNQueens(int n) {
+        ArrayList<String[]> result=new ArrayList<String[]>();
+        int[] posOfQueen=new int[n];
+        help(0,posOfQueen,result,n);
+        return result;
+    }
+	public void help(int cur,int[] posOfQueen,ArrayList<String[]> result,int n)
+	{
+		if(cur==n)
+		{
+			toRes(result,posOfQueen,n);
+		}
+		else
+		{
+			for(int i=0;i<n;i++)
+			{
+				posOfQueen[cur]=i;
+				if(valid(posOfQueen, cur))
+				{
+					help(cur+1,posOfQueen,result,n);
+				}
+			}
+		}
+	}
+	public boolean valid(int[] posOfQueen,int row)
+	{
+		for(int i=0;i<row;i++)
+		{
+			if(posOfQueen[i]==posOfQueen[row]|| Math.abs(posOfQueen[i]-posOfQueen[row])==(row-i))
+				return false;
+		}
+		return true;
+	}
+	public void toRes(ArrayList<String[]> result,int[] loc,int n)
+	{
+		String[] temp=new String[n];
+		for(int i=0;i<n;i++)
+		{
+			String add="";
+			for(int j=0;j<n;j++)
+			{
+				if(j==loc[i])
+					add+="Q";
+				else
+					add+=".";
+			}
+			temp[i]=add;
+		}
+		result.add(temp);
+	}
+}
