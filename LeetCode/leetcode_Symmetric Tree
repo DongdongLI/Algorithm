@@ -22,6 +22,7 @@ Note:
 
 /*
 We have two linkedList for the comparasion, we put the node in right order
+Keep "Symmetric" in mind then it would be already
 */
 
 public class Solution {
@@ -67,4 +68,29 @@ public class Solution {
 		}
 		return true;
     }
+}
+
+//recursive:
+public class Solution {
+    public boolean isSymmetric(TreeNode root)
+	{
+		if(root==null)
+			return true;
+		if(root.left!=null&&root.right==null)
+			return false;
+		if(root.right!=null&&root.left==null)
+			return false;
+		
+		return help(root.left,root.right);
+	}
+	public boolean help(TreeNode l,TreeNode r)
+	{
+		if(l==null&&r!=null || l!=null&&r==null)
+			return false;
+		if(l==null&&r==null)return true;
+		if(l.val!=r.val)
+			return false;
+		
+		return help(l.right,r.left)&&help(l.left,r.right);
+	}
 }
