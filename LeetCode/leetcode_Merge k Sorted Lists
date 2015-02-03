@@ -1,0 +1,53 @@
+/* Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity. */
+
+/*Ideas:
+Keep a Priority queue to keep track of the smallest ListNode at this point.
+
+*/
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode mergeKLists(List<ListNode> lists) {
+        if(lists==null || lists.size()==0)
+        	return null;
+        
+        PriorityQueue<ListNode> queue=new PriorityQueue<ListNode>(lists.size(),new Comparator<ListNode>() {
+
+			@Override
+			public int compare(ListNode o1, ListNode o2) {
+				if(o1.val>o2.val)
+					return 1;
+				else if(o1.val==o2.val)
+					return 0;
+				else
+					return -1;
+			}
+		});
+		for(ListNode list: lists)
+        	if(list!=null)
+            	queue.add(list);
+		
+        ListNode fakeHead=new ListNode(0);
+        ListNode h=fakeHead;
+        while(!queue.isEmpty())
+        {
+        	ListNode temp=queue.poll();
+        	h.next=temp;
+        	h=h.next;
+        	
+        	
+        	if(temp.next!=null)
+        		queue.add(temp.next);
+        }
+        return fakeHead.next;
+    }
+}
