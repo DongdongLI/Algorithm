@@ -1,0 +1,35 @@
+/*Implement strStr().
+
+Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+Update (2014-11-02):
+The signature of the function had been updated to return the index instead of the pointer. If you still see your function signature returns a char * or String, please click the reload button to reset your code definition. 
+*/
+/*Ideas:
+both empty, 0
+only needle is empty, 0
+if the length are equal and they are the same, 0
+  else -1
+if needle is longer than stack, -1
+*/
+public class Solution {
+    public int strStr(String haystack, String needle) {
+        if(haystack.length()==0&&needle.length()==0)
+			return 0;
+		if(haystack.length()!=0&&needle.length()==0)
+			return 0;
+		if(haystack.length()==needle.length()&&haystack.equals(needle))
+			return 0;
+		if(haystack.length()==needle.length()&&!haystack.equals(needle))
+			return -1;
+		if(haystack.length()<needle.length())
+			return -1;
+		
+		for(int i=0;i<=haystack.length()-needle.length();i++)
+		{
+			if(needle.equals(haystack.substring(i, i+needle.length())))
+				return i;
+		}
+		return -1;
+    }
+}
