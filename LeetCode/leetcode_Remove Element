@@ -1,0 +1,28 @@
+/*
+Given an array and a value, remove all instances of that value in place and return the new length.
+
+The order of elements can be changed. It doesn't matter what you leave beyond the new length. 
+*/
+
+/*
+Basic idea is to swap the elements same as the target to the end of the array and shorten the array
+***********something really important is that, when a target matches, the index i should not move on just in case the one sway to the front is also the target.
+*/
+public class Solution {
+    public int removeElement(int[] A, int elem) {
+        int len=A.length-1;
+		for(int i=0;i<=len;i++)
+		{
+			if(A[i]==elem)
+			{
+				int temp=A[i];
+				A[i]=A[len];
+				A[len]=temp;
+				i--;
+				len--;
+			}
+		}
+		
+		return len+1;
+    }
+}
