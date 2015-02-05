@@ -1,0 +1,40 @@
+/*
+ Given a string S and a string T, count the number of distinct subsequences of T in S.
+
+A subsequence of a string is a new string which is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (ie, "ACE" is a subsequence of "ABCDE" while "AEC" is not).
+
+Here is an example:
+S = "rabbbit", T = "rabbit"
+
+Return 3. 
+*/
+
+/*
+Yes, there is ambiguity in the question as the explanation of the question and question statement doesn't match, based on the explanation, question statement must be "Find the number of distinct sub sequences of S that are equal to T"
+*/
+public class Solution {
+    public int numDistinct(String S, String T) {
+        int[][] fit=new int[S.length()+1][T.length()+1];
+        fit[0][0]=1;
+        
+        	for(int i=1;i<fit.length;i++)//T is empty
+        		fit[i][0]=1;
+        
+       
+        	for(int i=1;i<fit[0].length;i++)//S is empty
+        		fit[0][i]=0;
+        
+        for(int i=1;i<fit.length;i++)
+        {
+        	for(int j=1;j<fit[0].length;j++)
+        	{
+        		fit[i][j]=fit[i-1][j];//不论i,j是否匹配,如果S[i-1] 和 T[j]已经匹配, 那么S[i] T[j]匹配个数至少等于前面
+        		if(S.charAt(i-1)==T.charAt(j-1))
+        		{
+        			fit[i][j]+=fit[i-1][j-1];
+        		}
+        	}
+        }
+        return fit[S.length()][T.length()];
+    }
+}
