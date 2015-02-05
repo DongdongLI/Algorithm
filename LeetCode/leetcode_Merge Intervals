@@ -1,0 +1,63 @@
+/*
+Given a collection of intervals, merge all overlapping intervals.
+
+For example,
+Given [1,3],[2,6],[8,10],[15,18],
+return [1,6],[8,10],[15,18]. 
+*/
+/*
+
+First of all, sort the list based on the "start" attribute of each interval object.
+Then maintain the start and end stand for the start and end of the last interval so far.
+
+If disjoint, join the old interval into result, then update start and end
+if overlap, merge two interval
+
+
+*/
+
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+public class Solution {
+    public ArrayList<Interval> merge(ArrayList<Interval> intervals) {
+        if(intervals==null|| intervals.size()==0||intervals.size()==1)
+        	return intervals;
+		ArrayList<Interval> res=new ArrayList<Interval>();
+		
+		Collections.sort(intervals, new Comparator<Interval>() {
+			public int compare(Interval a, Interval b)
+			{
+				return Integer.compare(a.start,	b.start);
+			}
+		});
+		
+		int start=intervals.get(0).start;
+		int end=intervals.get(0).end;
+		
+		
+		for(int i=1;i<intervals.size();i++)
+		{
+			Interval cur=intervals.get(i);
+			if(cur.start<=end)//overlapping
+			{
+				start=Math.min(cur.start, start);
+				end=Math.max(cur.end, end);
+			}
+			else
+			{
+				res.add(new Interval(start,end));//disjoint
+				start=cur.start;
+				end=cur.end;
+			}
+		}
+		res.add(new Interval(start,end));
+		return res;
+    }
+}
