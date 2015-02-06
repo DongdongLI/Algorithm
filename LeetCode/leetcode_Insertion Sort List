@@ -1,0 +1,53 @@
+//Sort a linked list using insertion sort.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+       if(head==null)return null;
+        
+        ListNode fake=new ListNode(0);
+        
+        //fake.next=head;
+        ListNode pre=fake;
+        ListNode cur=head;
+        while(cur!=null)
+        {
+        	ListNode next=cur.next;
+        	pre=fake;
+        	while(pre.next!=null&&pre.next.val<=cur.val)
+        		pre=pre.next;
+        	
+        	cur.next=pre.next;
+        	pre.next=cur;
+        	cur=next;
+        }
+        return fake.next; 
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pre,cur,next 三个指针。（next）用来保存原来 cur后面的链。pre每次都从新节点开始，找到第一个比cur值大的，pre和cur调换，next赋给cur
