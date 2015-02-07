@@ -1,0 +1,71 @@
+/*
+OJ's undirected graph serialization:
+
+Nodes are labeled uniquely.
+We use # as a separator for each node, and , as a separator for node label and each neighbor of the node.
+
+As an example, consider the serialized graph {0,1,2#1,2#2,2}.
+
+The graph has a total of three nodes, and therefore contains three parts as separated by #.
+
+    First node is labeled as 0. Connect node 0 to both nodes 1 and 2.
+    Second node is labeled as 1. Connect node 1 to node 2.
+    Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a self-cycle.
+
+Visually, the graph looks like the following:
+
+       1
+      / \
+     /   \
+    0 --- 2
+         / \
+         \_/
+
+*/
+
+/*
+HashMap用来把两图对应的点给联系起来
+LinkedList用来存下一个处理的点。
+  对于一个点，分别处理它的邻居
+  如果该邻居没在哈希表里，放进队列下一个处理它，生成它的对应点放进哈希表
+  如果在了，在哈希里找到它的对应的，往它的邻居集里加。。
+*/
+
+/**
+ * Definition for undirected graph.
+ * class UndirectedGraphNode {
+ *     int label;
+ *     List<UndirectedGraphNode> neighbors;
+ *     UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
+ * };
+ */
+
+public class Solution {
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        if(node==null)
+			return null;
+		
+		HashMap<UndirectedGraphNode, UndirectedGraphNode> hm=new HashMap<UndirectedGraphNode, UndirectedGraphNode>();
+		LinkedList<UndirectedGraphNode> queue=new LinkedList<UndirectedGraphNode>();
+		
+		UndirectedGraphNode res=new UndirectedGraphNode(node.label);
+		hm.put(node, res);
+		queue.add(node);
+		while(queue.isEmpty()==false)
+		{
+			UndirectedGraphNode temp=queue.poll();
+			for(UndirectedGraphNode oneNeighbor:temp.neighbors)
+			{
+				if(!hm.containsKey(oneNeighbor))
+				{
+					queue.add(oneNeighbor);
+					UndirectedGraphNode newNode=new UndirectedGraphNode(oneNeighbor.label);
+					hm.put(oneNeighbor, newNode);
+				}
+				hm.get(temp).neighbors.add(hm.get(oneNeighbor));
+			}
+			
+		}
+		return res;
+    }
+}
