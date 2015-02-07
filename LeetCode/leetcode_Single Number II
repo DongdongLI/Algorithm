@@ -1,0 +1,30 @@
+/*
+ Given an array of integers, every element appears three times except for one. Find that single one.
+
+Note:
+Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory? 
+*/
+
+/*
+对于数组中每个数的每一位,一位一位进行处理,比如,
+第五位,对于0到len-1 每个数
+取出这一位,先右移（A[j]>>i）,再把其他位去掉（&1）.把每个数的同一位加起来%3，如果都是3个一组取余刚好为0。
+把取余的结果左移复原，加入结果。
+*/
+
+public class Solution {
+    public int singleNumber(int[] A) {
+        int result=0;
+		int k;
+		for(int i=0;i<32;i++)
+		{
+			int bit=0;
+			for(int j=0;j<A.length;j++)
+			{
+				bit=(bit+((A[j]>>i)&1))%3;
+			}
+			result=result+(bit<<i);
+		}
+		return result;
+    }
+}
