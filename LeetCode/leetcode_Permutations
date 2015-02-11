@@ -10,6 +10,11 @@ ideas:
 result is for the final result;
 in the innerloop, we insert the New Integer to different index and store it in current, then delete the integer and go to the next
 index
+大循环是数组的长度，每次循环将这个数字插入结果集中每个结果的每个不同可能位置
+		0
+	0,1		1,0
+2,0,1	0,2,1	0,1,2
+
 */
 public class Solution {
     public ArrayList<ArrayList<Integer>> permute(int[] num) {
