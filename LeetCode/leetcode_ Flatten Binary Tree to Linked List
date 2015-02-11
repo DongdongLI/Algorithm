@@ -1,0 +1,92 @@
+/*
+ Given a binary tree, flatten it to a linked list in-place.
+
+For example,
+Given
+
+         1
+        / \
+       2   5
+      / \   \
+     3   4   6
+
+The flattened tree should look like:
+
+   1
+    \
+     2
+      \
+       3
+        \
+         4
+          \
+           5
+            \
+             6
+*/
+
+/*solution 1
+1.pre-order traverse, put them in an ArrayList
+2.tarverse the ArrayList and change the pointer
+*/
+public class Solution {
+    public void flatten(TreeNode root)
+	{
+		if(root==null)return;
+		ArrayList<TreeNode> queue=new ArrayList<TreeNode>();
+		pretraverse(root, queue);
+		for(int i=0;i<queue.size();i++)
+		{
+			if(i==queue.size()-1)
+			{
+				queue.get(i).left=null;
+				queue.get(i).right=null;
+			}
+			else
+			{
+				queue.get(i).left=null;
+				queue.get(i).right=queue.get(i+1);
+			}	
+		}
+	}
+	public void pretraverse(TreeNode root,ArrayList<TreeNode> queue)
+	{
+		if(root!=null)
+		{
+			queue.add(root);
+		}
+		if(root.left!=null)
+		{
+			pretraverse(root.left, queue);
+		}
+		if(root.right!=null)
+			pretraverse(root.right, queue);
+			
+	}
+ }
+ /*
+ Solution 2:
+ 把一个点的右子树接到左子树最右下的那个节点的右边，递归
+ */
+ public class Solution {
+    public void flatten(TreeNode root)
+	{
+		if(root==null||root.left==null&&root.right==null)return;
+        while(root!=null)
+        {
+            if(root.left!=null){
+                	TreeNode p=root.left;
+        	while(p.right!=null)
+        	{
+        	    
+        		p=p.right;
+        	}
+        	p.right=root.right;
+        	root.right=root.left;
+        	root.left=null;
+        }
+    
+        root=root.right;
+        }
+	}
+	}
