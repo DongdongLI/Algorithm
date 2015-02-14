@@ -1,0 +1,44 @@
+/* Given a binary tree, determine if it is a valid binary search tree (BST).
+
+Assume a BST is defined as follows:
+
+    The left subtree of a node contains only nodes with keys less than the node's key.
+    The right subtree of a node contains only nodes with keys greater than the node's key.
+    Both the left and right subtrees must also be binary search trees.
+*/
+
+/*In-order traverse.
+If the tree is a binary tree, then the result of the traversal should be sorted
+
+*/
+
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isValidBST(TreeNode root)
+	{
+		ArrayList<Integer> traverse=new ArrayList<Integer>();
+		inOrderTraverse(root, traverse);
+		for(int i=1;i<traverse.size();i++)
+			if(traverse.get(i)<=traverse.get(i-1))
+				return false;
+		return true;
+	}
+	public void inOrderTraverse(TreeNode root,ArrayList<Integer> traverse)
+	{
+		if(root==null)
+			return;
+		if(root.left!=null)
+			inOrderTraverse(root.left,traverse);
+		traverse.add(root.val);
+		if(root.right!=null)
+			inOrderTraverse(root.right,traverse);
+	}
+}
