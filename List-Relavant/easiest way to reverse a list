@@ -15,3 +15,17 @@ return pre;
 /*
 Basically, what it does is to reverse all the next pointer
 */
+
+
+//old school way
+
+private static ListNode reverse(ListNode pre, ListNode next){
+        ListNode last = pre.next;//where first will be doomed "last"
+        ListNode cur = last.next;
+        while(cur != next){
+            last.next = cur.next;
+            cur.next = pre.next;
+            pre.next = cur;
+            cur = last.next;
+        }
+        return last;
