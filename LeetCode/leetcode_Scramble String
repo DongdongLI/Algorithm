@@ -1,0 +1,78 @@
+/*
+ Given a string s1, we may represent it as a binary tree by partitioning it to two non-empty substrings recursively.
+
+Below is one possible representation of s1 = "great":
+
+    great
+   /    \
+  gr    eat
+ / \    /  \
+g   r  e   at
+           / \
+          a   t
+
+To scramble the string, we may choose any non-leaf node and swap its two children.
+
+For example, if we choose the node "gr" and swap its two children, it produces a scrambled string "rgeat".
+
+    rgeat
+   /    \
+  rg    eat
+ / \    /  \
+r   g  e   at
+           / \
+          a   t
+
+We say that "rgeat" is a scrambled string of "great".
+
+Similarly, if we continue to swap the children of nodes "eat" and "at", it produces a scrambled string "rgtae".
+
+    rgtae
+   /    \
+  rg    tae
+ / \    /  \
+r   g  ta  e
+       / \
+      t   a
+
+We say that "rgtae" is a scrambled string of "great".
+
+Given two strings s1 and s2 of the same length, determine if s2 is a scrambled string of s1.
+
+
+*/
+/*
+本质：三维动态规划
+dp[i][j][len]:s1从下标i开始长度为len的字串和s2从下标j开始长度为len的字串是否互为scramble。
+递归式：dp[i][j][len]|=dp[i][j][k]&&dp[i+k][j+k][len-k]||dp[i][j+len-k][k]&&dp[i+k][j][len-k];
+
+把i到i+len-1 分成任意长度的两半，s2也切。以下任意一种情况成立即可：
+1. i to i+k-1, len==k is scrumble to j to j+k-1,len==k  && i+k to i+len len==len-k is scrumble to j+k to j+len len==len-k
+2. i to i+k-1  len==k is scrumble to j+len-k to j+len len==k && j to j+len-k len==len-k is scrumble to i+k to i+len-k len==len-k
+
+*/
+public class Solution {
+    public boolean isScramble(String s1, String s2) {
+        if(s1==null||s2==null||s1.length()!=s2.length())
+			return false;
+		if(s1.length()==0)  
+	        return true; 
+		boolean dp[][][]=new boolean[s1.length()][s1.length()][s1.length()+1];
+		
+		for(int i=0;i<s1.length();i++)
+			for(int j=0;j<s2.length();j++)
+			{
+				if(s1.charAt(i)==s2.charAt(j))
+					dp[i][j][1]=true;
+			}
+		
+		for(int len=2;len<=s2.length();len++)
+			for(int i=0;i<s1.length()+1-len;i++)
+				for(int j=0;j<s2.length()-len+1;j++)
+					for(int k=1;k<len;k++)
+					{
+						dp[i][j][len]|=dp[i][j][k]&&dp[i+k][j+k][len-k]||dp[i][j+len-k][k]&&dp[i+k][j][len-k];
+					}
+		return dp[0][0][s1.length()];
+    }
+}
