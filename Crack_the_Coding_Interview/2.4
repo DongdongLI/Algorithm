@@ -1,0 +1,36 @@
+/*
+  Write code to partition a linked list around a value x, such that all nodes less than x come before all nodes greater than 
+  or equal to x.
+*/
+
+/*
+  Two list separately collect the element smaller or larger than the threshold.
+  Connect the two of them.
+*/
+
+static Node partition(Node head,int x)
+	{
+		Node p=head;
+		Node smaller=new Node(0);
+		Node smallHead=smaller;
+		Node bigger=new Node(0);
+		Node bigHead=bigger;
+		while(p!=null)
+		{
+			if(p.val<x)
+			{
+				smallHead.next=p;
+				smallHead=smallHead.next;
+				p=p.next;
+			}
+			else
+			{
+				bigHead.next=p;
+				bigHead=bigHead.next;
+				p=p.next;
+			}
+		}
+		smallHead.next=bigger.next;
+		bigHead.next=null;
+		return smaller.next;
+	}
