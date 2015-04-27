@@ -1,0 +1,20 @@
+/*
+  Implement an algorithm to delete a node in the middle of a single linked list, given only access to that node.
+*/
+
+
+static void delete(Node toBeDeleted)
+	{
+		Node slow=toBeDeleted;
+		Node fast=slow.next;
+		Node backup=toBeDeleted;
+		while(fast!=null)
+		{
+			slow.val=fast.val;
+			backup=slow;
+			slow=slow.next;
+			fast=fast.next;
+		}
+		backup.next=null;
+		
+	}
