@@ -2,3 +2,23 @@
 Assume you have a method isSubstring.
 Given two strings, s1 and s2. Check if s2 is a rotation of s1 using only one call to isSubstring
 */
+
+/*
+Assume we know the position of the rotation, then we can use x to decode the first part and y for the second part.
+So s1=xy and s2=yx
+
+And s1+s1=xyxy
+
+So, if s2 is a rotation of s1, it has to be a substring of s1+s1
+*/
+
+
+static boolean isRotation(String s1,String s2)
+	{
+		if(s1.length()!=s2.length())
+			return false;
+		else
+		{
+			return (s1+s1).contains(s2);
+		}
+	}
