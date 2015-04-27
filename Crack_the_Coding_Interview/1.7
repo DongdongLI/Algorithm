@@ -1,0 +1,36 @@
+/*
+If an element in an MxN matrix is 0, its entire row and column are set to 0.
+*/
+
+/*
+First run records which rows and columns have 0;
+Second run set each element with zero in its row or column to 0
+*/
+static void changeToZero(int[][] a)
+	{
+		int m=a.length;
+		int n=a[0].length;
+		boolean row[]=new boolean[m];
+		boolean column[]=new boolean[n];
+		for(int i=0;i<m;i++)
+		{
+			for(int j=0;j<n;j++)
+			{
+				if(a[i][j]==0)
+				{
+					row[i]=true;
+					column[j]=true;
+				}
+			}
+		}
+		for(int i=0;i<m;i++)
+		{
+			for(int j=0;j<n;j++)
+			{
+				if(row[i]||column[j])
+				{
+					a[i][j]=0;
+				}
+			}
+		}
+	}
