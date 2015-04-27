@@ -1,0 +1,26 @@
+/*
+  Write code to remove duplicates from an unsorted linked list.
+  
+  *What if the temporary buffer is not allowed?
+*/
+
+
+
+//trivia solution
+static LinkedList<Integer> deleteDuplicate(LinkedList<Integer> list)
+	{
+		HashSet<Integer> set= new HashSet<Integer>();
+		for(int i=0;i<list.size();i++)
+		{
+			
+			if(set.contains(list.get(i)))
+			{
+				list.remove(i);
+				System.out.println("len: "+list.size());
+			}
+			else
+				set.add(list.get(i));
+		}
+		return new LinkedList<Integer>(set);
+	}
+
