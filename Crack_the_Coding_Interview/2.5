@@ -2,4 +2,59 @@
   You have two numbers represented by a linked list, where each node contains a single digit. The ditits are stored in reverse order, 
   such that 1's digit is at the head of the list. Write a function that adds the two numbers and return the sum as a linked list.
 */
+//solution: sum up, get result, reverse
 
+static Node sumUp(Node node1, Node node2)
+	{
+		int sum1=0;
+		int sum2=0;
+		
+		Node p1=node1;
+		Node p2=node2;
+		
+		while(p1!=null)
+		{
+			sum1=sum1*10+p1.val;
+			p1=p1.next;
+		}
+		while(p2!=null)
+		{
+			sum2=sum2*10+p2.val;
+			p2=p2.next;
+		}
+		int sum=sum1+sum2;
+		System.out.println(sum);
+		Node fakeHead=new Node(0);
+		Node fakeP=fakeHead;
+		while(sum!=0)
+		{
+			fakeP.next=new Node(sum%10);
+			sum/=10;
+			fakeP=fakeP.next;
+		}
+		System.out.println("I am here");
+		Node result=fakeHead.next;
+		Node pre=result;
+		Node cur=result.next;
+		while(cur!=null)
+		{
+			Node temp=cur.next;
+			cur.next=pre;
+			pre=cur;
+			cur=temp;
+		}
+		result.next=null;
+		return pre;
+	}
+
+
+static void print(Node head)
+	{
+		while(head!=null)
+		{
+			System.out.print(head.val+" ");
+			head=head.next;
+		}
+	}
+	
+	//solution 2: we can also use traditional addition
