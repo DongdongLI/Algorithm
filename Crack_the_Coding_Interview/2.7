@@ -1,0 +1,46 @@
+/*
+  Implement a function to check if a linked list is a palindrome.
+*/
+
+/*solution 1: reverse and compare*/
+static boolean isPalindrome(Node head)
+	{
+		Node temp=new Node(head.val);
+		Node p=head.next;
+		Node q=temp.next;
+		while(p!=null)
+		{
+			q=new Node(p.val);
+			p=p.next;
+			q=q.next;
+		}
+		
+		Node pre=temp;
+		Node cur=temp.next;
+		while(cur!=null)
+		{
+			Node t=cur.next;
+			cur.next=pre;
+			pre=cur;
+			cur=t;
+		}
+		temp.next=null;
+		temp=pre;
+		
+		p=head.next;
+		q=temp.next;
+		while(p!=null)
+		{
+			if(p.val!=q.val)
+				return false;
+			else
+			{
+				p=p.next;
+				q=q.next;
+			}
+		}
+		return true;
+		
+	}
+	
+	/*solution 2: stack is a even better idea*/
