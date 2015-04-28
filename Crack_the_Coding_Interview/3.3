@@ -1,0 +1,48 @@
+/*
+  Imagine a (literal) stack of plats. If the stack gets too high, it might topple. Therefore, in real life, we would likely 
+  start a new stack when the previous stack exceeds some threshold. Implement a data structure SetOfStacks that mimics this. 
+  SetOfStacks should be composed of several stacks and should create a new stack once the previous one exceeds capacity. SetOfStacks.push()
+   and pop() should behave identically to a single stack.
+  
+  Follow up: Implement a function popAt(int index) which performs a pop operation on specific sub stack.
+*/
+
+/*
+  ArrayList<Stack<Integer>> stacks
+*/
+
+class SetOfStack
+{
+	int size=0;
+	ArrayList<Stack<Integer>> stacks;
+	public SetOfStack(int threhold) {
+		stacks=new ArrayList<Stack<Integer>>();
+		size=threhold;
+		stacks.add(new Stack<Integer>());
+	}
+	
+	public void push(int val)
+	{
+		if(stacks.get(stacks.size()-1).size()==size)
+		{
+			stacks.add(new Stack<Integer>());
+			stacks.get(stacks.size()-1).push(val);
+		}
+		else
+			stacks.get(stacks.size()-1).push(val);
+	}
+	public int pop()
+	{
+		int toReturn=stacks.get(stacks.size()-1).pop();
+		if(stacks.get(stacks.size()-1).size()==0)
+			stacks.remove(stacks.size()-1);
+		return toReturn;
+	}
+	public int popAt(int index)
+	{
+		int toReturn=stacks.get(index).pop();
+		if(stacks.get(index).size()==0)
+			stacks.remove(index);
+		return toReturn;
+	}
+}
