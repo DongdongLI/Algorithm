@@ -1,0 +1,34 @@
+/*
+  Given a circular linked list, implement an algorithm which returns the node at the beginning of the loop.
+*/
+
+/*
+    Fast and slow method is obvious.
+    Check if there is loop to see if they meet.
+    
+    "the fast and slow are LOOP_SIZE-k nodes away from each other, they will meet after LOOP_SIZE-k turns, both be k nodes from the 
+    front of the loop. Then they can move in same direction." 
+*/
+
+static Node findStartNode(Node head)
+	{
+		Node fast=head;
+		Node slow=head;
+		while(fast!=null && fast.next!=null)
+		{
+			fast=fast.next.next;
+			slow=slow.next;
+			if(fast==slow)
+			{
+				break;
+			}
+		}
+		
+		slow=head;
+		while(fast!=slow)
+		{
+			fast=fast.next;
+			slow=slow.next;
+		}
+		return fast;
+	}
