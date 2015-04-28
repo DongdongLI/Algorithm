@@ -1,0 +1,35 @@
+/*
+  How would you design a stack which, in addition to push and pop, also has a function min which returns the minimum element?
+  Push, pop and min should all operate in O(1) time.
+*/
+/*Use another stack to keep track of the min at each step*/
+class stack
+{
+	ArrayList<Integer> data;
+	Stack<Integer> min;
+	stack()
+	{
+		data=new ArrayList<Integer>();
+		min=new Stack<Integer>();
+	}
+	void push(int val)
+	{
+		data.add(val);
+		if(val<=min())
+			min.push(val);
+	}
+	int pop()
+	{
+		int v=data.indexOf(data.size()-1);
+		if(v==min())
+			min.pop();
+		return v;
+	}
+	int min()
+	{
+		if(min.isEmpty())
+			return Integer.MAX_VALUE;
+		else
+			return min.peek();
+	}
+}
