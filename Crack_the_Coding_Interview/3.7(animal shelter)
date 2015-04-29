@@ -1,0 +1,44 @@
+/*
+    An animal shelter holds only dogs and cats, and operates on a strictly "first in, first out" basis. People must adopt either
+    the "oldest" of all animals , or they can select whether they would prefer a dog or cat (and will receive the oldest of that
+    type).
+    
+    Create the data structure to maintain this system and implement operations such as enqueue, dequeueAny, dequeueDog and dequeueCat.
+    You may use the built-in LinkedList data structure.
+*/
+
+
+class AnimalShelter
+{
+	LinkedList<Dog> dogs;
+	LinkedList<Cat> cats;
+	public AnimalShelter()
+	{
+		dogs=new LinkedList<Dog>();
+		cats=new LinkedList<Cat>();
+	}
+	public void enqueue(animal ani)
+	{
+		if(ani.name=="dog")
+			dogs.add((Dog) ani);
+		else
+			cats.add((Cat) ani);
+	}
+	public animal dequeueAny()
+	{
+		int time1=dogs.peek().time;
+		int time2=cats.peek().time;
+		if(time1<time2)
+			return dogs.pop();
+		else
+			return cats.pop();
+	}
+	public Dog dequeueDog()
+	{
+		return dogs.pop();
+	}
+	public Cat dqueueCat()
+	{
+		return cats.pop();
+	}
+}
