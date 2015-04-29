@@ -1,0 +1,53 @@
+/*
+    Write a program to sort a stack in ascending order (biggest on top). You may use at most one additional stack to hold items, 
+    but you may not copy the elements into any other data structure(array). The stack supports the following operations: push,pop,peek, and
+    isEmpty.
+*/
+/*
+    Idea: The only key point is in push. Whenever pushing a new element in the stack, pop those elements larger than the incoming 
+    one into helper, put the new guy in, and let all of them back from helper to stack.
+    
+    In this recursive style we can get the sorted done.
+*/
+
+class SortedStack
+{
+	Stack<Integer> stack;
+	Stack<Integer> helper;
+	public SortedStack() {
+		stack=new Stack<Integer>();
+		helper=new Stack<Integer>();
+	}
+	public void push(int val)
+	{
+		if(stack.isEmpty())
+			stack.push(val);
+		else if(stack.peek()<=val)
+			stack.push(val);
+		else if(!stack.isEmpty() && stack.peek()>val)
+		{
+			while(!stack.isEmpty()&&stack.peek()>val)
+			{
+				helper.push(stack.pop());
+			}
+			stack.push(val);
+			while(!helper.isEmpty())
+			{
+				stack.push(helper.pop());
+			}
+			
+		}
+	}
+	public int pop()
+	{
+		return stack.pop();
+	}
+	public boolean isEmpty()
+	{
+		return stack.isEmpty();
+	}
+	public int peek()
+	{
+		return stack.peek();
+	}
+}
