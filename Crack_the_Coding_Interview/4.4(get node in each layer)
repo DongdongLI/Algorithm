@@ -1,0 +1,43 @@
+/*
+    Given a binary tree, design a algorithm which creates a linked list of all the nodes at each depth.
+    (e.g., if you have a tree with depth D, you will have D lists.)
+*/
+/*
+    layer by layer, while taking of this layer, put the children in the next layer and getting ready
+*/
+
+static ArrayList<LinkedList<TreeNode>> findNodeAtEachDepth(TreeNode root)
+	{
+		ArrayList<LinkedList<TreeNode>> result=new ArrayList<LinkedList<TreeNode>>();
+		if(root==null)
+			return result;
+		LinkedList<TreeNode> nextLev=new LinkedList<TreeNode>();
+		LinkedList<TreeNode> thisLev=new LinkedList<TreeNode>();
+		thisLev.add(root);
+		while(!thisLev.isEmpty())
+		{
+			result.add(new LinkedList<TreeNode>(thisLev));
+			for(TreeNode node:thisLev)
+			{
+				if(node.left!=null)
+					nextLev.add(node.left);
+				if(node.right!=null)
+					nextLev.add(node.right);
+			}
+			thisLev=nextLev;
+			nextLev=new LinkedList<TreeNode>();
+		}
+		return result;
+	}
+	
+	class TreeNode
+{
+	int val;
+	TreeNode left;
+	TreeNode right;
+	public TreeNode(int v) {
+		this.val=v;
+		left=null;
+		right=null;
+	}
+}
