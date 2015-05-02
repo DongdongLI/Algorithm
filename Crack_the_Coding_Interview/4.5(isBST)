@@ -1,0 +1,18 @@
+/*
+    Implement of a function to check if a binary tree is a binary search tree.
+*/
+/*
+    Solution 1: In order traverse and put all the node's value into array, if the array is sorted, it is a BST.
+*/
+
+public boolean isBST(TreeNode root)
+	{
+		if(root==null||root.left==null && root.right==null)
+			return true;
+		else if(root.left==null&&root.right!=null)
+			return root.val<=root.right.val && isBST(root.right);
+		else if(root.right==null&&root.left!=null)
+			return root.val>=root.left.val && isBST(root.left);
+		else
+			return root.val<=root.right.val && isBST(root.right) && root.val>=root.left.val && isBST(root.left);
+	}
