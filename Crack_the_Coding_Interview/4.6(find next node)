@@ -1,0 +1,42 @@
+/*
+    Write an algorithm to find the 'next' node(e.g. in-order-successor) of a given node in a binary search tree.
+    You may assume that each node has a link to its parent.
+*/
+
+//in order successor: left, middle, right
+/*solution 1: traverse the entire tree and take the one*/
+
+
+/*solution 2:*/
+
+public TreeNode returnNext(TreeNode node)
+	{
+		if(node==null)
+			return null;
+		if(node.right==null)
+		{
+			TreeNode p=node;
+			TreeNode x=node.parent;
+			while(x!=null && x.left!=p)
+			{
+				p=x;
+				x=x.parent;
+			}
+			return x;
+		}
+		else
+		{
+			return findLeftMost(node.right);
+		}
+	}
+	public TreeNode findLeftMost(TreeNode node)
+	{
+		if(node==null)
+			return null;
+		TreeNode p=node;
+		while(p.left!=null)
+		{
+			p=p.left;
+		}
+		return p;
+	}
