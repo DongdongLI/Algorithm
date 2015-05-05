@@ -1,0 +1,41 @@
+/*
+    You are given a binary tree in which each node contains a value. Design an algorithm to print all paths which 
+    sum to a given value. No need to worry about start and end.
+*/
+
+public void findAllPath(TreeNode root,int sum)
+	{
+		int depth=getDepth(root);
+		int[] path=new int[depth];
+		
+	}
+	public void findPath(TreeNode root,int sum,int[] path,int level)
+	{
+		if(root==null)
+			return;
+		
+		path[level]=root.val;
+		int t=0;
+		for(int i=level;i>=0;i--)
+		{
+			t+=path[i];
+			if(t==sum)
+				printPath(path, i, level);
+		}
+		findPath(root.left, sum, path, level+1);
+		findPath(root.right, sum, path, level+1);
+		
+		path[level]=Integer.MIN_VALUE;
+	}
+	public void printPath(int[] path,int start,int end)
+	{	
+		for(int i=start;i<=end;i++)
+			System.out.print(path[i]+" ");
+		System.out.println();
+	}
+	public int getDepth(TreeNode root)
+	{
+		if(root==null)
+			return 0;
+		return 1+Math.max(getDepth(root.left), getDepth(root.right));
+	}
