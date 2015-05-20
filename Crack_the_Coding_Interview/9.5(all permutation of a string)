@@ -1,0 +1,30 @@
+/*
+    Implement an algorithm to compute all permutations of a string.
+*/
+
+/*
+    for each character in the string, try to put them in any possible position in a permutation.
+*/
+
+ArrayList<ArrayList<Character>> findPermutation(ArrayList<Character> a)
+	{
+		ArrayList<ArrayList<Character>> result=new ArrayList<ArrayList<Character>>();
+		if(a==null||a.size()==0)
+			return result;
+		result.add(new ArrayList<Character>());
+		for(int i=0;i<a.size();i++)
+		{
+			ArrayList<ArrayList<Character>> current=new ArrayList<ArrayList<Character>>();
+			for(ArrayList<Character> k:result)
+			{
+				for(int j=0;j<k.size()+1;j++)
+				{
+					k.add(j,a.get(i));
+					current.add(new ArrayList<Character>(k));
+					k.remove(j);
+				}
+			}
+			result=new ArrayList<ArrayList<Character>>(current);
+		}
+		return result;
+	}
