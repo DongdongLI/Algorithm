@@ -1,0 +1,61 @@
+/*
+    Implement an algorithm to print all valid combinations of n-pairs of parentheses
+*/
+
+/*
+    The idea of DFS is obvious here, the controlled of valid or invalid combination is that: whenever the left amout of left 
+    parentheses is less than the right ones, that combination can never be valid.
+*/
+
+void printParentheses(int n)
+	{
+		ArrayList<String> result=new ArrayList<String>();
+		String temp="";
+		help(n,n,result,temp);
+		System.out.println(result);
+	}
+	void help(int left,int right,ArrayList<String> result, String temp)
+	{
+		if(left>right)
+			return;
+		else if(left==0 && right==0)
+			result.add(temp);
+		else
+		{
+			if(left>0)
+				help(left-1,right,result,temp+"(");
+			if(right>0)
+				help(left,right-1,result,temp+")");
+		}
+	}
+	
+	/*
+	    I know there should be a second way which doen't require the generation of all combination, which is expensive.
+	*/
+	//Alternative 1: not so efficient
+	/*
+	    recursion and insertion
+	    
+	    when n=2, we have:
+	     ()()
+	     with insertion:
+	      add () after the first ( =>>  (())()
+	      add () after the second ( =>>   ()(())
+	      add () at the beginning =>> ()()()
+	     
+	     (())
+	       add () after the first ( =>>  (()())
+	       add () after the second ( =>>   ((()))
+	       add () at the beginning =>> ()(()) 
+	     
+	   at last, use set to kill all the duplicates.
+	*/
+	
+//Alternative 2: // turn out to use the same idea as the implementation of the original one
+/*
+    Adding stradegy:
+    
+    when to add left: anytime as long as we have left parentheses left
+    
+    when to add right: 1. have right parentheses left, 2. no syntxerror
+*/
