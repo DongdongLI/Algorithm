@@ -1,0 +1,35 @@
+/*
+    Given an infinite number of 25, 10, 5, 1 coins, write an algorithm to figure out how many ways are there to represent n cents.
+*/
+
+/*traditional recursive way*/
+int makeChange(int n,int denom)
+	{
+		int next_denom=0;   //indicates which coin to use in the next or the deeper recursion
+		switch(denom)
+		{
+		case 25:
+			next_denom=10;
+			break;
+		case 10:
+			next_denom=5;
+			break;
+		case 5:
+			next_denom=1;
+			break;
+		case 1:
+			return 1;
+		}
+		
+		int ways=0;
+		
+		for(int i=0;i*denom<=n;i++)
+			ways+=makeChange(denom-i*denom, next_denom);
+	
+	//e.g.  n=100, one 25 and have 75 left for next recursion start with 10 coin
+	//        or   two 25 and have 50 left for next recursion start with 10 coins
+	
+	// that's how we can get all the different ways
+	
+		return ways;
+	}
