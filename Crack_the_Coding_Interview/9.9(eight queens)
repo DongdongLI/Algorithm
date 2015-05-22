@@ -1,0 +1,49 @@
+/*
+    for each row, try all possible positions, if valid, then put the partial result to the next recursion.
+*/
+
+public class test
+{
+	public static void main(String[] args)
+	{
+		System.out.println(queens().size());
+	}
+	static public ArrayList<String> queens()
+	{
+		ArrayList<String> result=new ArrayList<String>();
+		int[] temp=new int[8];
+		help(0, temp, result);
+		return result;
+	}
+	static void help(int current, int[] temp,ArrayList<String> result)
+	{
+		if(current==temp.length)
+		{
+			StringBuilder sb=new StringBuilder();
+			for(int i=0;i<temp.length;i++)
+				sb.append(temp[i]+" ");
+			result.add(sb.toString());
+		}
+		else
+		{
+			for(int i=0;i<temp.length;i++)
+			{
+				temp[current]=i;
+				if(isValid(temp, current))
+					help(current+1, temp, result);
+			}
+		}
+	}
+	
+	static boolean isValid(int[] temp,int current)
+	{
+		for(int i=0;i<current;i++)
+		{
+			if(temp[i]==temp[current] || Math.abs(i-current)==Math.abs(temp[i]-temp[current]))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+}
