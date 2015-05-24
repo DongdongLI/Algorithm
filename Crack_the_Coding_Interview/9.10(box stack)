@@ -1,0 +1,71 @@
+/*
+    You have a stack of n boxes, with widths wi, heights hi, and depth di. The boxes cannot be rotated and can only be stacked 
+    on top of one another if each box in the stack is strictly larger than the box above in width, height and depth. find the 
+    tallest height.
+*/
+
+/*
+    Use recursive way to compare all the possibilities, use HashMap to keep track of the results.
+*/
+
+public class test
+{
+	public static void main(String args[])
+	{
+		
+	}
+	static public ArrayList<Box> createStackDP(Box[] boxes,Box bottom, HashMap<Box, ArrayList<Box>> stack_map)
+	{
+		if(bottom!=null && stack_map.containsKey(bottom))
+		{
+			return stack_map.get(bottom);
+		}
+		
+		int max_height=0;
+		ArrayList<Box> max_stack=null;
+		for(int i=0;i<boxes.length;i++)
+		{
+			if(boxes[i].canBeAbove(bottom))
+			{
+				ArrayList<Box> new_stack=createStackDP(boxes, boxes[i], stack_map);
+				int new_height=stackHeight(new_stack);
+				if(new_height>max_height)
+				{
+					max_height=new_height;
+					max_stack=new_stack;
+				}
+			}
+		}
+		if(max_stack==null) max_stack=new ArrayList<Box>();
+		if(bottom!=null)max_stack.add(0,bottom);
+		stack_map.put(bottom, max_stack);
+		
+		return (ArrayList<Box>)max_stack.clone();
+	}
+	static public int stackHeight(ArrayList<Box> stack)
+	{
+		int height=0;
+		for(int i=0;i<stack.size();i++)
+		{
+			height+=stack.get(i).height;
+		}
+		return height;
+	}
+}
+class Box
+{
+	int width;
+	int height;
+	int depth;
+	
+	public Box(int w,int h,int d)
+	{
+		width=w;
+		height=h;
+		depth=d;
+	}
+	public boolean canBeAbove(Box bottom)
+	{
+		return this.depth<bottom.depth && this.height<bottom.height && this.width<bottom.width;
+	}
+}
