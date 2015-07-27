@@ -1,0 +1,50 @@
+/*
+  Remove all elements from a linked list of integers that have value val.
+
+  Example
+  Given: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6
+  Return: 1 --> 2 --> 3 --> 4 --> 5
+*/
+
+/*
+    Use a fake head in case the head itself need to be deleted
+    Two pointers: p and closestAvaliable
+        p is moving one step at a time
+          everytime when p gets to a node doesn't need to be delete, closestAvaliable will connect to p 
+    *** in the end, "closestAvaliable.next=null;" will help to cut the list
+*/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if(head==null)return head;
+    	
+    	ListNode fakeHead=new ListNode(0);
+    	fakeHead.next=head;
+    	head=fakeHead;
+    	
+    	ListNode closestAvaliable=head;
+    	ListNode p=head.next;
+    	
+    	while(p!=null){
+    		if(p.val!=val){
+    			closestAvaliable.next=p;
+    			closestAvaliable=p;
+    			p=p.next;
+    			
+    		}
+    		else{
+    			p=p.next;
+    		}
+    	}
+    	closestAvaliable.next=null;
+    	return fakeHead.next;
+    }
+}
