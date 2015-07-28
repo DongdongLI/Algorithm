@@ -40,7 +40,7 @@ public class Solution {
     		}else{
     			result.append(count);// there are "count"
     			result.append(digit);// "digit" in this section
-    			
+    			count=1;
     			digit=a[i+1];
     		}
     	}
