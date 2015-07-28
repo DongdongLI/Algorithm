@@ -1,0 +1,40 @@
+/*
+    Given a positive integer, return its corresponding column title as appear in an Excel sheet.
+
+    For example:
+    
+        1 -> A
+        2 -> B
+        3 -> C
+        ...
+        26 -> Z
+        27 -> AA
+        28 -> AB 
+*/
+
+/*
+    after AZ it's BZ
+    so its like 26-base
+    
+    0 1 2 3 4 5 6 7 8 ... 25 then back to 0 (instead it's encoded in letter)
+    AZ->BA, BZ->CA,... etc
+    
+    0 is map to A, so we need n-- each time
+    
+    start from the rear, so need to reverse in the end
+*/
+
+public class Solution {
+    public String convertToTitle(int n) {
+        StringBuilder result=new StringBuilder();
+        
+        
+        while(n>0){
+        	n--;
+        	result.append((char)(n%26+'A'));
+        	n/=26;
+        }
+        result.reverse();
+        return result.toString();
+    }
+}
