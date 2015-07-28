@@ -10,43 +10,38 @@
   Note: The sequence of integers will be represented as a string.
 */
 
-//trivial way (too slow)
+//trivial way 
 /*
     Based on the previous string to generate the next one:
       count how many same digits appear one by one
 */
 public class Solution {
     public String countAndSay(int n) {
-        String result="1";
-    	if(n==1)
-        	return "1";
-        else
-        	for(int i=0;i<n-1;i++){
-        		result=generateNext(result);
-        	}
-    	return result;
-    }
-    public String generateNext(String s){
-    	if(s.equals("1"))return "11";
-    	
-    	char[] a=s.toCharArray();
-    	StringBuilder result=new StringBuilder();
-    	
-    	char digit=a[0];
-    	int count=1;
-    	for(int i=0;i<a.length-1;i++){
-    		if(a[i+1]==a[i]){
-    			count++;
-    		}else{
-    			result.append(count);// there are "count"
-    			result.append(digit);// "digit" in this section
-    			count=1;
-    			digit=a[i+1];
-    		}
+    	if(n==1)return "1";
+    	String s="1";
+    	StringBuilder result;
+    	int num=1;
+    	while(num<n){
+	    	char[] a=s.toCharArray(); // s is the string generate in the last iteration
+	    	result=new StringBuilder(); // built from scrach
+	    	
+	    	char digit=a[0];
+	    	int count=1;
+	    	for(int i=0;i<a.length-1;i++){
+	    		if(a[i+1]==a[i]){
+	    			count++;
+	    		}else{
+	    			result.append(count); // there are count 
+	    			result.append(digit); // of digit in this section
+	    			count=1;
+	    			digit=a[i+1];
+	    		}
+	    	}
+	    		result.append(count);
+			result.append(digit); 
+			s=result.toString();
+			num++; // the next one
     	}
-    	result.append(count);
-		result.append(digit);
-		
-		return result.toString();
+		return s;
     }
 }
