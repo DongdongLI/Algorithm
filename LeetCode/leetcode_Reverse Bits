@@ -1,0 +1,41 @@
+/*
+  Reverse bits of a given 32 bits unsigned integer.
+
+  For example, given input 43261596 (represented in binary as 00000010100101000001111010011100), 
+  return 964176192 (represented in binary as 00111001011110000010100101000000).
+*/
+
+/*
+      Remove the bits of the original integer from the rear one by one,
+        put them in a tempory array
+        sum them up
+*/
+
+public class Solution {
+    // you need treat n as an unsigned value
+    public int reverseBits(int n) {
+        int[] bits=new int[32];
+    	for(int i=0;i<bits.length;i++){
+    		int t=(n&1);
+    		bits[i]=t;
+    		n>>=1;
+    	}
+    	
+    	long total=0;
+    	for(int i=0;i<bits.length;i++){
+    		total+=bits[i]*Math.pow(2, bits.length-1-i);
+    	}
+    	return (int) total;
+    }
+}
+
+/*
+  Follow up:
+  If this function is called many times, how would you optimize it?
+*/
+/*
+  Optimization:
+  
+  1^1=0 0^0=0 1^0=1 0^1=1
+  Maybe just swap the i th and the j th bit?
+*/
