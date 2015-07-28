@@ -1,0 +1,72 @@
+/*
+  Rotate an array of n elements to the right by k steps.
+
+  For example, with n = 7 and k = 3, the array [1,2,3,4,5,6,7] is rotated to [5,6,7,1,2,3,4].
+*/
+
+/*
+    Brute Force: too slow
+*/
+
+//brute force
+public class Solution {
+  public void rotate(int[] nums, int k) {
+  	for(int i=0;i<=k;i++){
+  		int temp=nums[0];
+  		for(int j=1;j<nums.length;j++){
+  			nums[j-1]=nums[j];
+  		}
+  		nums[nums.length-1]=temp;
+  	}
+  }
+}
+
+/*
+    Use tempory array to save part of the original array, then copy
+*/
+
+public class Solution {
+	public void rotate(int[] nums, int k) {
+	    if(k>=nums.length)k=k%nums.length;
+	    if(k==0)return;
+	    int[] temp=new int[nums.length];
+	    
+		for (int i = 0; i <k; i++) { // copy the rotated part to the temp
+			temp[i]=nums[nums.length-k+i];
+		}
+		
+		for(int i=k;i<nums.length;i++){
+			temp[i]=nums[i-k];  // copy the rest of the original array to temp
+		}
+		System.arraycopy(temp, 0, nums, 0, temp.length);  // copy back
+	}
+}
+
+/*
+    BEST method: the shift and copy of the integer can be done using reversal
+    {1,2,3,4,5,6} k=2;
+    reverse the first part 4,3,2,1,5,6
+    reverse the second part 4,3,2,1,6,5
+    reverse the whole 5,6,1,2,3,4
+    
+    the reason of reversing the each parts is to balance the last reverse. (reverse twice means going back to original) but the 
+    effect of swaping two parts can remain
+*/
+
+public class Solution {
+	public void rotate(int[] nums, int k) {
+	    if(k>=nums.length)k=k%nums.length;
+	    if(k==0)return;
+	    
+	    reverse(nums, 0, nums.length-k-1);
+	    reverse(nums, nums.length-k, nums.length-1);
+	    reverse(nums,0,nums.length-1);
+	}
+	public void reverse(int[] nums,int start,int end){
+		for(int i=start;i<=(start+end)/2;i++){
+			int temp=nums[i];
+			nums[i]=nums[end-(i-start)];
+			nums[end-(i-start)]=temp;
+		}
+	}
+}
