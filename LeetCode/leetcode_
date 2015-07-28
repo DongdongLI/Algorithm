@@ -8,6 +8,8 @@
 
 /*
     Strightforward idea: start from the target, change the value of each node, delete the last one
+
+    Easier way: cut the copy part: just copy one value and then skip the node
 */
 
 public class Solution {
@@ -26,3 +28,10 @@ public class Solution {
 	      ListNode next;
 	      ListNode(int x) { val = x; }
 	  }
+// method 2
+public class Solution {
+    public void deleteNode(ListNode node) {
+      	node.val=node.next.val;
+      	node.next=node.next.next;
+    }
+}
