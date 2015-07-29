@@ -96,3 +96,7 @@ public class Trie {
 // Trie trie = new Trie();
 // trie.insert("somestring");
 // trie.search("key");
+
+//*************************
+
+we can also use array to manage it
