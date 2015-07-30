@@ -1,0 +1,101 @@
+/*
+  Design a data structure that supports the following two operations:
+
+  void addWord(word)
+  bool search(word)
+  search(word) can search a literal word or a regular expression string containing only letters a-z or .. A . means it can represent any one letter.
+  
+  For example:
+  
+  addWord("bad")
+  addWord("dad")
+  addWord("mad")
+  search("pad") -> false
+  search("bad") -> true
+  search(".ad") -> true
+  search("b..") -> true
+*/
+
+// DFS and trie
+
+/*Solution*/
+
+public class WordDictionary {
+	private TrieNode root;
+	public WordDictionary(){
+		root=new TrieNode();
+	}
+	// Adds a word into the data structure.
+    public void addWord(String word) {
+    	TrieNode p=root;
+        for(int i=0;i<word.length();i++){
+        	if(p.children.containsKey(word.charAt(i))){
+        		p=p.children.get(word.charAt(i));
+        	}else{
+        		p.children.put(word.charAt(i), new TrieNode(word.charAt(i)));
+        		p=p.children.get(word.charAt(i));
+        	}
+        	if(i==word.length()-1)p.isLeaf=true;
+        }
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    
+    public boolean search(String word) {
+    	if(word==null || word.length()==0)
+    		return true;
+    	
+    		return searchHelper(word, root.children,0); 
+    }	
+    
+    public boolean searchHelper(String word, HashMap<Character, TrieNode> children, int start){
+    	if(start==word.length()) // the whole word has been traversed
+    	{
+    		if(children.size()==0) // and there it is the leaf
+    			return true;
+    		return false;
+    	}
+    	
+    	char c=word.charAt(start); // the char to be used in this iteration
+    	
+    	if(children.containsKey(c)){ // if there is a match
+    		if(start==word.length()-1 && children.get(c).isLeaf)  // it is already the last letter, and it can be the leaf
+    			return true;
+    		return searchHelper(word, children.get(c).children, start+1); //go to the next letter, together with its children
+    	}else if(c=='.'){ // if it is a '.'
+    		boolean result=false;
+    		
+    		for(Map.Entry<Character, TrieNode> child:children.entrySet()){ // get all key value pairs of the children
+    			if(start==word.length()-1 && child.getValue().isLeaf) // if this dot is the last in the word, and this node can be the leaf
+    				return true;
+    			
+    			if(searchHelper(word, child.getValue().children, start+1)) // then for every child, go
+    				result=true;
+    			
+    		}
+    		return result; // if one of the path works, it will return
+    	}else
+    	{
+    		return false; // doent match anything, and it's not a dot
+    	}	
+    }
+}
+
+class TrieNode {
+    // Initialize your data structure here.
+	char val;
+    HashMap<Character, TrieNode> children=new HashMap<Character, TrieNode>();
+    boolean isLeaf;// very important
+	public TrieNode() {
+        val=' ';
+    }
+	public TrieNode(char val){
+		this.val=val;
+	}
+	
+}
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary = new WordDictionary();
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");
