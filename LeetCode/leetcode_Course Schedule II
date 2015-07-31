@@ -72,3 +72,59 @@ public class Solution {
     	return result;
     }
 }
+
+/*
+	DFS: see comments in code
+*/
+package leetcodePlayground;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+
+public class Solution {
+	public int[] findOrder(int numCourses, int[][] prerequisites) {
+		Map<Integer, LinkedList<Integer>> prerequisiteMap=new HashMap<Integer, LinkedList<Integer>>();
+    	for(int i=0;i<prerequisites.length;i++){
+    		if(prerequisiteMap.containsKey(prerequisites[i][1])){
+    			prerequisiteMap.get(prerequisites[i][1]).add(prerequisites[i][0]);// course 1 is prerequisite of course 0
+    		}else{
+    			LinkedList<Integer> list=new LinkedList<>();
+    			list.add(prerequisites[i][0]);
+    			prerequisiteMap.put(prerequisites[i][1], list);
+    		}
+    	}
+    	Stack<Integer> stack=new Stack<Integer>(); // used to store the result in the iteration
+    	boolean[] visited=new boolean[numCourses];	// all iteration will use the same "visited" array, as long as all of it is true, then it's over
+    	for(int i=0;i<numCourses;i++)
+    	{
+    		//if any course does not make it, return false
+    		if(!DFS(prerequisiteMap, i, visited, stack, new boolean[numCourses]))
+    			return new int[0];
+    	}
+    	int[] result=new int[numCourses];
+    	int i=0;
+    	while(!stack.isEmpty()){
+    		result[i++]=stack.pop();
+    	}
+    	return result;
+    }
+	public boolean DFS(Map<Integer, LinkedList<Integer>> prerequisiteMap,int course,boolean[] visited,Stack<Integer> stack,boolean[] loop){
+		if(visited[course])// first check if it has been visited, then loop, because if a node is not been finished but been "loop"
+			return true;// it means it is still being processed, so there is a loop, then false
+		if(loop[course])
+			return false;
+		
+		loop[course]=true;
+		if(prerequisiteMap.containsKey(course)) // some course may not exist in the map
+		for(int otherCourse:prerequisiteMap.get(course)){
+			if(!DFS(prerequisiteMap, otherCourse, visited, stack, loop)) // goes deeper
+				return false;
+		}
+		stack.push(course); //everything is fine, push into stack
+		visited[course]=true;// and mark the visit
+		return true;
+    }
+}
