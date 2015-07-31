@@ -1,0 +1,48 @@
+/*
+  Given an input string, reverse the string word by word.
+
+  For example,
+  Given s = "the sky is blue",
+  return "blue is sky the".
+*/
+
+/*
+    No space in the beginning or in the end
+    only sing space allowed between words
+    
+    see comments
+*/
+
+package leetcodePlayground;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+public class Solution {
+	public String reverseWords(String s) {
+	    if(s==null || s.length()==0)
+	    	return s;
+	    // store each word without the space
+	    List<String> strings=new ArrayList<String>();
+	    String[] temp=s.split(" ");
+	    for(int i=0;i<temp.length;i++){
+	    	// get rid with the " " and extra spaces in word
+	    	if(!temp[i].trim().equals("")){
+	    		strings.add(temp[i].trim());
+	    	}
+	    }
+	    // reverse the word
+	    Collections.reverse(strings);
+	    StringBuffer sb=new StringBuffer();
+	    // get them out with a space
+	    for(int i=0;i<strings.size()-1;i++){
+	    	sb.append(strings.get(i));
+	    	sb.append(" ");
+	    }
+	    sb.append(strings.get(strings.size()-1));
+	    return sb.toString();
+	}
+	
+}
