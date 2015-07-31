@@ -71,3 +71,50 @@ public class Solution {
     	return numOfNoPre==numCourses;
     }
 }
+// dfs: delicated to find a cycle
+package leetcodePlayground;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
+public class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+    	// key is the course i, and all the course come after i is stored in the list
+    	Map<Integer, LinkedList<Integer>> prerequisiteMap=new HashMap<Integer, LinkedList<Integer>>();
+    	for(int i=0;i<prerequisites.length;i++){
+    		if(prerequisiteMap.containsKey(prerequisites[i][1])){
+    			prerequisiteMap.get(prerequisites[i][1]).add(prerequisites[i][0]);
+    		}else{
+    			LinkedList<Integer> list=new LinkedList<>();
+    			list.add(prerequisites[i][0]);
+    			prerequisiteMap.put(prerequisites[i][1], list);
+    		}
+    	}
+    	// -1 visiting, 1 visited
+    	int[] visited=new int[numCourses];
+    	
+    	for(int i=0;i<visited.length;i++){
+    		if(!DFS(visited, prerequisiteMap, i))
+				return false;
+    	}
+    	return true;
+    }
+    public boolean DFS(int[] visited, Map<Integer, LinkedList<Integer>> prerequisiteMap,int i){
+    	if(visited[i]==-1) //i is also in the middle of the process, circle found
+    		return false;
+    	
+    	if(visited[i]==1)
+    		return true;
+    	
+    	visited[i]=-1;
+    	
+    	if(prerequisiteMap.containsKey(i))
+    		for(Integer c:prerequisiteMap.get(i)){
+    			if(!DFS(visited, prerequisiteMap, c))
+    				return false;
+    		}
+    	visited[i]=1;
+    	return true;
+    }
+}
