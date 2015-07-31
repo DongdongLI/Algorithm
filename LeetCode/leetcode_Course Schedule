@@ -1,0 +1,73 @@
+here are a total of n courses you have to take, labeled from 0 to n - 1.
+
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?
+
+For example:
+
+2, [[1,0]]
+There are a total of 2 courses to take. To take course 1 you should have finished course 0. So it is possible.
+
+2, [[1,0],[0,1]]
+There are a total of 2 courses to take. To take course 1 you should have finished course 0, and to take course 0 you should 
+also have finished course 1. So it is impossible.
+
+/*
+    analysis
+      0 1 ...
+    0 i j    course j is course i's prerequisite (this has nothing to do with the index of the array !!!) i appears one more time, it has one more prerequisit
+    1
+    2
+    3
+    ...
+*/
+
+// BFS
+/*
+   for one course i, find all other courses j that take i as prerequisite
+*/
+package leetcodePlayground;
+
+import java.util.LinkedList;
+
+public class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+    	// count the number of prerequisites for each course
+    	int[] numOfPre=new int[numCourses];
+    	// for each entry, 
+    	for(int i=0;i<prerequisites.length;i++){
+    		// [i][0] is the course, and [i][1] is the prerequisite for that course
+    		numOfPre[prerequisites[i][0]]++;
+    	}
+    	//put courses that have no prerequisites in list
+    	LinkedList<Integer> startCourse=new LinkedList<Integer>();
+    	for(int i=0;i<numOfPre.length;i++)
+    		if(numOfPre[i]==0)
+    			startCourse.add(i);
+    	
+    	// number of courses that have no prerequisites
+    	int numOfNoPre=startCourse.size();
+    	
+    	// total goal is to get the number of course that can be taken with the help of the first few classes
+    	while(!startCourse.isEmpty()){
+    		// take out one and see what it can help
+    		int course=startCourse.remove();
+    		for(int i=0;i<prerequisites.length;i++){
+    			// go through all courses, and when some course depends on this course
+    			if(prerequisites[i][1]==course){
+    				// deduct one, as this prerequisite is set
+    				numOfPre[prerequisites[i][0]]--;
+    				// when it is all set, it is free and it can come in to help other course
+    				if(numOfPre[prerequisites[i][0]]==0){
+    					numOfNoPre++;
+    					startCourse.add(prerequisites[i][0]);
+    				}
+    			}
+    		}
+    	}
+    	
+    	
+    	return numOfNoPre==numCourses;
+    }
+}
