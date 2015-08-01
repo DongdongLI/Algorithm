@@ -1,0 +1,139 @@
+/*
+  Implement a basic calculator to evaluate a simple expression string.
+
+  The expression string contains only non-negative integers, +, -, *, / operators and empty spaces . The integer division should truncate toward zero.
+  
+  You may assume that the given expression is always valid.
+  
+  Some examples:
+  "3+2*2" = 7
+  " 3/2 " = 1
+  " 3+5 / 2 " = 5
+*/
+
+/*
+    two stacks, one for number and the other for operators
+    normally:
+      pop one operator from Operator stack, pop two numbers from number stack, get the result then push the number back
+    BUT:
+      since we are doing them backwards, for example, 6/4*2 ( we CANNOT do 4/2 first!!)
+        Solution:
+        Using 2 more tempory stacks to keep things, as long as there is a valid calculation, then push them back again
+        
+        2         
+        4 *         4                                 2
+        6 /  then   6 /  and 2 *  then 1 and 2 * then 1 * then 2
+    
+    "*" should not be executed when the one before it is "/"
+    "/" should not be executed when the one before it is "/" or "*"
+    "+" should not be executed when the one before it is "/" or "*" or "-"
+    "-" should not be executed when the one before it is "/" or "*" or "-"
+    
+    Method 1: SLOW but accepted:
+*/
+
+package leetcodePlayground;
+
+import java.util.Stack;
+
+public class Solution {
+    public int calculate(String s) {
+        Stack<String> numbers=new Stack<String>();
+        Stack<String> operator=new Stack<String>();
+        
+        s=s.trim();
+        for(int i=0;i<s.length();){
+        	if(s.charAt(i)>='0' && s.charAt(i)<='9'){
+        		int j=i+1;
+        		while(j<s.length() && s.charAt(j)>='0' && s.charAt(j)<='9'){ // there may be more then 1 digit
+        			j++;
+        		}
+        		numbers.push(s.substring(i,j));
+        		i=j;// at least i= i+1;
+        	}else{
+        		operator.push(s.charAt(i)+"");
+        		i++;
+        	}
+        }
+        Stack<String> numTemp=new Stack<String>();
+        Stack<String> opTemp=new Stack<String>();
+        
+        while(!operator.isEmpty()){
+        	String op=operator.pop();
+        	// the two numbers
+        	int a=0;
+        	int b=0;
+        	// used for the check of next operator
+        	String nextOp="";
+        	switch (op) {
+        	case "*":
+        		if (!operator.isEmpty())
+        			nextOp=operator.peek();
+				if (!operator.isEmpty() && nextOp.equals("/")) { // it cannot be executed then put them in temp
+					opTemp.push(op);
+					numTemp.push(numbers.pop());
+				} else { // if it is fine, then calculate and push back the result
+					a = Integer.valueOf(numbers.pop());
+					b = Integer.valueOf(numbers.pop());
+					numbers.add(b * a + "");
+					pushBack(numbers, operator, numTemp, opTemp);
+				}
+
+				break;
+        	case "/":
+        		if (!operator.isEmpty())
+        			nextOp=operator.peek();
+        		if (!operator.isEmpty() && nextOp.equals("/")|| nextOp.equals("*")) {
+					opTemp.push(op);
+					numTemp.push(numbers.pop());
+				} else {
+					a = Integer.valueOf(numbers.pop());
+					b = Integer.valueOf(numbers.pop());
+					numbers.push(b / a + "");
+					pushBack(numbers, operator, numTemp, opTemp);
+				}
+        		break;
+        	case "+":
+        		if (!operator.isEmpty())
+        			nextOp=operator.peek();
+        		if(!operator.isEmpty() &&  nextOp.equals("*") ||nextOp.equals("/")||nextOp.equals("-")){
+        			opTemp.push(op);
+        			numTemp.push(numbers.pop());
+        		}else{
+        			a=Integer.valueOf(numbers.pop());
+    				b=Integer.valueOf(numbers.pop());
+    				numbers.push((b+a)+"");
+    				pushBack(numbers, operator, numTemp, opTemp);
+        		}
+        		break;
+        	case "-":
+        		if (!operator.isEmpty())
+        			nextOp=operator.peek();
+        		if(!operator.isEmpty() &&  nextOp.equals("*") ||nextOp.equals("/") ||nextOp.equals("-")){
+        			opTemp.push(op);
+        			numTemp.push(numbers.pop());
+        		}else{
+        			a=Integer.valueOf(numbers.pop());
+    				b=Integer.valueOf(numbers.pop());
+    				numbers.push((b-a)+"");
+    				pushBack(numbers, operator, numTemp, opTemp);
+        		}
+        		break;
+
+			default:
+				break;
+			}
+        }
+        return Integer.valueOf(numbers.pop());
+    }
+    // push everything in temp stack back (work but slow)
+    public void pushBack(Stack<String> numbers ,Stack<String> operator ,Stack<String> numTemp,Stack<String> opTemp)
+    {
+    	while(!opTemp.isEmpty()){
+    		operator.push(opTemp.pop());
+    	}
+    	while(!numTemp.isEmpty()){
+    		numbers.push(numTemp.pop());
+    	}
+    }
+}
