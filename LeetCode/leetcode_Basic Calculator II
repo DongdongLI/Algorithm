@@ -137,3 +137,46 @@ public class Solution {
     	}
     }
 }
+
+/*
+	Fast and elegent (trim is not always usefule: like "/ " will save that space)
+	one way
+*/
+
+public class Solution {
+    public int calculate(String s) {
+        Stack<Integer> stack=new Stack<Integer>();// only numbers
+        int num=0; 
+        char op='+'; // since the first token in string should number, so the default is '+'
+        for(int i=0;i<s.length();i++){
+        	if(Character.isDigit(s.charAt(i))){
+        		num=num*10+s.charAt(i)-'0'; // if num is 0 originally, it is find; else, it can add on
+        	}
+        	if(!Character.isDigit(s.charAt(i)) && s.charAt(i)!=' ' || i==s.length()-1){ // operators or the last one(since there will be no more digits)
+        		// smart part
+        		if(op=='-'){
+        			stack.push(-num);
+        		}
+        		if(op=='+'){
+        			stack.push(num);
+        		}
+        		if(op=='*'){
+        			stack.push(stack.pop()*num);
+        		}
+        		if(op=='/'){
+        			stack.push(stack.pop()/num);
+        		}
+        		// update op:
+        		op=s.charAt(i);
+        		// num is over, get ready for the next num
+        		num=0;
+        	}
+        }
+        int result=0;
+        // sum them up
+        while(!stack.isEmpty()){
+        	result+=stack.pop();
+        }
+        return result;
+    }
+}
