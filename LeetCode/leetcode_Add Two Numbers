@@ -1,0 +1,84 @@
+/*
+  You are given two linked lists representing two non-negative numbers. The digits are stored in 
+  reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+  Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+  Output: 7 -> 0 -> 8
+*/
+
+/*
+    Idea: traverse l1 and l2,save the sum of each node to result list
+    
+    traverse the result list, and add 1 to the next node if current node has val >=10.
+*/
+
+public class Solution{
+	public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+		ListNode p1=l1;
+        ListNode p2=l2;
+        // A fake head
+        ListNode fakeHead=new ListNode(0);
+        ListNode pr=fakeHead;
+        
+        // add and save
+        while(p1!=null && p2!=null){
+        	if(pr.next==null){
+        		pr.next=new ListNode(0);
+        	}
+        	pr.next.val=p1.val+p2.val;
+        	
+        	p1=p1.next;
+        	p2=p2.next;
+        	pr=pr.next;
+        }
+        // p1 is longer then p2
+        while(p1!=null){
+        	if(pr.next==null){
+        		pr.next=new ListNode(0);
+        	}
+        	pr.next.val=p1.val;
+        	
+        	p1=p1.next;
+        	pr=pr.next;
+        }
+        // p2 is longer then p1
+        while(p2!=null){
+        	if(pr.next==null){
+        		pr.next=new ListNode(0);
+        	}
+        	pr.next.val=p2.val;
+        	
+        	p2=p2.next;
+        	pr=pr.next;
+        }
+        
+        pr=fakeHead.next;
+        int temp=0;
+       
+        while(true){
+        	pr.val+=temp;
+        	if(pr.val>=10){
+        		temp=1;
+        		pr.val-=10;
+        	}
+        	else{
+        		temp=0;
+        	}
+        	if(pr.next==null && temp==0) // no more node, and no need for new creation
+        		break;
+        	else if(pr.next==null && temp!=0) // need to create one last node
+        	{
+        		pr.next=new ListNode(temp);
+        		break;
+        	}
+        	else
+        		pr=pr.next; // there are more nodes to be taken care of
+        	
+        }
+        
+        if(temp!=0){
+        	pr=new ListNode(temp);
+        }
+        return fakeHead.next;
+	}
+}
