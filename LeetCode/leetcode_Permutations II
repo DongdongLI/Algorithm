@@ -33,7 +33,8 @@ public class Solution {
 
 
 //second solution
-//去重处理：前一个元素和当前元素一样，且前一个元素已经被访问过，没关系。前一个元素和当前元素一样，且前一个元素已经没有被访问过，跳过当前元素
+//去重处理：前一个元素和当前元素一样，且前一个元素已经被访问过，没关系。前一个元素和当前元素一样，且前一个元素已经没有被访问过
+//，跳过当前元素
 public class Solution {
     public ArrayList<ArrayList<Integer>> permuteUnique(int[] num) {
 		if (num == null || num.length == 0)
@@ -66,3 +67,14 @@ public class Solution {
 		}
 	}
 }
+// 2015.8.2 refresh: remember exact the first solution
+	/*
+		Manually avoid duplicate:
+		  * sort the array
+		  * only exception from the Permutation 1:
+		  	if current element is the same as the last one, and the last one is visited already, then skip it.
+		  	
+		  	code:
+		  	
+		  	if(!(i>=1 &&nums[i]==nums[i-1]&&used[i-1] ||used[i] ))
+	*/
