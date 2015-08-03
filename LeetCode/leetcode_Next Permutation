@@ -1,0 +1,75 @@
+/*
+  Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
+
+  If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).
+  
+  The replacement must be in-place, do not allocate extra memory.
+  
+  Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.
+  1,2,3 → 1,3,2
+  3,2,1 → 1,2,3
+  1,1,5 → 1,5,1
+*/
+
+/*
+    1 3 2
+    start from right, find the first element that is not larger than the next one, find 1 (p)
+    start from right, find the first element that is larger than the one above (q)
+    swap
+    reverse (p+1,q)
+    
+    4 5 6 3 2 1
+    p is 5, q is 6
+    
+    4 6 5 3 2 1
+    
+    4 6 1 2 3 5 
+*/
+
+public class Solution {
+    public void nextPermutation(int[] nums) {
+        if(nums==null || nums.length<2)
+        	return;
+        
+        int p=0;
+        // from right to left, find the first element that is not larger than the next one, record it
+        for(int i=nums.length-2;i>=0;i--){
+        	if(nums[i+1]>nums[i]){
+        		p=i;
+        		break;
+        	}
+        }
+        // from right to left, find the first element that is larger than [p], record it
+        int q=0;
+        for(int i=nums.length-1;i>p;i--)
+		{
+			if(nums[i]>nums[p])
+			{
+				q=i;
+				break;
+			}
+		}
+        // keep increasing from right to left; 
+        if(p==0&&q==0)
+        {
+            reverse(nums,0,nums.length-1);
+            return;
+        }
+        // swap them
+        int temp=nums[p];
+		nums[p]=nums[q];
+		nums[q]=temp;
+		// reverse the rest
+		reverse(nums, p+1, nums.length-1);
+        
+        
+    }
+    public void reverse(int[] nums,int left,int right)
+    {
+    	for(int i=left,j=right;i<j;i++,j--){
+    		int temp=nums[i];
+    		nums[i]=nums[j];
+    		nums[j]=temp;
+    	}
+    }
+}
