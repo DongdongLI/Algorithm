@@ -1,0 +1,41 @@
+/*
+  Given two strings s and t, write a function to determine if t is an anagram of s.
+
+  For example,
+  s = "anagram", t = "nagaram", return true.
+  s = "rat", t = "car", return false.
+*/
+
+/*
+    Since the character set is known, personaly speaking, hashSet is just too much for this problem.
+    Array is enough.
+*/
+
+package leetcodePlayground;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+    	int a[]=new int[26];
+    	// map the lette to index, start from 'a' -> 0
+    	for(int i=0;i<s.length();i++){
+        	a[s.charAt(i)-'a']++;
+        }
+        
+        for(int i=0;i<t.length();i++){
+        	a[t.charAt(i)-'a']--;
+        }
+        // if in two strings, each letter appears for same amount of times, then at last each element should be 0
+        for(int i:a){
+        	if(i!=0)
+        		return false;
+        }
+        return true;
+    }
+}
