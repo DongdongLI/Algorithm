@@ -46,3 +46,38 @@ public class Solution {
     		traverse(root.right,k,result);
     }
 }
+/*
+    More Elegent way:
+    Basic rule, for an node in BST, all nodes in its left child tree is less than itself, all nodes in its right child tree is 
+    larger than it
+    
+   
+    
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+    	int count=countNode(root.left); // number of nodes in left sub tree
+    	if(count>=k){  // the node we are looking for is in left sub tree
+    		return kthSmallest(root.left, k);
+    	}else if(count+1<k){//all the left sub tree plus the root, it means it is in right sub tree
+    		return kthSmallest(root.right, k-count-1);//exclude the root (1) and the nodes in the left (count)
+    	}
+    	// k==count+1 (exactly it is the root! then return)
+    	return root.val;
+    }
+    public int countNode(TreeNode root){ // count the amount of nodes include this node itself
+    	if(root==null)
+    		return 0;
+    	return 1+countNode(root.left)+countNode(root.right);
+    }
+}
