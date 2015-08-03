@@ -1,0 +1,48 @@
+/*
+  Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+
+  Note: 
+  You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
+  
+  Follow up:
+  What if the BST is modified (insert/delete operations) often and you need to find the kth smallest frequently? 
+  How would you optimize the kthSmallest routine?
+*/
+
+/*
+  Trivia Solution:
+  
+  Inorder Traversal will get the value of all the nodes in increasing order.
+  As long as the traverse set has become as large as k, then we have found the target
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+    	if(root==null) return 0;
+    	
+    	List<Integer> result=new LinkedList<Integer>();
+    	traverse(root, k, result);
+    	return result.get(result.size()-1);
+    }
+    public void traverse(TreeNode root,int k, List<Integer> result){
+    	if(root.left!=null)
+    		traverse(root.left, k, result);
+    	
+    	if(result.size()==k)// found
+    		return;
+    	else
+    		result.add(root.val); // not found, keep going
+    	
+    	if(root.right!=null)
+    		traverse(root.right,k,result);
+    }
+}
