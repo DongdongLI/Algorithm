@@ -1,0 +1,85 @@
+/*
+    Given a string s and a dictionary of words dict, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
+
+    For example, given
+    s = "leetcode",
+    dict = ["leet", "code"].
+    
+    Return true because "leetcode" can be segmented as "leet code".
+*/
+
+/*
+    Trivial solution: won't pass the last test (brute force)
+*/
+
+public class Solution {
+    public boolean wordBreak(String s, Set<String> wordDict) {
+        if(s==null)return false;
+        return help(s, wordDict, 0);
+    }
+    public boolean help(String s,Set<String> wordDict,int index){
+    	if(index==s.length())
+    		return true;
+    		
+    		// for each word in dictionary
+    	for(String a:wordDict){
+    		int len=a.length();
+    		int end=index+len;
+    		//System.out.println("end:"+end);
+    		if(end>s.length())
+    			continue;
+    		//System.out.println("sub:"+s.substring(index, end));
+    		// if there is word in dict matches part of the word s, than procceed with this way
+    		// all the possibilities will be tested till a true or the end
+    		if(s.substring(index, end).equals(a)){
+    			//return help(s, wordDict, end);
+    			if(help(s, wordDict, end))
+    				return true;
+    		}
+    	}
+    	return false;
+    }
+}
+
+/*
+    Based on trivial solution: dynamic programming solution: (I doubt the accuracy of using "dynamic programming" to describe
+    this solution)
+    Details all in comment
+*/
+package leetcodePlayground;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+public class Solution {
+    public boolean wordBreak(String s, Set<String> wordDict) {
+        boolean[] a=new boolean[s.length()+1];
+        // a[i] == true; means substring (0,i-1) can be segmented with wordDict
+        a[0]=true;
+        // initial state
+        for(int i=0;i<s.length();i++){
+        	if(a[i]==false)
+        		continue;
+        	
+        	// for each word in dict
+        	for(String ss:wordDict){
+        		int len=ss.length();
+        		int end=i+len;
+        		
+        		// if a word is not possible, proceed to next word
+        		if(end>s.length())
+        			continue;
+        		// if the destination can be segmented already, proceed to next word
+        		if(a[end]==true)
+        			continue;
+        		// if the word and the substring match. set to true
+        		if(s.substring(i, end).equals(ss))
+        			a[end]=true;
+        	}
+        }
+        // see if the end can be reached
+        return a[a.length-1];
+    }
+    
+}
