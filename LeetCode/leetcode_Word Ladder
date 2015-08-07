@@ -1,0 +1,76 @@
+/*
+    Given two words (beginWord and endWord), and a dictionary, find the length of shortest transformation sequence from beginWord to endWord, such that:
+
+    Only one letter can be changed at a time
+    Each intermediate word must exist in the dictionary
+    For example,
+    
+    Given:
+    start = "hit"
+    end = "cog"
+    dict = ["hot","dot","dog","lot","log"]
+    As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+    return its length 5.
+    
+    Note:
+    Return 0 if there is no such transformation sequence.
+    All words have the same length.
+    All words contain only lowercase alphabetic characters.
+*/
+
+/*
+    BFS: but how to gurantee the result is the shortest?
+    
+    It gurantees that by try to make the shortest tranform (start from the first letter)
+*/
+
+public class Solution {
+	public int ladderLength(String beginWord, String endWord,
+			Set<String> wordDict) {
+			// store the partial result
+		LinkedList<WordNode> queue = new LinkedList<WordNode>();
+		// beginning: the beginword
+		queue.add(new WordNode(beginWord, 1));
+		wordDict.add(endWord);
+
+		while (!queue.isEmpty()) {
+			WordNode temp = queue.remove();
+			
+			if (temp.word.equals(endWord)) {
+				return temp.steps;
+			}
+      // take the top element apart;
+			char[] token = temp.word.toCharArray();
+			for (int i = 0; i < token.length; i++) {
+        // start from the first letter, try different ones, (first change the first letter, then second...
+				for (char c = 'a'; c <= 'z'; c++) {
+					char t = token[i];
+					if (token[i] != c)
+						token[i] = c;
+
+					String newWord = new String(token);
+					// try to see if the new assemble word is in the dict
+					// if it is, put it in
+					if (wordDict.contains(newWord)) {
+						wordDict.remove(newWord);
+						queue.add(new WordNode(newWord, temp.steps + 1));
+					}
+					// restore it
+					token[i] = t;
+				}
+			}
+
+		}
+		return 0;
+	}
+}
+// used to help with the search, it contains the word string itself, and the steps it takes to transform from begin word
+class WordNode {
+	String word;
+	int steps;
+
+	public WordNode(String word, int steps) {
+		this.word = word;
+		this.steps = steps;
+	}
+}
