@@ -1,0 +1,42 @@
+/*
+  Say you have an array for which the ith element is the price of a given stock on day i.
+
+  Design an algorithm to find the maximum profit. You may complete as many transactions as 
+  you like (ie, buy one and sell one share of the stock multiple times). However, you may not 
+  engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
+*/
+
+/*
+    After it says "as many transactions as possible", it should use Greedy strategy
+    Start from day 1, stick with the rule "buy in the beginning if the price goes higher, hold; if it goes down, 
+    sell it before that, and buy in the next day"
+*/
+
+public class Solution {
+    public int maxProfit(int[] prices) {
+       int total=0;
+       for(int i=0;i<prices.length-1;i++){
+        // looking for a spot where price not going to get lower
+    	   if(prices[i+1]<prices[i])
+    		   continue;
+    	   else{
+    	     int j=i+1;
+    		   for(;j<prices.length;j++){
+    			   if(prices[j]>=prices[j-1]){
+    			      // as long as the price is no lower than yesterday, we are making profit!
+    				   total+=prices[j]-prices[j-1];
+    				   //System.out.println("total:"+total);
+    			   }else{
+    			     // so we sold it yesterday, buy in again today
+    				   i=j;
+    			   }
+    		   }
+    		   if(j==prices.length) // no more trying
+    			   return total;
+    	   }
+       }
+       return total;
+    }
+}
+//System.out.println("i:"+i);
+//System.out.println("j:"+j);
