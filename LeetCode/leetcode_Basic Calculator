@@ -1,0 +1,105 @@
+/*
+    Implement a basic calculator to evaluate a simple expression string.
+
+    The expression string may contain open ( and closing parentheses ), the plus + or minus sign -, non-negative integers and empty spaces .
+    
+    You may assume that the given expression is always valid.
+    
+    Some examples:
+    "1 + 1" = 2
+    " 2-1 + 2 " = 3
+    "(1+(4+5+2)-3)+(6+8)" = 23
+*/
+
+/*
+  Idea: Deal with the parameter first. When faced a ')', pop until the first '(', calculate the expression in the middle, push the result back
+  
+  After the first time traverse, all parenthesis are gone, one last calculation needed then result is in the top of the stack
+  
+  (Bulky and slow)
+*/
+
+public class Solution{
+	public int calculate(String s) {
+		if(s==null || s.length()==0)return 0;
+		s = s.replaceAll(" ", "");// necessary
+		
+		Stack<String> stack=new Stack<String>();
+		char[] a=s.toCharArray();
+		StringBuffer number=new StringBuffer(); // used to store tempory number
+		
+		for(int i=0;i<a.length;i++){
+			if(a[i]==' ')
+				continue;
+			
+			if(a[i]>='0' && a[i]<='9') // append the digit to the String
+			{
+				number.append(a[i]);
+				if(i==a.length-1) // the end? push the number to the stack
+					stack.push(number.toString());
+			}
+			else{ // not number
+				if(number.length()>0){ // and there is a temp num in the stringbuffer, push it in
+					stack.push(number.toString());
+					number=new StringBuffer(); // refresh
+				}
+				
+				if(a[i]!=')'){ 
+					stack.push(new String(new char[]{a[i]})); // push anything before ")"
+				}else{
+					// start calculation
+					List<String> list=new ArrayList<String>();
+					while(!stack.isEmpty()){
+						String top=stack.pop();
+						if(top.equals("("))
+							break;
+						else
+							list.add(0, top); // the expression is shown backward
+					}
+					
+					int temp=0; // tempory result
+					if(list.size()==1)
+						temp=Integer.valueOf(list.get(0));
+					else {
+					  // go backward: last one is the number, and the one before it is a op
+						for (int j = list.size() - 1; j > 0; j = j - 2) {
+							if (list.get(j - 1).equals("-")) {
+								temp += 0- Integer.valueOf(list.get(j));
+							} else {
+								temp += Integer.valueOf(list.get(j));
+							}
+						}
+						// System.out.println("temp:"+temp);
+						// since there is always one more number then the operation, so add it
+						temp+=Integer.valueOf(list.get(0));
+					}
+					// push back the temp result
+					stack.push(String.valueOf(temp));
+				}
+			}
+		}
+		//System.out.println("stack:"+stack.size());
+		List<String> list=new ArrayList<String>();
+		while(!stack.isEmpty()){
+			String top=stack.pop();
+			//System.out.println("top:"+top);// no problem
+			list.add(0, top);
+		}
+
+		//System.out.println("fois:"+list.get(0));
+		int temp=0;
+		
+		
+		for(int j=list.size()-1;j>0;j=j-2){
+			if(list.get(j-1).equals("-")){
+				temp+= 0-Integer.valueOf(list.get(j));
+				//System.out.println("element:"+list.get(j));
+			}else{
+				temp+=Integer.valueOf(list.get(j));
+				//System.out.println("element:"+list.get(j));
+			}
+		}
+		temp+=Integer.valueOf(list.get(0));
+		return temp;
+	}
+}
