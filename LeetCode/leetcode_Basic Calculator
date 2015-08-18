@@ -103,3 +103,158 @@ public class Solution{
 		return temp;
 	}
 }
+
+/*
+	Recursive way:
+*/
+public class Solution {
+	public int calculate(String s) {
+		Stack<Integer> stack=new Stack<Integer>();// store the tempory result and sign
+		int result=0;
+		int sign=1;
+		int number=0; // composit the number
+		
+		for(int i=0;i<s.length();i++){
+			char c=s.charAt(i);
+			
+			if(Character.isDigit(c)){
+				number=number*10+(int)(c-'0');
+			}else if(c=='+'){
+				result=result+sign*number;
+				number=0;
+				sign=1;// set the sign for the next
+			}else if(c=='-'){
+				result=result+sign*number;
+				number=0;
+				sign=-1;
+			}else if(c=='('){
+				stack.push(result);// store the current result in the stack
+				stack.push(sign);// store the sign before the '(' in stack
+				//fresh start for the expression in the ()
+				result=0; 
+				sign=1;
+			}else if(c==')'){// after the )
+				result+=sign*number;
+				number=0;
+				// take back the number and sign
+				result=result*stack.pop();
+				result=result+stack.pop();
+			}
+		}
+		if(number!=0)result+=sign*number;
+		return result;
+	}
+}
+
+
+/*
+	Advanced and Ultimate: transform to Prefix expression
+*/
+package leetcodePlayground;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
+
+public class Solution {
+	public int calculate(String s){
+		return eval(infixToPostfix(s));
+	}
+	public int eval(List<Object> postFix){
+		Stack<Integer> numbers=new Stack<Integer>();
+		for(Object obj:postFix){
+			// it is an operarant
+			if(obj instanceof Character){
+				int a=numbers.pop();
+				int b=numbers.pop();
+				
+				int temp=0;
+				switch ((char)obj) {
+				case '+':
+					temp=a+b;
+					break;
+				case '-':
+					temp=b-a;
+					break;
+				case '*':
+					temp=a*b;
+					break;
+				case '/':
+					temp=b/a;
+					break;
+
+				default:
+					break;
+				}
+				// push back
+				numbers.push(temp);
+				temp=0;
+			}else{
+				numbers.push((Integer)obj);
+			}
+		}
+		return numbers.pop();
+	}
+	
+	public List<Object> infixToPostfix(String s){
+		Stack<Character> operators=new Stack<Character>();
+		List<Object> postFix=new LinkedList<>();
+		boolean numBuffer=false;
+		int number=0;
+		
+		char[] a=s.toCharArray();
+		for(int i=0;i<a.length;i++){
+			char c=a[i];
+			if(Character.isDigit(c)){
+				number=number*10+(int)(c-'0');
+				numBuffer=true;
+			}else{
+				if(numBuffer)
+					postFix.add(number);
+				number=0;
+				numBuffer=false;
+				
+				if(c==' '|| c=='\t')
+					continue;
+				if(c=='(')
+					operators.push(c);
+				else if(c==')'){
+					while(operators.peek()!='('){
+						postFix.add(operators.pop());
+					}
+					operators.pop();
+				}else{
+					if(!operators.isEmpty() && rank(c)<=rank(operators.peek())){
+						postFix.add(operators.pop());
+						operators.push(c);
+					}else{
+						operators.push(c);
+					}
+				}
+				
+			}
+		}
+		if(numBuffer)
+			postFix.add(number);
+		while(!operators.isEmpty())
+			postFix.add(operators.pop());
+		return postFix;
+	}
+	public int rank(char op){
+		// returns the priority of each operator
+		switch (op) {
+		case '+':
+			return 1;
+		case '-':
+			return 1;
+		case '*':
+			return 2;
+		case '/':
+			return 2;
+
+		default:
+			return 0;
+		}
+	}
+}
