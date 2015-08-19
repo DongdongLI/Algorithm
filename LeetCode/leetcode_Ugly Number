@@ -1,0 +1,72 @@
+/*
+  Write a program to check whether a given number is an ugly number.
+
+  Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 6, 8 are ugly while 14 
+  is not ugly since it includes another prime factor 7.
+  
+  Note that 1 is typically treated as an ugly number.
+*/
+
+/*
+  idea: traditional way, did not pass.
+  get all prime factor, then check if there is anything besides 2,3,5
+*/
+
+public class Solution {
+    public boolean isUgly(int num) {
+        if(num==1)
+        	return true;
+        
+        Set<Integer> uglyNum=new HashSet<Integer>();
+        uglyNum.add(2);
+        uglyNum.add(3);
+        uglyNum.add(5);
+        
+    	Set<Integer> primeFactor=findPrimeFactor(num);
+    	for(int a:primeFactor){
+    		if(!uglyNum.contains(a))
+    			return false;
+    	}
+    	return true;
+    }
+    
+    
+    
+    public Set<Integer> findPrimeFactor(int num){
+    	Set<Integer> primeFactor=new HashSet<Integer>();
+    	
+    	int i=0;
+    	for(i=2;i<=num;i++){
+    		if(num%i==0)
+    		{
+    			primeFactor.add(i);
+    			num/=i;// this can save lots of time
+    			i--;
+    		}
+    	}
+    	return primeFactor;
+    }
+}
+
+
+/*
+  Second solution: more tricky but fast
+*/
+
+
+public class Solution {
+    public boolean isUgly(int num) {
+    
+    if(num==0)
+    		return false;
+    		
+    	while(num%2==0)
+        	num/=2;
+    	while(num%3==0)
+        	num/=3;
+    	while(num%5==0)
+        	num/=5;
+        
+    	return num==1;
+    }
+}
