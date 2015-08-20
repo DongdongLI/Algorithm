@@ -1,0 +1,56 @@
+/*
+  Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times. 
+  The algorithm should run in linear time and in O(1) space.
+*/
+
+/*
+    More then the ceiling of n/3 means there will be at most 2 majority number, which also means that these two elements are more 
+    than any other elements.
+    
+    two traversal:
+      First one, find the two elements appear most frequently,
+        method: meet one, times++, meet something else, times --;
+      
+      Second one, check the times of their appearances
+*/
+
+public class Solution {
+public List<Integer> majorityElement(int[] nums) {
+        int n1=0;
+        int n2=0;
+        
+        int num1=0;
+        int num2=1;
+        
+        for(int i=0;i<nums.length;i++){
+        	if(nums[i]==num1){
+        		n1++;
+        	}else if(nums[i]==num2){
+        		n2++;
+        	}else if(n1==0){
+        		num1=nums[i];
+        		n1=1;
+        	}else if(n2==0){
+        		num2=nums[i];
+        		n2=1;
+        	}else{
+        		n1--;
+        		n2--;
+        	}
+        }
+        
+        n1=0;
+        n2=0;
+        for(int i:nums){
+        	if(i==num1)n1++;
+        	else if(i==num2)n2++;
+        }
+        
+        List<Integer> result=new LinkedList<Integer>();
+        if(n1>(nums.length*1.0/3.0))
+        	result.add(num1);
+        if(n2>(nums.length*1.0/3.0))
+        	result.add(num2);
+        return result;
+    }
+}
