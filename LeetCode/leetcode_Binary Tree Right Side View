@@ -1,0 +1,45 @@
+/*
+  Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered 
+  from top to bottom.
+
+  For example:
+  Given the following binary tree,
+     1            <---
+   /   \
+  2     3         <---
+   \     \
+    5     4       <---
+  You should return [1, 3, 4].
+*/
+
+/*
+    Trivial Solution:
+      If look at a binary tree from the right side, we will see the last node of each level. So we traverse the nodes level by 
+      level, and record the "val" of the last node of each level
+*/
+
+public class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res=new LinkedList<Integer>();
+        if(root==null)
+        	return res;
+        //last row
+        List<TreeNode> prev=new LinkedList<TreeNode>();
+        List<TreeNode> curr=new LinkedList<TreeNode>();// this row
+        
+        prev.add(root);
+        while(!prev.isEmpty()){
+        	res.add(prev.get(prev.size()-1).val);
+        	for(TreeNode node:prev){// send their children into the list
+        		if(node.left!=null)
+        			curr.add(node.left);
+        		if(node.right!=null)
+        			curr.add(node.right);
+        	}
+        	prev.clear();
+        	prev.addAll(curr);
+        	curr.clear();
+        }
+        return res;
+    }
+}
