@@ -43,3 +43,25 @@ public class Solution {
         return res;
     }
 }
+/*
+  Yet another smart idea:
+    1. Since we only take the last node of each row, so the size of the result set should be the same as the depth of the tree
+    2. If let it goes down it self, the right path is among the longest path.
+*/
+
+public class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res=new LinkedList<Integer>();
+        goDeeper(0, res, root);
+        return res;
+    }
+    public void goDeeper(int depth, List<Integer> result,TreeNode node){
+    	if(node==null)
+    		return;
+    	if(result.size()==depth){ // for example, at the beginning, there is nothing in "res", the node level is 0 as well
+    		result.add(node.val);
+    	}// it is important to explore the righ sub-tree here.
+    	goDeeper(depth+1, result, node.right);
+    	goDeeper(depth+1, result, node.left);
+    }
+}
