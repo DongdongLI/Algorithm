@@ -1,0 +1,131 @@
+/*
+  Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.
+
+  If the fractional part is repeating, enclose the repeating part in parentheses.
+  
+  For example,
+  
+  Given numerator = 1, denominator = 2, return "0.5".
+  Given numerator = 2, denominator = 1, return "2".
+  Given numerator = 2, denominator = 3, return "0.(6)".
+*/
+
+/*
+    NOT AN ACCEPTED SOLUTION! but very close
+*/
+public class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        if(denominator==0)return "";
+    	
+        int sign=numerator*denominator >0 ? 1:-1;
+        
+        numerator=Math.abs(numerator);
+        denominator=Math.abs(denominator);
+    	
+        int beforeDigit=numerator/denominator;
+    	int leftOver=numerator%denominator;
+    	
+    	if(leftOver==0)
+    		return beforeDigit+"";
+    	
+    	StringBuilder afterDigit=new StringBuilder();
+    	StringBuilder recur=new StringBuilder();
+    	
+    	Map<Integer,Integer> record=new HashMap<Integer, Integer>();
+    	
+    	String result=  beforeDigit+"";
+    	if(sign==-1)
+    		result="-"+result;
+    	
+    	leftOver*=10;
+    	while(true){
+    		int t1=leftOver/denominator;
+    		int t2=leftOver%denominator;
+    		
+    		if(t2*10==leftOver || record.containsKey(leftOver)) // recur
+    		{
+    			recur.append(t1);
+    			//System.out.println("afterdig:"+afterDigit);
+    			if(afterDigit.toString().contains(recur.toString())){
+    				String at=afterDigit.toString();
+    				String rt=recur.toString();
+    				
+    				recur.delete(0, recur.length()-1);
+    				int i;
+    				for(i=0;i<at.length();i++){
+    					if(at.charAt(i)==rt.charAt(0)){
+    						break;
+    					}
+    				}
+    				rt=at.substring(i,at.length());
+    				at=at.substring(0,i);
+    				
+    				//System.out.println("at,rt:"+at+" "+rt);
+    				at.replace(rt, "");
+    				return result+"."+at+"("+rt+")";
+    			}
+    			return result+"."+afterDigit+"("+recur.toString()+")";
+    		}
+    		record.put(leftOver, 1);
+    		leftOver=10*t2;
+    		//System.out.println("leftOver:"+leftOver);
+    		
+    		afterDigit.append(t1);
+    		
+    		if(t2==0)
+    		{
+    			result+="."+afterDigit.toString();
+    			return result;
+    		}
+    		
+    		
+    	}
+    }
+}
+
+/*Accepted*/
+public class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        if(denominator==0)return "";
+    	if(numerator==0)return "0";
+        int sign; // get the sign
+        if(numerator>0 && denominator>0 || numerator<0 && denominator<0)sign=1;
+        else sign=-1;
+        
+        long num=Math.abs((long)numerator);
+        long den=Math.abs((long)denominator);
+    	
+        
+    	StringBuilder res=new StringBuilder();
+    	
+    	if(sign==-1)
+    		res.append("-");
+    	
+    	res.append(num/den);
+    	num%=den;
+    	
+    	if(num==0)
+    		return res.toString();
+    	
+    	res.append(".");
+    	
+    	Map<Long,Integer> record=new HashMap<Long, Integer>(); // keep track of the character of each locatin
+    	
+    	
+    	record.put(num, res.length());
+    	while(num!=0){
+    		num*=10;
+    		res.append(num/den);
+    		
+    		num%=den;
+    		if(record.containsKey(num)){ // recurance found: insert the ( and break
+    			res.insert(record.get(num), "(");
+    			res.append(")");
+    			break;
+    		}else{
+    			record.put(num, res.length());
+    		}
+    	}
+    	return res.toString();
+    }
+}
