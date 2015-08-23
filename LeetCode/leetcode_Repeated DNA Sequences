@@ -1,0 +1,46 @@
+/*
+  All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: "ACGAATTCCG". When studying DNA,
+  it is sometimes useful to identify repeated sequences within the DNA.
+
+  Write a function to find all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule.
+  
+  For example,
+  
+  Given s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT",
+  
+  Return:
+  ["AAAAACCCCC", "CCCCCAAAAA"].
+*/
+
+/*
+  Dummy solution: start from the first letter to the tenth letter, try every possible combination on by one, and use hashMap to 
+      keep track of the times of appearance. At the end, traverse the map again to get the result
+*/
+
+public class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        Map<String, Integer> sequences=new HashMap();// keep track of the appearance
+        List<String> res=new LinkedList<String>();
+        
+        for(int i=0;i+10-1<=s.length()-1;i++){ // check every substring whose length is exact 10
+        	String subString=s.substring(i, i+10);
+        	//System.out.println("sub: "+subString);
+        	if(sequences.containsKey(subString)){ // has appeared before
+        		sequences.put(subString, sequences.get(subString)+1);
+        	}else{ // first time
+        		sequences.put(subString, 1);
+        	}
+        }
+//        for(Entry<String, Integer> entry:sequences.entrySet()){
+//        	if(entry.getValue()>1)
+//        		res.add(entry.getKey());
+//        }
+        // last traversal
+        for(String ss:sequences.keySet()){
+        	if(sequences.get(ss)>1){
+        		res.add(ss);
+        	}
+        }
+        return res;
+    }
+}
