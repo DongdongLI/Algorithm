@@ -1,0 +1,49 @@
+/*
+  Given an array of integers, find out whether there are two distinct indices i and j in the array such that the 
+  difference between nums[i] and nums[j] is at most t and the difference between i and j is at most k.
+*/
+
+/*
+  Two pointers moving.
+  has to use long to pass the last case in the test
+*/
+
+public class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+    	long difIndice=0; // the difference between indice
+    	long difValue=0; // the difference between their values
+    	
+    	int i=0,j=1; // initial state
+    	
+    	while(i<nums.length && j<nums.length){
+    		difIndice=j-i; // update
+    		difValue=Math.abs((long)nums[i]-(long)nums[j]);
+    		
+    		if(difIndice<=k && difValue<=t)
+    			return true;
+    		if(i+1==j){ 
+    			j++; // only go forward, and i never equals to j
+    			continue;
+    		}
+    		if(difValue>t){ // the value gets too big
+    			if(j==nums.length-1){ // j can move no more
+    				i++;
+    				continue;
+    			}else{
+    				if(Math.abs((long)nums[j+1]-(long)nums[i]) > Math.abs((long)nums[j]-(long)nums[i+1])){ // compare which move will make the difference smaller
+    					i++;
+    					continue;
+    				}else{
+    					j++;
+    					continue;
+    				}
+    			}
+    		}
+    		if(difIndice>k){ // the distance is too big, to decrease it, i has to move (j is never comming back)
+    			i++;
+    		}
+    	}
+    	return false;
+    }
+}
+
