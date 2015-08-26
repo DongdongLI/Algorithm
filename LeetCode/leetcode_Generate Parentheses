@@ -37,3 +37,5 @@ public class Solution {
 			DFS(left,right-1,result,temp+")");
 	}
 }
+
+// 8/26/2015 review (pass the test in one time, writing almost the same code)
