@@ -23,7 +23,7 @@
 */
 
 /*
-  There is nothing about adding parenthesis, just about the order of calculations
+  There is nothing about adding parenthesis, just about the order of calculations (in devide and conquer style)
 */
 
 public class Solution {
