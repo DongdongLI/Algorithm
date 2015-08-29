@@ -1,0 +1,64 @@
+/*
+    Given a range [m, n] where 0 <= m <= n <= 2147483647, return the bitwise AND of all numbers in this range, inclusive.
+
+    For example, given the range [5, 7], you should return 4.
+*/
+
+/*
+    Very smart solution.
+    
+    idea: 
+      the result of odd number & even number has 0 in the last bit
+      if m!=n, there will be at least one odd number and one even number in between
+        so the last bit is 0; (use that 1 so keep all the zeros)
+        
+        as long as the rest part are the same, the result can be calculated as m*mask
+    
+    eg.
+    m=5,n=7,
+    
+    101
+    111
+    001
+    
+    010
+    011
+    010
+    
+    001
+    001
+    100 so it is 4
+    
+    m=5, n=8
+    
+    0101
+    1000
+    0001
+    
+    010
+    100
+    010
+    
+    001
+    010
+    100
+    ...
+    000
+    000
+      result is therefore 0
+    
+*/
+
+public class Solution {
+    public int rangeBitwiseAnd(int m, int n) {
+    	if(m==0)return 0;
+    	
+    	int mask=1;
+    	while(m!=n){
+    		m=m>>1;
+    		n=n>>1;
+    		mask=mask<<1;
+    	}
+    	return m*mask;
+    }
+}
