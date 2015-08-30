@@ -1,0 +1,79 @@
+/*
+  Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing all ones and return its area.
+*/
+
+/*
+  Dynamic programming:keep track of the left boundry, right boundry and height of the possible largest rectangle.
+  
+*/
+
+public class Solution {
+    public int maximalRectangle(char[][] matrix) {
+    	if(matrix==null || matrix.length==0)
+    		return 0;
+    	
+    	int m=matrix.length;
+    	int n=matrix[0].length;
+    	
+    	int[] leftBound=new int[n];
+    	int[] rightBound=new int[n];
+    	int[] height=new int[n];
+    	
+    	int max=0;
+    	
+    	for(int i=0;i<n;i++)
+    		rightBound[i]=n; // initialize
+    	
+    	for(int i=0;i<m;i++){
+    		int cur_left=0;
+    		int cur_right=n;
+    		
+    		for(int j=0;j<n;j++){
+    			if(matrix[i][j]=='1'){
+    				leftBound[j]=Math.max(leftBound[j], cur_left);
+    			}else{ // if it is 0, left bound of this row should at least be the next one
+    				leftBound[j]=0; // no matter for the last row if there is '1' in this index, it is use less
+    				cur_left=j+1;
+    			}
+    		}
+    		
+    		for(int j=n-1;j>=0;j--){
+    			if(matrix[i][j]=='1'){
+    				rightBound[j]=Math.min(rightBound[j], cur_right);
+    			}else{ // 0 here means
+    				rightBound[j]=n; // the '1' in this index of last row is useless
+    				cur_right=j; // the possible right bound is j
+    			}
+    		}
+    		
+    		for(int j=0;j<n;j++){
+    			if(matrix[i][j]=='1'){
+    				height[j]++;
+    			}else
+    				height[j]=0;	
+    		}
+    		for(int j=0;j<n;j++)
+    			max=Math.max(max, height[j]*(rightBound[j]-leftBound[j]));
+    	}
+    	return max;
+    }
+}
+
+/*A great example*/
+/*
+    0 0 0 1 0 0 0
+    0 0 1 1 1 0 0
+    0 1 1 1 1 1 0
+    
+    row 0:
+    l: 0 0 0 3 0 0 0
+    r: 7 7 7 4 0 0 0
+    
+    row 1:
+    l: 0 0 2 3 2 0 0
+    r: 7 7 5 4 5 7 7
+
+    row 2:
+    l: 0 1 2 3 2 1 0
+    r: 7 6 5 4 5 6 7
+*/
