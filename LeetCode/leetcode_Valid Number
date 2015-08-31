@@ -1,0 +1,46 @@
+/*
+  Validate if a given string is numeric.
+
+  Some examples:
+  "0" => true
+  " 0.1 " => true
+  "abc" => false
+  "1 a" => false
+  "2e10" => true
+*/
+/*
+  Tricky problem, solution is to use bunch of flags to mark if there is invalid situation.
+  
+  all the cocnditions are shown in the if else comments
+*/
+
+public class Solution {
+    public boolean isNumber(String s) {
+        boolean point=false;
+        boolean e=false;
+        boolean digits=false;
+        boolean digitsAfterE=false;
+        s=s.trim();
+        for(int i=0;i<s.length();i++){
+        	char c=s.charAt(i);
+        	if(Character.isDigit(c)){
+        		digits=true;
+        		digitsAfterE=true;
+        	}else if(c=='.'){
+        		if(point || e) // see one more point or see a point after seeing e
+        			return false;
+        		point=true;
+        	}else if(c=='e'){ // see one more e or seeing e before any digits
+        		if(e || !digits)
+        			return false;
+        		e=true;
+        		digitsAfterE=false; // if we just met e, there cant be any number after e
+        	}else if(c=='+'||c=='-'){ 
+        		if(i!=0 && s.charAt(i-1)!='e') // the sign should be either at the beginning or right after e
+        			return false;
+        	}else
+        		return false; // any other characters is in valid
+        }
+        return digits && digitsAfterE;
+    }
+}
