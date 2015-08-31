@@ -76,3 +76,18 @@ public class Solution {
         return res;
     }
 }
+
+/*
+    It turns out that in PriorityQueue, we can delete a particular element
+    So there is a faster of the trivial method
+*/
+...
+ for(int i=0;i+k<=nums.length;i++){
+        	for(int j=i;j<i+k;j++){
+        		heap.offer(nums[j]);
+        	}
+        	res[resInd++]=heap.peek();
+        	if(i>=k-1)
+        		heap.remove(nums[i-k+1]);
+        }
+  .....
