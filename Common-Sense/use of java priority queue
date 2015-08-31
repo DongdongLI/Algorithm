@@ -1,0 +1,33 @@
+
+// need a class implements Comparator
+public class MaxPriorityQueue implements Comparator<Integer>{
+
+	@Override
+	public int compare(Integer o1, Integer o2) {
+		if(o1<o2)
+			return 1;
+		else if(o1>o2)
+			return -1;
+		else 
+			return 0;
+	}
+	
+}
+
+*************************
+//need priority queue
+
+Comparator<Integer> comp=new MaxPriorityQueue();
+PriorityQueue<Integer> heap=new PriorityQueue<>(comp);
+
+********************** this is it
+int[] ia = { 1, 10, 5, 3, 4, 7, 6, 9, 8 };
+		for(int i:ia){
+			heap.offer(i);
+		}
+		//System.out.println(heap);
+		
+		while(!heap.isEmpty()){
+			System.out.println(heap.poll());
+		}
+		
