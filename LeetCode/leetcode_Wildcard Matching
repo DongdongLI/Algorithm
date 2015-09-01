@@ -1,0 +1,74 @@
+/*
+    '?' Matches any single character.
+    '*' Matches any sequence of characters (including the empty sequence).
+    
+    The matching should cover the entire input string (not partial).
+    
+    The function prototype should be:
+    bool isMatch(const char *s, const char *p)
+    
+    Some examples:
+    isMatch("aa","a") → false
+    isMatch("aa","aa") → true
+    isMatch("aaa","aa") → false
+    isMatch("aa", "*") → true
+    isMatch("aa", "a*") → true
+    isMatch("ab", "?*") → true
+    isMatch("aab", "c*a*b") → false
+*/
+
+/*
+  key point, * means any match, '?' means single match
+  
+  pound: the location of last *
+  match: the last index of match
+  
+  A good example: 
+  s:  a b e d
+  p:  ? b * d * *
+  
+    a meets ?, p++, s++
+    b meets b, p++, s++
+    e meets *: mark the match, mark the index of * , p++
+    e meets d: get to the third  "else if":
+      drag p back, right next to *,
+      help match the guy in s, so match++.
+      and s should start at the match.
+*/
+
+public class Solution {
+    public boolean isMatch(String s, String p) {
+        
+    	
+    	int indS=0;
+    	int indP=0;
+    	int match=0;
+    	int pound=-1;
+    	
+    	while(indS<s.length()){
+    		
+    		if(indP<p.length() &&( p.charAt(indP)=='?' ||  s.charAt(indS)==p.charAt(indP)   )){
+    			indS++;
+    			indP++;
+    			
+    		}
+    		else if(indP<p.length() && p.charAt(indP)=='*' ){
+    			pound=indP++; // mark the pound, move p cursor
+    			match=indS; // mark the match index
+    			
+    		}
+    		else if(pound!= -1){ // need help from the *
+    			indP=pound+1; // drag p back
+    			match++; // match one character, update match index
+    			indS=match;  // move s
+    			
+    		}else
+    			return false;
+    	}
+    	
+    	while(indP<p.length() &&  p.charAt(indP)=='*') // if everything remain is * then it is fine
+    		indP++;
+    	
+    	return indP==p.length();
+    }
+}
