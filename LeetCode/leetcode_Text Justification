@@ -1,0 +1,97 @@
+/*
+  Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and 
+  right) justified.
+
+  You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' 
+  when necessary so that each line has exactly L characters.
+
+  Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly 
+  between words, the empty slots on the left will be assigned more spaces than the slots on the right.
+  
+  For the last line of text, it should be left justified and no extra space is inserted between words.
+  
+  For example,
+  words: ["This", "is", "an", "example", "of", "text", "justification."]
+  L: 16.
+  
+  Return the formatted lines as:
+  [
+     "This    is    an",
+     "example  of text",
+     "justification.  "
+  ]
+  Note: Each word is guaranteed not to exceed L in length.
+*/
+
+public class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) 
+    {
+    	List<String> res = new ArrayList<String>();
+        if(words == null || words.length == 0) return res;
+
+        int tmpLen = 0;
+        List<String> curLine=new ArrayList<String>();
+        boolean lastLine=false;
+        int i=0;
+        while(i<words.length){
+        	String word=words[i];
+        	while(tmpLen+word.length()<=maxWidth && i<words.length){
+        		tmpLen+=1+word.length();
+        		curLine.add(word);
+        		i++;
+        		if(i==words.length)break;
+        		word=words[i];
+        	}
+        	lastLine=(i==words.length);
+            finishALine(res, curLine, maxWidth, tmpLen, lastLine);
+            tmpLen=0;
+            curLine.clear();
+        }
+        return res;
+    }
+    // to produce a single line. tmpLen stands for the total length without the extra space
+    public void finishALine(List<String> res,List<String> curLine,int maxWidth,int tmpLen,boolean lastLine){
+    	StringBuilder sb=new StringBuilder();
+    	int count=curLine.size();// number of the words
+    	int space=count-1; // all the single space between two words
+    	
+    	if(space==0){// single word
+    		sb.append(curLine.get(0));
+    		addSpace(sb, maxWidth-curLine.get(0).length());
+    		res.add(sb.toString());
+    		return;
+    	}
+
+    	if(lastLine){ //last line of text, it should be left justified and no extra space is inserted between words
+    		for(int i=0;i<count-1;i++){
+    			sb.append(curLine.get(i)+" ");
+    		}
+    		sb.append(curLine.get(count-1));
+    		addSpace(sb, maxWidth-(tmpLen-1));
+    		res.add(sb.toString());
+    		return;
+    	}
+    	
+    	int totalSpace=maxWidth-(tmpLen-count);
+    	int avgSpace=totalSpace/(count-1);
+    	int remain=totalSpace%(count-1);
+    	
+    	for(int i=0;i<count-1;i++){
+    		sb.append(curLine.get(i));
+    		if(remain>0){ // assign more space to the slots in the left until there is no more
+    			addSpace(sb, avgSpace+1);
+    			remain--;
+    		}else{
+    			addSpace(sb, avgSpace);
+    		}
+    	}
+    	sb.append(curLine.get(count-1));
+    	res.add(sb.toString());
+    	return;
+    }
+    // make it easy to append multiple spaces
+    public void addSpace(StringBuilder sb,int numOfSpace){
+    	for(int i=0;i<numOfSpace;i++)
+    		sb.append(" ");
+    }
+}
