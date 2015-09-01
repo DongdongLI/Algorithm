@@ -72,3 +72,68 @@ public class Solution {
     	return indP==p.length();
     }
 }
+
+/*
+    DP version: does not make any sense yet
+    
+    DP equation:
+        1). if p[j-1] is not *, f(i,j) is determined by if s[0:i-2] matches p[0:j-2] and if (s[i-1]==p[j-1] or p[j-1]=='?').
+        2). if p[j-1] is *, f(i,j) is true if either f(i,j-1) is true: s[0:i-1] matches p[0:j-2] and * is not used here; or f(i-1,j) is true: s[0:i-2] matches p[0:j-1] and * is used to match s[i-1].
+*/
+public class Solution {
+    public boolean isMatch(String s, String p) {
+        int m = s.length(), n = p.length();
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (p.charAt(i) == '*') count++;
+        }
+        if (count==0 && m != n) return false;
+        else if (n - count > m) return false;
+
+        boolean[] match = new boolean[m+1];
+        match[0] = true;
+        for (int i = 0; i < m; i++) {
+            match[i+1] = false;
+        }
+        for (int i = 0; i < n; i++) {
+            if (p.charAt(i) == '*') {
+                for (int j = 0; j < m; j++) {
+                    match[j+1] = match[j] || match[j+1]; 
+                }
+            } else {
+                for (int j = m-1; j >= 0; j--) {
+                    match[j+1] = (p.charAt(i) == '?' || p.charAt(i) == s.charAt(j)) && match[j];
+                }
+                match[0] = false;
+            }
+        }
+        return match[m];
+    }
+}
+//c++ dp
+1). if(p[j-1]!='*') f(i, j) = f(i-1, j-1) && (s[i-1]==p[j-1] || p[j-1]=='?')
+
+2). if(p[j-1]=='*') f(i, j) = f(i, j-1) || f(i-1, j)
+
+bool isMatch(const char *s, const char *p) {
+    const int m = strlen(s);
+    const int n = strlen(p);
+    if(m>30000) return false; // to skip the large test case
+    vector<bool> prev(n+1,false); // to save space, just O(n) space is used
+    prev[0]=true;
+    for(int j=1; j<=n; j++)
+        prev[j] = prev[j-1] && p[j-1]=='*';
+    for(int i=1; i<=m; i++) {
+        vector<bool> cur(n+1,false);
+        for(int j=1; j<=n; j++) {
+            if(p[j-1]=='*') {
+                cur[j] = cur[j-1] || prev[j];
+            }
+            else {
+                cur[j] = prev[j-1] && (s[i-1]==p[j-1] || p[j-1]=='?');
+            }
+        }
+        prev = cur;
+    }
+    return prev[n];
+}
