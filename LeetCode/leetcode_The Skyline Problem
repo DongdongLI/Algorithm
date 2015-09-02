@@ -1,0 +1,67 @@
+/*
+  For instance, the dimensions of all buildings in Figure A are recorded as: [ [2 9 10], [3 7 15], [5 12 12], [15 20 10], 
+  [19 24 8] ] .
+
+  The output is a list of "key points" (red dots in Figure B) in the format of [ [x1,y1], [x2, y2], [x3, y3], ... ] 
+  that uniquely defines a skyline. A key point is the left endpoint of a horizontal line segment. Note that the last key point, 
+  where the rightmost building ends, is merely used to mark the termination of the skyline, and always has zero height. Also, the ground in between any two adjacent buildings should be considered part of the skyline contour.
+  
+  For instance, the skyline in Figure B should be represented as:[ [2 10], [3 15], [7 12], [12 0], [15 10], [20 8], [24, 0] ].
+*/
+
+public class Solution {
+    public List<int[]> getSkyline(int[][] buildings) {
+        
+    	if(buildings==null || buildings.length==0)
+    		return new LinkedList<int[]>();
+    	return recur(buildings, 0, buildings.length-1);
+    }
+    private LinkedList<int[]> recur(int[][] buildings,int p,int q){
+    	if(p<q){
+    		int m=(p+q)/2; // cut into two halves
+    		return merge(recur(buildings, p, m), recur(buildings, m+1, q));
+    	}else{
+    		LinkedList<int[]> res=new LinkedList<int[]>(); //p==q
+    		res.add(new int[]{buildings[p][0],buildings[p][2]}); // x1,h
+    		res.add(new int[]{buildings[p][1],0}); // h2.h
+    		return res;
+    	}
+    }
+    
+    private LinkedList<int[]> merge(LinkedList<int[]> l1, LinkedList<int[]> l2) {
+    	LinkedList<int[]> res=new LinkedList<int[]>();
+    	
+    	int h1=0;int h2=0;
+    	while(l1.size()>0 && l2.size()>0){
+    		int x=0;
+    		int h=0;
+    		if(l1.getFirst()[0] <l2.getFirst()[0]){ // keep the line with smaller x first
+    			x=l1.getFirst()[0];
+    			h1=l1.getFirst()[1];
+    			h=Math.max(h1, h2);
+    			
+    			l1.removeFirst();
+    			
+    		}else if(l1.getFirst()[0] >l2.getFirst()[0]){
+    			x=l2.getFirst()[0];
+    			h2=l2.getFirst()[1];
+    			h=Math.max(h1, h2);
+    			l2.removeFirst();
+    		}else{ // if xs are the same, keep x with the longer line
+    			x=l1.getFirst()[0];
+    			h1=l1.getFirst()[1];
+    			h2=l2.getFirst()[1];
+    			h=Math.max(h1, h2);
+    			l1.removeFirst();
+    			l2.removeFirst();
+    		}
+    		// h1 and h2 are kept for the next comparision
+    		if(res.size()==0 || h!=res.getLast()[1]){ 
+    			res.add(new int[]{x,h});
+    		}
+    	}
+    	res.addAll(l1);
+    	res.addAll(l2);
+    	return res;
+    }	
+}
