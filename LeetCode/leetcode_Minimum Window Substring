@@ -1,0 +1,81 @@
+/*
+  Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+
+  For example,
+  S = "ADOBECODEBANC"
+  T = "ABC"
+  Minimum window is "BANC".
+  
+  Note:
+  If there is no such window in S that covers all characters in T, return the emtpy string "".
+  
+  If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+*/
+
+/*
+  Not fast, but works.
+  Idea:
+    Keep two HashMap, one for the window (subString), storing the characters and their amount between start and end
+    one for the target string, storing the characters and their amount
+    
+    First traverse String T, update both HashMaps
+    
+    count is monitor for the subString (window)
+    
+    tarverse S, try to shrink the window by moving start pointer .
+*/
+
+public class Solution{
+	public String minWindow(String S, String T){
+		
+		HashMap<Character, Integer> target=new HashMap<Character, Integer>();
+		HashMap<Character, Integer> window=new HashMap<Character, Integer>();
+		
+		for(int i=0;i<T.length();i++){
+			char c=T.charAt(i);
+			if(!target.containsKey(c)){
+				target.put(c, 1);
+				window.put(c, 0);
+			}else{
+				target.put(c, target.get(c)+1);
+			}
+		}
+		
+		int count=0; // the monitor shows if the substring is found
+		int minStart=0; // latest start point
+		int start=0;
+		int minLen=Integer.MAX_VALUE;
+		for(int end=0;end<S.length();end++){
+			char c=S.charAt(end);
+			
+			if(target.containsKey(c)){
+				if(window.get(c)<target.get(c)){ // still need more of these characters
+					count++; // note that the only difference is to update "count" or not
+				}
+				window.put(c, window.get(c)+1);
+			}
+			
+			if(count>=T.length()){ // subString found
+				// if the guy at start is useless  OR  we have efficient characters in windows already
+				while(!target.containsKey(S.charAt(start)) || window.get(S.charAt(start)) > target.get(S.charAt(start)) ){
+					if(window.containsKey(S.charAt(start))){ // second situation
+						window.put(S.charAt(start), window.get(S.charAt(start))-1);
+						// do not touch start here
+					} 
+					start++; // do it here
+				}
+				
+				if(end-start+1<minLen){ // if the length gets smaller
+					minStart=start;
+					minLen=end-start+1; // update
+				}
+				count--;
+				window.put(S.charAt(start), window.get(S.charAt(start))-1);
+				start++;
+			}
+		}
+		if(minLen==Integer.MAX_VALUE)
+			return "";
+		return S.substring(minStart,minStart+minLen);
+	}
+}
