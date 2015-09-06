@@ -1,0 +1,64 @@
+/*
+    Two elements of a binary search tree (BST) are swapped by mistake.
+
+    Recover the tree without changing its structure.
+    
+    Note:
+    A solution using O(n) space is pretty straight forward. Could you devise a constant space solution?
+    confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
+*/
+
+/*
+    Based on In-order traverse.
+    If there is a correct BST, the value got in in-order traverse is increasing:
+    
+    6,3,4,5,2 (6 and 2 are the two errors here)
+    
+    Set a fake node(Integer.MIN) to help the compare, also FirstErr, SecondErr
+    
+    if first hasn't been found, and the previous node is larger than current node
+    let prev node be the first error
+    
+    if the first has already been found, and the root node is smaller than previous node
+    let root be the second error
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+	
+	private TreeNode firstErr;
+	private TreeNode secondErr;
+	private TreeNode prevNode=new TreeNode(Integer.MIN_VALUE);
+	
+    public void recoverTree(TreeNode root) {
+        inOrder(root); // traverse
+        
+        int temp=firstErr.val; // swap
+        firstErr.val=secondErr.val;
+        secondErr.val=temp;
+    }
+    
+    private void inOrder(TreeNode root){
+    	if(root==null)
+    		return;
+    	inOrder(root.left);
+    	
+    	if(firstErr==null && root.val<=prevNode.val){
+    		firstErr=prevNode;
+    	}
+    	if(firstErr!=null&& root.val<=prevNode.val ){
+    		secondErr=root;
+    	}
+    	prevNode=root; // keep track of the previous node
+    	
+    	inOrder(root.right);
+    }
+}
