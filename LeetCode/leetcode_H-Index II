@@ -1,0 +1,35 @@
+/*
+    Follow up for H-Index: What if the citations array is sorted in ascending order? Could you optimize your algorithm?
+
+    Hint:
+    
+    Expected runtime complexity is in O(log n) and the input is sorted.
+*/
+
+/*
+    Idea: seeing the expected O(log n) time complexity, binary search strategy is quite obvious.
+    
+    if citations[mid] equals len-mid, h-index found.
+    if citations[mid] is less then len-mid, so there are more than citations[mid] papers have more than citations[mid] cites.
+      so try to shrink it more, let left=mid+1 to see it there is larger result
+      
+    last case: ...
+*/
+
+public class Solution {
+    public int hIndex(int[] citations) {
+        int left=0;
+        int right=citations.length;
+        while(left<right){
+        	int mid=left+(right-left)/2;
+        	if(citations.length-1 - mid +1 == citations[mid]){
+        		return citations[mid];
+        	}else if(citations.length-1 - mid +1 > citations[mid]){
+        		left=mid+1;
+        	}else{
+        		right=mid;
+        	}
+        }
+        return citations.length-left;
+    }
+}
