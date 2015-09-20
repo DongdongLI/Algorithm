@@ -1,0 +1,134 @@
+/*
+  Convert a non-negative integer to its english words representation. Given input is guaranteed to be less than 231 - 1.
+
+  For example,
+  123 -> "One Hundred Twenty Three"
+  12345 -> "Twelve Thousand Three Hundred Forty Five"
+  1234567 -> "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+*/
+
+/*
+  Take 3 digits at most each time.
+  
+  The convert function is to convert any number smaller than 1000 to English.
+  
+  
+*/
+
+public class Solution {
+	
+	Map<Integer, String> map=new HashMap<Integer, String>();
+	
+	public Solution() {
+		
+    	map.put(1, "One");
+    	map.put(2, "Two");
+    	map.put(3, "Three");
+    	map.put(4, "Four");
+    	map.put(5, "Five");
+    	map.put(6, "Six");
+    	map.put(7, "Seven");
+    	map.put(8, "Eight");
+    	map.put(9, "Nine");
+    	
+    	map.put(10, "Ten");
+    	map.put(11, "Eleven");
+    	map.put(12, "Twelve");
+    	map.put(13, "Thirteen");
+    	map.put(14, "Fourteen");
+    	map.put(15, "Fifteen");
+    	map.put(16, "Sixteen");
+    	map.put(17, "Seventeen");
+    	map.put(18, "Eighteen");
+    	map.put(19, "Nineteen");
+    	
+    	map.put(20, "Twenty");
+    	map.put(30, "Thirty");
+    	map.put(40, "Forty");
+    	map.put(50, "Fifty");
+    	map.put(60, "Sixty");
+    	map.put(70, "Seventy");
+    	map.put(80, "Eighty");
+    	map.put(90, "Ninety");
+    	
+    	map.put(100, "Hundred");
+    	map.put(1000, "Thousand");
+    	map.put(1000000, "Million");
+    	map.put(1000000000, "Billion");
+	}
+    public String numberToWords(int num) {
+        if(num==0)return "Zero";
+
+    	if(num<1000)
+    		return convert(num);
+    	
+        StringBuffer res=new StringBuffer();
+        
+        int totalLen=String.valueOf(num).length();
+        int firstPartLen=totalLen%3;
+        if(firstPartLen!=0){
+        	res.append(convert(num/(int)(Math.pow(10, totalLen-firstPartLen))));
+        	res.append(" ");
+        	//System.out.println((int) Math.pow(10, totalLen-firstPartLen));
+        	res.append(map.get( (int) Math.pow(10, totalLen-firstPartLen) ));
+        }
+        int temp=num% (int)Math.pow(10, totalLen-firstPartLen);
+        totalLen-=firstPartLen;
+        while(temp!=0){
+        	if(res.length()!=0)
+        		res.append(" ");
+        	
+        	//if(totalLen<3)break;
+        	if(temp/(int) Math.pow(10, totalLen-3)!=0){ // make sure its not 10 "1000010"
+        		res.append(   convert(temp/(int) Math.pow(10, totalLen-3))   );
+	        	res.append(" ");
+	        	if(totalLen!=3)
+	        		res.append( map.get(  (int) Math.pow(10,totalLen-3) )  );
+        	}
+        	temp%=	(int) Math.pow(10,totalLen-3) 	;
+        	totalLen-=3;
+        	
+        }
+        
+        return res.toString().replaceAll("\\s+", " ").trim().replace("\\s+$", "");
+    }
+    
+    public String convert(int num){
+    	int len=String.valueOf(num).length();
+    	StringBuffer res=new StringBuffer();
+    	int temp=num;
+    	
+    	while(temp!=0 && len!=0){
+    		if(res.length()!=0)res.append(" ");// append a space if the string is not empty
+    		//System.out.println(temp);
+    		if(len==3){ // only this digit needs "Hundred"
+    			res.append( map.get(num/(int)Math.pow(10,len-1)) );
+    			res.append(" ");
+    			res.append( map.get( (int)Math.pow(10,len-1) ) );
+    			temp=temp% (int)Math.pow(10,len-1) ;
+    			len--;
+    		}else if(len==2){
+    			if(temp/10 ==0){ // if it is 0, skip this digit
+    				len--;
+    			}else{
+    				if(temp<20){ // have One to Nineteen...
+    					res.append( map.get(temp) );
+    					break;
+    				}
+    				
+    				res.append( map.get(temp/10*10) ); // twenty thirty blah
+    				len--;
+    				temp%=10;
+    			}
+    		}else{
+    			if(temp!=0){
+    				res.append( map.get(temp) );
+    				len--;
+    			}else{
+    				break;
+    			}
+    		}
+    	}// delete duplicate spaces and the spaces at the rear
+    	return res.toString().replaceAll("\\s+", " ").trim().replace("\\s+$", ""); 
+    }
+}
