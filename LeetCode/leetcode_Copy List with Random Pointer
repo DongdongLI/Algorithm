@@ -1,0 +1,63 @@
+/*
+    A linked list is given such that each node contains an additional random pointer which could point to any node in the list 
+    or null.
+
+    Return a deep copy of the list.
+*/
+
+/*
+    Based on a popular solution in discuss session:
+    3 steps, 3 rounds
+    1.  For the sake of deep copy, every node need to be duplicated. So in the first round, create an identical node and insert
+        it after the original node.
+    2.  Since there are random pointers, and we make it ready in the first step, so in this step, just set up the pointers
+    3.  Detach them to two lists. n.next=n.next.next. (remember to break if n2.next==null)
+*/
+
+/**
+ * Definition for singly-linked list with a random pointer.
+ * class RandomListNode {
+ *     int label;
+ *     RandomListNode next, random;
+ *     RandomListNode(int x) { this.label = x; }
+ * };
+ */
+public class Solution {
+    public RandomListNode copyRandomList(RandomListNode head) {
+    	if(head==null)return head;
+    	
+    	RandomListNode n=head;
+    	while(n!=null){
+    		RandomListNode newNode=new RandomListNode(n.label);
+    		RandomListNode temp=n.next;
+    		n.next=newNode;
+    		newNode.next=temp;
+    		n=temp; // which means n=n.next.next
+    	}
+    	
+    	n=head;
+    	while(n!=null){
+    		RandomListNode next=n.next;
+    		if(n.random!=null){
+    			next.random=n.random.next; // because in the first round, we duplicate each node. So the random node it points to will
+    			// have a same node after that, ready to be connected by the new point
+    		}else{
+    			next.random=null;
+    		}
+    		n=n.next.next;
+    	}
+    	
+    	RandomListNode newList=head.next;
+    	n=head;
+    	RandomListNode n2=head.next;
+    	while(n!=null && n2!=null){
+    		n.next=n.next.next;
+    		if(n2.next==null)break;
+    		n2.next=n2.next.next;
+    		
+    		n2=n2.next;
+    		n=n.next;
+    	}
+    	return newList;
+    }
+}
