@@ -1,0 +1,44 @@
+/*
+  Say you have an array for which the ith element is the price of a given stock on day i.
+
+  Design an algorithm to find the maximum profit. You may complete at most two transactions.
+  
+  Note:
+  You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
+*/
+
+/*
+  Dynamic iteration;
+  
+  f[k][ii]: with at most k trasactions, the max profit untile prices[ii] (not ending on day ii)
+  
+  // it may equal to the profit of yesterday, or: the last transaction ends on jj, and then we buy it again, sell on ii
+  
+  // jj is someday between day 0 and day ii
+  f[k][ii]=Max(f[k][ii-1], Max(prices[ii]-prices[jj]+f[k-1][jj] ) )
+          =Max(f[k][ii-1], prices[ii] + Max(f[k-1][jj] -priecs[jj]  ))
+          
+  f[0,ii]=0: with 0 transactions, there won't be any profit
+  f[k,0]: there is one price than there's no money to make
+*/
+
+
+public class Solution {
+    public int maxProfit(int[] prices) {
+        
+    	if(prices==null || prices.length<=0)return 0;
+    	
+    	int maxProfit=0;
+    	
+    	int[][] f=new int[2+1][prices.length];
+    	for(int kk=1;kk<f.length;kk++){
+    		int tmpMax=f[kk-1][0]-prices[0]; //Max(f[k-1][jj] -priecs[jj]
+    		for(int ii=1;ii<prices.length;ii++){
+    			f[kk][ii]=Math.max(f[kk][ii-1], prices[ii]+tmpMax);
+    			tmpMax=Math.max(tmpMax,f[kk-1][ii]-prices[ii]);
+    			maxProfit=Math.max(maxProfit, f[kk][ii]);
+    		}
+    	}
+    	return maxProfit;
+    }
+}
