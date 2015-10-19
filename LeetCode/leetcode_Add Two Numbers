@@ -82,3 +82,63 @@ public class Solution{
         return fakeHead.next;
 	}
 }
+
+// 2015/10/19 Finish it with few mistakes, come up with this simpler version
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dumbHead=new ListNode(0);
+        ListNode r=dumbHead;
+        
+        if(l1==null && l2==null)
+            return dumbHead;
+        
+        ListNode p=l1;
+        ListNode q=l2;
+        
+        int sum=0;
+        int left=0;
+        
+        while(p!=null && q!=null){
+        	sum=p.val+q.val+left;
+        	left=sum/10;
+        	sum%=10;
+        	r.next=new ListNode(sum);
+        	r=r.next;
+        	
+        	p=p.next;
+        	q=q.next;
+        }
+        while(p!=null){
+        	sum=p.val+left;
+        	left=sum/10;
+        	sum%=10;
+        	r.next=new ListNode(sum);
+        	
+        	r=r.next;
+        	p=p.next;
+        }
+        while(q!=null){
+        	sum=q.val+left;
+        	left=sum/10;
+        	sum%=10;
+        	r.next=new ListNode(sum);
+        	
+        	r=r.next;
+        	q=q.next;
+        }
+        if(left!=0){
+        	r.next=new ListNode(left);
+        	r=r.next;
+        }
+        
+        return dumbHead.next;
+    }
+}
