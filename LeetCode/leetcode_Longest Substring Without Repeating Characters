@@ -72,3 +72,4 @@ public class Solution {
     	return max;
     }
 }
+//2015/10/19 Finish with Hashmap solution.
