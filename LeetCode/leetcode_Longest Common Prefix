@@ -27,3 +27,23 @@ public class Solution {
 		return temp;
     }
 }
+
+// more advanced way, instead of checking each string again and again, we make strs[0] as the initial prefix, 
+// for each other string, if not match, cut done the last character of the prefix until there is a match
+
+public class Solution {
+    public String longestCommonPrefix(String[] strs) {
+    	if(strs==null || strs.length==0)
+    		return "";
+    	String prefix=strs[0]; // make the first string as the initial prefix
+    	int i=1; // start checking with the second one
+    	while(i<strs.length){
+    		while(strs[i].indexOf(prefix)!=0){ // prefix won't fit
+    			prefix=prefix.substring(0,prefix.length()-1); // cut the last character and check again
+    		}
+    		i++;//check the next word
+    	}
+    	return prefix;
+    }
+}
+//2015/20/21 came up with the old stupid way and then got to know the faster one
