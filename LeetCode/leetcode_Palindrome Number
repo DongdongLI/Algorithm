@@ -1,0 +1,47 @@
+/*
+  Determine whether an integer is a palindrome. Do this without extra space.
+
+  click to show spoilers.
+  
+  Some hints:
+  Could negative integers be palindromes? (ie, -1)
+  
+  If you are thinking of converting the integer to string, note the restriction of using extra space.
+  
+  You could also try reversing an integer. However, if you have solved the problem "Reverse Integer", you know that the 
+  reversed integer might overflow. How would you handle such case?
+  
+  There is a more generic way of solving this problem.
+*/
+
+/*
+    Idea: corner cases: if a number is not 0 but ends with 0. return false;
+                        if a number is negative, return false;
+          
+          build a number.
+          
+          in each iteration, cut a digit from the end of x, put it as the next number of "reverse"
+          
+          eg.
+          12321 0
+          1232 1
+          123 12
+          12 123 (jump out of the while and check)
+*/
+
+public class Solution {
+    public boolean isPalindrome(int x) {
+        if(x<0 || (x!=0&&x%10==0))return false;
+        
+        int reverse=0;
+        while(reverse<x){
+        	int lastBit=x%10;
+        	reverse=reverse*10+lastBit;
+        	
+        	x/=10;
+        }
+        // the first case is for even length interger, the second one is for the odd length integer
+        return (reverse==x||reverse/10 == x);
+    }
+}
+//2015/10/21: got the idea but didn't complete all the code
