@@ -26,3 +26,32 @@ public class Solution {
 //First we add "" to the list
 //later we have the last letter
 //...
+
+//2015/10/22: forgort about recursive way. Read a post and got to know about a more straightforward way.
+/*
+	Idea: the linked list is like a queue, First In First Out
+	
+	In each iteration, pop the element with a specific length, attach different new character to it and put it back to the
+	list( it will not be peeked or pop next because is a queue)
+*/
+
+public class Solution {
+    public List<String> letterCombinations(String digits) {
+    	LinkedList<String> res=new LinkedList<String>();
+    	
+    	if(digits==null || digits.length()==0)
+    		return res;
+    	String[] map={"0","1","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+    	res.add("");
+    	
+    	for(int i=0;i<digits.length();i++){
+    		while(res.peek().length()==i){ // make sure all elements with this length is modified
+    			String t=res.pop(); // take it out
+    			for(char c:map[digits.charAt(i)-'0'].toCharArray()){ 
+    				res.add(t+c); // add possible character, add back( add to the head, but pop from rear)
+    			}
+    		}
+    	}
+    	return res;
+    }
+}
