@@ -76,7 +76,7 @@ public class Solution {
                         
                         low++;
                         high--;
-                        
+                        // this two while loops can only be put here
                         while(low<high&&num[low]==num[low-1])//remove dupicate
                             low++;
                         while(low<high&&num[high]==num[high+1])//remove dupicate
@@ -92,3 +92,4 @@ public class Solution {
         return res;
     }
 }
+//2015/10/21: only come up with the trivil solution: after reading the solution than remember the quick solution.
