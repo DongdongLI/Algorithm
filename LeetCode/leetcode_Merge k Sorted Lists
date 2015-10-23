@@ -51,3 +51,11 @@ public class Solution {
         return fakeHead.next;
     }
 }
+//2015/10/23: forgot at first and then read the solution and then come back
+/*
+	Hint: in priority queue, all the lists are sorted by the first element of each list,
+	each time one list is pop, only the first node is linked to the result, and the result will be
+	put back to the queue.
+	
+	Then the next pop list will still have the smallest first element
+*/
