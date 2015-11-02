@@ -26,3 +26,22 @@ public class Solution {
 		return len+1;
     }
 }
+
+
+//2015/11/2
+// almost forgot
+/*idea:
+	two pointer:
+	begin: to the left of begin, there is no more elements equal to val (aka. mark the position of the first appearance of the "val")
+	i: traverse from 0 to len-1
+		: if a element does not equal to val, then copy it and assign to latest element with val*/
+public class Solution {
+    public int removeElement(int[] nums, int val) {
+        int begin=0;
+        for(int i=0;i<nums.length;i++){
+            if(val!=nums[i])
+                nums[begin++]=nums[i];
+        }
+        return begin;
+    }
+}
