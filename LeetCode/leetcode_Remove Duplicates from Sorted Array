@@ -29,3 +29,12 @@ public class Solution {
 		return i+1;
     }
 }
+
+// 2015/11/2: almost forgot
+/*
+	refresh:
+	two pointer: 
+		one pointer traverse from 1 to the end of the array
+		the other always stays in a point where there is no duplication before it
+	
+*/
