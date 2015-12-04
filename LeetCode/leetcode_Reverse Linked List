@@ -23,3 +23,10 @@ public class Solution {
     	return prev;
     }    
 }
+
+// 2015/12/4
+/*
+    Remember how it works. 
+    Forgot to set "head.next=null;" (the reason to set head.next=null: assume the first node point to the second node as its next, and the 
+    second one point to the first one as next, that would be an infinite loop)
+*/
