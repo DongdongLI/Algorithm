@@ -45,3 +45,8 @@ public class Solution {
     
 }
 // 2015/10/23: nail it
+// 2015/12/4: nail it
+/*
+	If want to take care of the p1.val==p2.val situation,
+	be careful and move the cursor in time.
+*/
