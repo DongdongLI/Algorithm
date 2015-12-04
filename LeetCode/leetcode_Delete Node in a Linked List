@@ -35,3 +35,6 @@ public class Solution {
       	node.next=node.next.next;
     }
 }
+//2015/12/4: Read the answer and the memory comes back.
+//since the current node is considered to be deleted, put the value of next node in current node, and skip the next node.
+// Then it looks like the current node is deleted.
