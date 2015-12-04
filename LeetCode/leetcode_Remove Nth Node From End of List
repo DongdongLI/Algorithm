@@ -40,3 +40,4 @@ public class Solution {
 }
 
 //2015/10/22: nail it.
+//2015/12/4: nail it. Since there is a dummy head created, no need to check if the head is null (if checked, there would be mistake)
