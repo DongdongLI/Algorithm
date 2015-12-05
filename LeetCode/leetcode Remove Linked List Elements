@@ -48,3 +48,11 @@ public class Solution {
     	return fakeHead.next;
     }
 }
+//2015/12/5: ran into a tiny problem.
+/*
+  Be really careful about the check like 
+  "if(head==null)
+			return head;"
+			
+	 sometimes you check "head.next==null" but sometimes you shouldn't
+*/
