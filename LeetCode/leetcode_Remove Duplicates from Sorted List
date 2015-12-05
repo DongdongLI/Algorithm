@@ -45,3 +45,8 @@ public class Solution {
 		return head;
     }
 }
+//2015/12/5: nail it
+/*
+	two pointers, the slower one marks the end of the list without duplicate, and the fast one marks the next node that will not 
+	cause duplicates.
+*/
