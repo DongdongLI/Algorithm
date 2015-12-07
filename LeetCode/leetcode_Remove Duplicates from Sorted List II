@@ -44,3 +44,42 @@ public class Solution {
         return prev.next;
     }
 }
+
+//2015/12/7: struggle and finish
+/*
+  pre: the end of the list without duplicate
+  cur: the node being process
+  
+  if the cur and node next have same val, move the cur to a node whose value is different
+   set pre.next to this.
+  else:
+   pre and cur move together
+*/
+
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head==null)return head;
+    	ListNode fakeHead=new ListNode(0);
+    	fakeHead.next=head;
+    	
+    	head=fakeHead;
+    	
+    	ListNode pre=head;
+    	ListNode cur=head.next;
+    	
+    	while(cur!=null){
+    		if(cur.next!=null&&cur.next.val==cur.val){
+	    		while(cur.next!=null&&cur.next.val==cur.val){
+	    			cur=cur.next;
+	    		}
+		    		pre.next=cur.next;
+		    		cur=cur.next;
+		    }
+    		else{
+    			pre=pre.next;
+    			cur=cur.next;
+    		}
+        }
+        return fakeHead.next;
+    }
+}
