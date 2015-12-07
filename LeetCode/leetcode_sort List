@@ -1,0 +1,77 @@
+/*
+  Sort a linked list in O(n log n) time using constant space complexity.
+*/
+
+/*
+  quite obviously it is merge sort
+  
+  the merge part is ordinary
+  
+  the sort part use two pointers method to find mid point and split
+  sort both halfs and merge
+  
+  ***remember to set slow.next=null;
+*/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head==null||head.next==null)return head;
+        
+        ListNode slow=head;
+        ListNode fast=head;
+        
+        while(fast.next!=null && fast.next.next!=null){
+        	slow=slow.next;
+        	fast=fast.next.next;
+        }
+        
+        ListNode secondHalf=sortList(slow.next);
+        slow.next=null;
+        return mergeList(sortList(head), secondHalf);
+    }
+	
+	public ListNode mergeList(ListNode l1,ListNode l2){
+		ListNode fakeHead=new ListNode(0);
+		ListNode h1=l1;
+		ListNode h2=l2;
+		ListNode h=fakeHead;
+		while(h1!=null && h2!=null){
+			if(h1.val<h2.val){
+				h.next=h1;
+				h=h.next;
+				h1=h1.next;
+			}else if(h1.val>h2.val){
+				h.next=h2;
+				h=h.next;
+				h2=h2.next;
+			}else{
+				h.next=h1;
+				h=h.next;
+				h1=h1.next;
+				
+				h.next=h2;
+				h=h.next;
+				h2=h2.next;
+			}
+		}
+		while(h1!=null){
+			h.next=h1;
+			h=h.next;
+			h1=h1.next;
+		}
+		while(h2!=null){
+			h.next=h2;
+			h=h.next;
+			h2=h2.next;
+		}
+		return fakeHead.next;
+	}
+}
