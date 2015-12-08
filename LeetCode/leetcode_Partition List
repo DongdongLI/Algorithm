@@ -53,3 +53,4 @@ public class Solution {
 		return smaller.next;
     }
 }
+// 2015/12/8: went nuts and read the answer and then understand
