@@ -24,30 +24,29 @@
 public class Solution {
     public ListNode swapPairs(ListNode head) {
         if(head==null || head.next==null)
-        	return head;
-        
-        ListNode dumbHead=new ListNode(0);
-        dumbHead.next=head;
-        ListNode p=dumbHead;
-    	
-        while(p!=null){
-        	if(p.next!=null && p.next.next!=null){ // in each round, three nodes get involved
-        		ListNode third=p.next.next.next; // this one will hold its position(not moving)
-        		ListNode first=p.next; // the first is going to be swapped with the secoond
-        		ListNode second=p.next.next;
-        		
-        		p.next=second;
-        		p.next.next=first;
-        		p.next.next.next=third;
-        		
-        	}
-        	p=p.next; // there may be odd number of elements
-        	if(p!=null) // so need to check first
-        	    p=p.next;
-        	else
-        	    break;
-        }
-        return dumbHead.next;
+			return head;
+		
+		ListNode fakehead=new ListNode(0);
+		fakehead.next=head;
+		head=fakehead;
+		
+		ListNode pre=head;
+		ListNode cur=head.next;
+		
+		while(cur!=null && cur.next!=null){
+			ListNode next=cur.next;
+			ListNode temp=next.next;
+			
+			next.next=cur;
+			pre.next=next;
+			cur.next=temp;
+			
+			pre=cur;
+			cur=temp;
+		}
+		return fakehead.next;
     }
 }
+
 //2015/10/24: nail it
+//2015/12/7: nail it with more concise code
