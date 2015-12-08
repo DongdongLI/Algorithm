@@ -142,3 +142,5 @@ public class Solution {
         return dumbHead.next;
     }
 }
+
+//2015/12/7: nail it. Almost the same code
