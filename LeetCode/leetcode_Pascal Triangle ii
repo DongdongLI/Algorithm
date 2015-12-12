@@ -39,3 +39,6 @@ public class Solution {
     }
 }
  
+// 2015/12/11: need refreshment of this method.
+in each round, add a "1" in index 0
+	j start from index 1, set index j equal to index j + index j+1
