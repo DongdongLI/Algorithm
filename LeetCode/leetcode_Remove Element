@@ -47,3 +47,8 @@ public class Solution {
 }
 
 //2015/12/11: almost forget.
+/*
+	To swap with the end of the list is the right thing to do.
+	To thing need to be noted: after swaping, the length decrease by 1;
+	Do not move the front cursor after swapping. (in case the number swapped back is also the same number)
+*/
