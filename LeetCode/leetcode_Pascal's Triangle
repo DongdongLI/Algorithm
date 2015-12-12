@@ -33,3 +33,4 @@ public class Solution {
     }
     return result;
 }}
+//2015/12/11: almost the same code. nail it
