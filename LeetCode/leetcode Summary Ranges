@@ -38,7 +38,13 @@ public class Solution {
 }
 //2015/12/11: completely forget
 //new solution
-
+/*
+	one pass
+	
+	one cursor i.
+	
+	
+*/
 public class Solution {
     public List<String> summaryRanges(int[] nums) {
         List<String> res=new LinkedList<>();
