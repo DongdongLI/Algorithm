@@ -24,3 +24,5 @@ public class Solution {
         return false;
     }
 }
+
+//2015/12/15: nail it. Same method
