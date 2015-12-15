@@ -93,3 +93,9 @@ public class Solution {
     }
 }
 //2015/10/21: only come up with the trivil solution: after reading the solution than remember the quick solution.
+//2015/12/15: nail it with trivil solution.
+/*
+	To remove duplicate element: 
+	during the traverse, if nums[i-1]==nums[i], just skip
+	after successfully found one solution, move p and q, but if their values are same as their previous value, keep moving
+*/
