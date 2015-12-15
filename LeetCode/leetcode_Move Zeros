@@ -42,3 +42,25 @@ public class Solution {
     	}
     }
 }
+//2015/12/15: almost forgot.
+// brand new solution.
+/*
+    Keep something known as insertpoint:
+    it is the index of the insertion point for those non-zero element
+*/
+
+public void moveZeroes(int[] nums) {
+		if(nums==null||nums.length==0)
+			return;
+		
+		int insertPoint=0;
+		for(int i:nums){
+			if(i!=0) // for the non-zero element,
+				nums[insertPoint++]=i; // insert it to the insert point index, then move forward the insert point
+		}
+		// each number has been inserted, so if there is some more space, they should be filled with 0s.
+		if(insertPoint<nums.length-1)
+			while(insertPoint<nums.length-1){
+				nums[insertPoint++]=0;
+			}
+    }
