@@ -38,3 +38,29 @@ public class Solution {
 			return;
     }
 }
+
+//2015/12/15: almost forgot. Concise solution
+/*
+	Two cursors moving backward in both array.
+	compare and Copy the larger element to the end of nums1.
+*/
+public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i=m-1;//mark the end of the num1
+        int j=n-1;// mark the end of the num2
+        int k=m+n-1; // help to copy the element to the end of num1
+        
+        while(i>=0&&j>=0){ // always move the bigger element to the end
+        	if(nums1[i]>nums2[j]){
+        		nums1[k--]=nums1[i--];
+        	}else if(nums1[i]<nums2[j]){
+        		nums1[k--]=nums2[j--];
+        	}else{
+        		nums1[k--]=nums1[i--];
+        		nums1[k--]=nums2[j--];
+        	}
+        }
+        
+        while(j>=0){
+        	nums1[k--]=nums2[j--];
+        }
+    }
