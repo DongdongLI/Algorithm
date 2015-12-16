@@ -47,3 +47,39 @@ public class Solution {
 		}
     }
 }
+
+//2015/12/15:
+/*
+	get the clue immediately but spent lots of time on some detail
+	
+	col0 is used to mark if there is any 0s in the first column
+	
+	
+*/
+public class Solution {
+    public void setZeroes(int[][] matrix) {
+        // only set the border!
+        int col0=1;
+		
+		// set the borders and mark if the first col has 0s
+		for(int i=0;i<matrix.length;i++){
+			if(matrix[i][0]==0)col0=0;
+			for(int j=1;j<matrix[0].length;j++){
+				if(matrix[i][j]==0){
+					matrix[i][0]=0;
+					matrix[0][j]=0;
+				}
+			}
+		}
+		// second round, setting 0s
+		for(int i=matrix.length-1;i>=0;i--){
+			for(int j=matrix[0].length-1;j>=1;j--){
+				if(matrix[i][0]==0 || matrix[0][j]==0)
+					matrix[i][j]=0;
+			}
+			if(col0==0) // the first column is dealt with
+				matrix[i][0]=0;
+		}
+		
+    }
+}
