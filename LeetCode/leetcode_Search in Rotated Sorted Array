@@ -89,3 +89,45 @@ int search(int[] A, int target)
 		}
 		 return A[l] == target ? l : -1;//very important
 	}
+//2015/12/18: almost forgot
+// an easier and more straightforward method
+
+/*
+	Find the rotation point first
+	Start binary search very close to the normal version
+	the only difference is: 
+		after getting the mid point, calcute the real mid index by
+		
+		realMid=(mid+pivot)%n;
+*/
+
+public class Solution {
+    public int search(int[] nums, int target) {
+        // find pivot
+		int low=0;
+		int high=nums.length-1;
+		
+		while(low<high){
+			int mid=(low+high)/2;
+			if(nums[mid]>nums[high])
+				low=mid+1;
+			else
+				high=mid;
+		}
+		int pivot=low;
+		low=0;
+		high=nums.length-1;
+		while(low<=high){
+			int mid=(low+high)/2;
+			int trueMid=(mid+pivot)%nums.length;
+			if(nums[trueMid]==target)
+				return trueMid;
+			else if(nums[trueMid]<target)
+				low=mid+1;
+			else
+				high=mid-1;
+				
+		}
+		return -1;
+    }
+}
