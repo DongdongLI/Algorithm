@@ -73,3 +73,8 @@ public class Solution {
     	}
     }
 }
+// 2015/12/20: totally nightmare: totally forget.
+// key point: the next permutation is the smallest number larger than current one
+/*
+	Check backward to find the first place where num[i-1]<num[i]
+*/
