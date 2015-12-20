@@ -78,3 +78,43 @@ public class Solution {
 /*
 	Check backward to find the first place where num[i-1]<num[i]
 */
+public class Solution {
+    public void nextPermutation(int[] nums) {
+        int index=nums.length-1;
+        if(nums.length<2)return;
+        while(index>0){
+        	if(nums[index-1]<nums[index])
+        		break;
+        	else
+        		index--;
+        }
+        // the part from index to the end is in increasing order
+        
+        if(index==0){ // meaning it's sorted like "6,5,4,3,..."
+        	reverse(nums,0,nums.length-1); // reverse and return
+        	return;
+        }else{
+        	// find the first number that is larger than the target, swap and reorder
+        	int j=nums.length-1;
+        	while(j>=index ){
+        		if(nums[j]>nums[index-1])
+        			break;
+        		j--;
+        	}
+        	int temp=nums[j];
+        	nums[j]=nums[index-1];
+        	nums[index-1]=temp;
+        	reverse(nums,index,nums.length-1);
+        	return;
+        }
+    }
+	public void reverse(int[] nums,int start,int end){ // the "equal" sign is important
+		if(start>end)
+			return;
+		for(int i=start;i<=(start+end)/2;i++){
+			int temp=nums[i];
+			nums[i]=nums[start+end-i];
+			nums[start+end-i]=temp;
+		}
+	}
+}
