@@ -20,19 +20,20 @@ public class Solution {
     public boolean canJump(int[] A) {
         if(A.length==1)
 			return true;
-		int move=1;
-		int maxreach=0;
+		int move=1; // how many steps can I move(from index -1 to index 0)
+		int maxreach=0; // the furthest place I can go
 		for(int i=0;i<A.length;i++)
 		{
-			move--;
-			if(A[i]+i>maxreach)
+			move--; // move one step
+			if(A[i]+i>maxreach) // from current index, I can jump to a even further place
 			{
-				maxreach=A[i]+i;
-				move=A[i];
+				maxreach=A[i]+i; // update the maxreach
+				move=A[i]; // start from here, I can move A[i] step
 			}
-			if(move==0&&i<A.length-1)
+			if(move==0&&i<A.length-1) // running out of step but still not getting to the end
 				return false;
 		}
 		return true;
     }
 }
+//2015/12/22: completely forgot. need practice. read the comment
