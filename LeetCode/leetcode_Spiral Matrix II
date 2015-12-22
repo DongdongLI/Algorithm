@@ -76,3 +76,36 @@ public class Solution {
         return result;
     }
 }
+
+// 2015/12/22: based on the new solution of "Spiral Matrix", I nailed this one.
+
+public class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] mat=new int[n][n];
+		
+		int num=1;
+		int rowBegin=0;
+		int colBegin=0;
+		int rowEnd=n-1;
+		int colEnd=n-1;
+		
+		while(num<=n*n && rowBegin<=rowEnd && colBegin<=colEnd){
+			for(int i=colBegin;i<=colEnd;i++)
+				mat[rowBegin][i]=num++;
+			rowBegin++;
+			
+			for(int i=rowBegin;i<=rowEnd;i++)
+				mat[i][colEnd]=num++;
+			colEnd--;
+			
+			for(int i=colEnd;i>=colBegin;i--)
+				mat[rowEnd][i]=num++;
+			rowEnd--;
+			
+			for(int i=rowEnd;i>=rowBegin;i--)
+				mat[i][colBegin]=num++;
+			colBegin++;
+		}
+		return mat;
+    }
+}
