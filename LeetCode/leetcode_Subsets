@@ -1,0 +1,55 @@
+/*
+  Given a set of distinct integers, nums, return all possible subsets.
+
+  Note:
+  Elements in a subset must be in non-descending order.
+  The solution set must not contain duplicate subsets.
+  For example,
+  If nums = [1,2,3], a solution is:
+  
+  [
+    [3],
+    [1],
+    [2],
+    [1,2,3],
+    [1,3],
+    [2,3],
+    [1,2],
+    []
+  ]
+*/
+
+/*
+  in a set of size 3, all of its subsets are either size 1,2 or 3 except for the empty set. 
+  
+*/
+
+public class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+		List<List<Integer>> res=new LinkedList<List<Integer>>();
+		List<Integer> temp=new LinkedList<>();
+		Arrays.sort(nums);
+		for(int i=1;i<=nums.length;i++)
+			help(res, temp, 0, nums,i);
+		res.add(new LinkedList<>());
+		return res;
+    }
+  // each one of this kind of call will get all the subsets of one particular size
+	public void help(List<List<Integer>> res,List<Integer> temp,int start,int[] nums,int len){
+		if(temp.size()==len){
+			res.add(new LinkedList<>(temp));
+			return;
+		}
+		if(start==nums.length){
+			return;
+		}else{
+			for(int i=start;i<nums.length;i++){
+				temp.add(nums[i]);
+				help(res, temp, i+1, nums,len); // the start point should be i+1, because you want to prevent the situation like 1,3 -> 1,3,2 to happen
+				temp.remove(temp.size()-1);
+			}
+		}
+	}
+}
+
+//2015/12/22: it has been a while, but I crack it out without much effort.
