@@ -63,3 +63,33 @@ public class Solution {
     return result;
 }
 }
+//2015/12/22: still have problem taking care of the duplicates. better solution
+public class Solution {
+	public List<List<Integer>> subsetsWithDup(int[] nums) {
+		Arrays.sort(nums);
+		List<List<Integer>> res=new LinkedList<List<Integer>>();
+		List<Integer> temp=new LinkedList<>();
+		for(int i=1;i<=nums.length;i++)
+			help(res, temp, 0, nums,i);
+		res.add(new LinkedList<>());
+		return res;
+    }
+	public void help(List<List<Integer>> res,List<Integer> temp,int start,int[] nums,int len){
+		if(temp.size()==len){
+			res.add(new LinkedList<>(temp));
+			return;
+		}
+		if(start==nums.length){
+			return;
+		}else{
+			for(int i=start;i<nums.length;i++){
+				temp.add(nums[i]);
+				help(res, temp, i+1, nums,len);
+				temp.remove(temp.size()-1);
+				// if the next element is the same, skip. because it will be added into the list in the "help" call earlier. make sure it happens only once
+				while(i<nums.length-1&&nums[i]==nums[i+1])
+					i++;
+			}
+		}
+	}
+}
