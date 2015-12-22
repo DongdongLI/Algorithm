@@ -81,3 +81,46 @@ public class Solution {
         return result;
     }
 }
+//2015/12/22: it has been a while. I had some ideas but cannot implement. Here comes a more intuitive solution.
+
+public class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> res=new LinkedList<>();
+        if(matrix==null||matrix.length==0)
+            return res;
+        // the boundries in four directions
+        int rowBegin=0;
+        int colBegin=0;
+        int rowEnd=matrix.length-1;
+        int colEnd=matrix[0].length-1;
+        
+        while(rowBegin<=rowEnd && colBegin<=colEnd){
+        	// right
+        	for(int i=colBegin;i<=colEnd;i++)
+        		res.add(matrix[rowBegin][i]);
+        	rowBegin++;
+        	//down
+        	for(int i=rowBegin;i<=rowEnd;i++)
+        		res.add(matrix[i][colEnd]);
+        	colEnd--;
+        	
+        	//check if there if any more rows to traverse
+        	if(rowBegin<=rowEnd){
+        		// left
+            	for(int i=colEnd;i>=colBegin;i--)
+            		res.add(matrix[rowEnd][i]);
+            }
+            rowEnd--;
+        	
+        	// check if there is any more cols to traverse
+        	if(colBegin<=colEnd){
+        		//up
+            	for(int i=rowEnd;i>=rowBegin;i--)
+            		res.add(matrix[i][colBegin]);
+            }
+            colBegin++;
+        	
+        }
+        return res;
+    }
+}
