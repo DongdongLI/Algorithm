@@ -24,7 +24,6 @@ Bonus point if you are able to do this using only O(n) extra space, where n is t
   5       7
 1   8   8   3
 */
-
 public class Solution {//dynamic programming bottom up(makes sure opimality)
     public int minimumTotal(List<List<Integer>> triangle) {
         int[] res=new int[triangle.size()];
@@ -42,3 +41,6 @@ public class Solution {//dynamic programming bottom up(makes sure opimality)
         return res[0];
     }
 }
+
+// 2015/12/21: completely forgot.
+
