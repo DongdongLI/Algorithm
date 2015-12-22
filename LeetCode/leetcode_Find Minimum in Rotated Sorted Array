@@ -36,3 +36,16 @@ public class Solution {
 		return num[r];
 	}
 }
+// 2015/12/22: almost forgot
+1. Use binary search
+2. if [mid-1]>[mid]<[mid+1], return
+2. if [mid-1]<[mid]<[mid+1] ,and [mid]<[len-1] high=mid-1
+	else
+		low=mid+1
+		
+*************key point***************
+the order of the comparision does matter!!!!!!!!!!!
+
+if( nums[mid]<nums[mid+1] && nums[mid]>nums[mid-1] &&  nums[mid]<nums[nums.length-1]) will work
+
+if( nums[mid]>nums[mid-1] && nums[mid]<nums[mid+1] &&   nums[mid]<nums[nums.length-1])// this won't
