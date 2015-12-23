@@ -39,3 +39,7 @@ public class Solution {
     	return Math.min(height[l], height[r])*(r-l);
     }
 }
+//2015/12/22: need practice.
+*two pointers start from both side
+*keep tracking of the largest area so far
+*always move the border with smaller height
