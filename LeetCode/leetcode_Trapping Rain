@@ -41,3 +41,36 @@ public class Solution {
 		return total;
     }
 }
+// 2015/12/22: totally forgot;
+
+public class Solution {
+    public int trap(int[] height) {
+        if(height==null || height.length==0)
+            return 0;
+        
+        int l=0; // left pointer
+		int r=height.length-1; // right pointer
+		// the global highest left border
+		int leftMax=0;
+		// the global highest right border
+		int rightMax=0;
+		
+		int max=0;
+		// start moving
+		while(l<r){
+		    // update the borders.
+			leftMax=Math.max(leftMax, height[l]);
+			rightMax=Math.max(rightMax, height[r]);
+			if(leftMax<rightMax){
+			    // left border is shorter, indicating that the water in left pointer can be stored, but not sure about the right pointer
+				max+=leftMax-height[l];
+				// move forward
+				l++;
+			}else{
+				max+=rightMax-height[r];
+				r--;
+			}
+		}
+		return max;
+    }
+}
