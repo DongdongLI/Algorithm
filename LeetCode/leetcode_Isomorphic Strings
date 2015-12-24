@@ -47,3 +47,18 @@ public class Solution {
     	return true;
     }
 }
+//2015/12/24: nail it, long gone.
+public class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        Map<Character, Character> charMap=new HashMap<>();
+		for(int i=0;i<s.length();i++){
+			if(!charMap.containsKey(s.charAt(i))){
+				if(charMap.containsValue(t.charAt(i)))return false; // something else has mapped to this character already. false
+				charMap.put(s.charAt(i), t.charAt(i));
+			}else{
+				if(charMap.get(s.charAt(i))!=t.charAt(i))return false; // The char in s has mapped to something, but not equal to this char in t. false
+			}
+		}
+		return true;
+    }
+}
