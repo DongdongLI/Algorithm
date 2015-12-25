@@ -37,3 +37,25 @@ public class Solution{
 		return 0;
     }
 }
+
+//2015/12/25: nail it. similar code. long gone
+// more clear solution
+public int hIndex(int[] citations) {
+        if(citations.length==1)
+            if(citations[0]==0)
+                return 0;
+            else
+                return 1;
+        
+        Arrays.sort(citations);
+		
+		int len=citations.length;
+		for(int i=len-1;i>=0;i--){
+			int amount=len-1-i+1;
+			if(citations[i]>=amount)
+				if(i>0&&citations[i-1]<=amount)
+					return amount;
+				else if(i==0)
+				    return amount;
+		}
+		return 0;
