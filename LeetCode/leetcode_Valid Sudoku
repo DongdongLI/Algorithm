@@ -41,3 +41,6 @@ public class Solution {
 		return true;
     }
 }
+
+//2015/12/25: nail it. same code. Farewell!
+key point. to get the block# using i and j: #=i/3*3+j/3
