@@ -73,3 +73,14 @@ public class Solution {
     }
 }
 //2015/10/19 Finish with Hashmap solution.
+
+//2015/12/26: nail it with trivial solution:, but I think the above solution will be a little bit faster 
+for(int i=0;i<s.length()-1;i++){
+	int j=i+1;
+	set.add(s.charAt(i));
+	while(j<s.length()&&!set.contains(s.charAt(j))){
+		set.add(s.charAt(j++));
+	}
+	max=Math.max(max, j-i);
+	set.clear();
+}
