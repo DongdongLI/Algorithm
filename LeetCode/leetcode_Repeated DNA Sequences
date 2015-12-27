@@ -44,3 +44,28 @@ public class Solution {
         return res;
     }
 }
+
+
+//2015/12/26: nail the dummy solution with shorter solution
+public class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        List<String> res=new LinkedList<>();
+		Map<String,Integer> map=new HashMap<>();
+		
+		for(int i=0;i<s.length()-9;i++){
+			String temp=s.substring(i, i+10);
+			if(map.containsKey(temp)){
+				map.put(temp, map.get(temp)+1);
+			}else{
+				map.put(temp, 1);
+			}
+		}
+		
+		for(String str:map.keySet())
+			if(map.get(str)>1)
+				res.add(str);
+		return res;
+    }
+}
+
+// faster idea
