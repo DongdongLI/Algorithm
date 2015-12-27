@@ -68,4 +68,26 @@ public class Solution {
     }
 }
 
-// faster idea
+// faster idea: transform the string into Integer
+public class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        Set<Integer> word=new HashSet<>(); // first appearance, save here
+	Set<Integer> doubleWord=new HashSet<>(); // multiple times
+	char[] map= new char[26]; // set different Character as different value
+	map['C'-'A']=1;
+	map['G'-'A']=2;
+	map['T'-'A']=3;
+	List<String> res=new LinkedList<>();
+	
+	for(int i=0;i<s.length()-9;i++){
+		int val=0;
+		for(int j=i;j<i+10;j++){ //process each length 10 substring
+			val<<=2; // move 2 steps to the left
+			val|=map[s.charAt(j)-'A']; // append the new number to the rare
+		}
+		if(!word.add(val) && doubleWord.add(val)) // appear once again: set is going to return false if inserting something old	
+			res.add(s.substring(i,i+10));
+		}
+		return res;
+    }
+}
