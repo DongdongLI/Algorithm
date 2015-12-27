@@ -24,3 +24,8 @@ public class Solution {
 		return result[n];
     }
 }
+
+//2015/12/27: nail it. farewell
+// one concern: when initialization
+dp[0]=1;
+dp[1]=2;
