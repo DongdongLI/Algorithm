@@ -30,3 +30,5 @@ public class Solution {
     	return max;
     }
 }
+
+//2015/12/27: didnt' pass, redo it sometime
