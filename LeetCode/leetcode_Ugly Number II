@@ -45,3 +45,35 @@ public class Solution {
     	return ugly[n-1];
     }
 }
+
+//2015/12/28: got the idea, but couldn't make it. so close
+public class Solution {
+    public int nthUglyNumber(int n) {
+        int[] ugly=new int[n];
+		ugly[0]=1;
+		int ind2=0,ind3=0,ind5=0; // 
+		for(int i=1;i<n;){
+			int res2=ugly[ind2]*2;
+			int res3=ugly[ind3]*3;
+			int res5=ugly[ind5]*5;
+			
+			int min=Math.min(res2, Math.min(res3, res5));// the min of the three is the next ugly number
+			
+			// it covers all the possibilities
+			if(min==res2){
+				ind2++; // try to * 2 for  next ugly number 
+			}else if(min==res3){
+				ind3++;
+			}else if(min==res5){
+				ind5++;
+			}
+			// 2*3==3*2
+			if(min==ugly[i-1]){
+				continue;// skip number
+			}else{
+				ugly[i++]=min;
+			}
+		}
+		return ugly[n-1];
+    }
+}
