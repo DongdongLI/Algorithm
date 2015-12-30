@@ -32,3 +32,5 @@ public class Solution {
         return dp[n];
     }
 }
+
+//2015/12/30: it has been a while. work it out but too slow.
