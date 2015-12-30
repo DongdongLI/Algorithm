@@ -44,3 +44,5 @@ public class Solution {
         return Math.max(robHelp(nums, 0, nums.length-2), robHelp(nums, 1, nums.length-1));
     }
 }
+
+// 2015/12/29: remember the idea, but could not implement
