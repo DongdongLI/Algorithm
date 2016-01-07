@@ -24,3 +24,5 @@ public class Solution {//second
 		return isSameTree(p.left, q.left)&&isSameTree(p.right,q.right);
     }
 }
+
+//2016/1/7: nail it.
