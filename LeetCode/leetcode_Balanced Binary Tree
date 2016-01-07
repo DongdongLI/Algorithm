@@ -43,3 +43,6 @@ public class Solution {
 		return Math.max(getHeight(root.left), getHeight(root.right))+1;
 	}
 }
+
+
+// 2016/1/7: Almost nail it. See you next time
