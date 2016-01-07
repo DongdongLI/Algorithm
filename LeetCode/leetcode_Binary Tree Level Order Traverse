@@ -72,3 +72,5 @@ public class Solution {//second
 		return result;
 	}
 }
+
+//2016/1/7: nail it. But a single Queue can solve the problem
