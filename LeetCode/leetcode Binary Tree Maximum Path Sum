@@ -54,3 +54,11 @@ public class Solution {
 		return toParent;
 	}
 }
+
+// 2016/1/8:nail it with a much shorter solution.
+public class Solution {
+    public int maxDepth(TreeNode root) {
+        if(root==null)return 0;
+        return 1+Math.max(maxDepth(root.left) ,maxDepth(root.right) );
+    }
+}
