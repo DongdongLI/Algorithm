@@ -57,3 +57,20 @@ class TreeNode {
 		val = x;
 	}
 }
+
+//2016/1/8: almost forgot. 
+// there is a very nice solution based on the feature of BST. 
+
+//for one particular node, all the node of its left sub-tree is smaller that all of the node of the right sub-tree.
+
+public class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        
+        if(root.val>p.val && root.val>q.val)
+            return lowestCommonAncestor(root.left,p,q);
+        else if(root.val<p.val && root.val<q.val)
+            return lowestCommonAncestor(root.right,p,q);
+        else
+            return root;
+    }
+}
