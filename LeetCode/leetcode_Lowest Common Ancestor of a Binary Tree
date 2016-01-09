@@ -76,9 +76,8 @@ public class Solution {
     	TreeNode left=lowestCommonAncestor(root.left, p, q);
     	TreeNode right=lowestCommonAncestor(root.right, p, q);
     	// cannot find the result in left, or right, then it is root
-    	if(left==null && right==null)
-    		return root;
-    	// if not left, should be right
-    	return left==null ?right:left;
+    	return left == null ? right : right == null ? left : root;
     }
 }
+
+//2016/1/9: Almost forgot. need refresh.
