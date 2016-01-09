@@ -81,3 +81,5 @@ public class Solution {
     	return 1+countNode(root.left)+countNode(root.right);
     }
 }
+
+// 2016/1/9: nail it with a trivial solution, need refreshment on binary search.
