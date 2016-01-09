@@ -1,0 +1,36 @@
+Given a complete binary tree, count the number of nodes.
+
+/*
+Definition of a complete binary tree from Wikipedia:
+In a complete binary tree every level, except possibly the last, is 
+completely filled, and all nodes in the last level are as far left as possible. 
+It can have between 1 and 2h nodes inclusive at the last level h.
+*/
+
+
+public class Solution {
+    public int countNodes(TreeNode root) {
+        int height=getHeight(root);
+        if(height==-1) // prevent null root
+            return 0;
+       
+        int rightSub=getHeight(root.right);
+        // check if the last node on the last row is in the left sub-tree or not
+        if(rightSub==height-1){// left subtree is complete
+            return (1<<height)+countNodes(root.right); // no need to explicitly add 1 for the node. it's contained in 2^h
+        }else{ // the right subtree is complete with height of h-1
+            return (1<<height-1)+countNodes(root.left);
+        }
+    }
+    public int getHeight(TreeNode node){
+        if(node==null)
+            return -1;
+        return getHeight(node.left)+1;
+    }
+}
+
+/*
+  The key point is to determine where is the last node of the last node.
+*/
+
+// 2016/1/9: totally forgot
