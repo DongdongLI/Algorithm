@@ -28,3 +28,5 @@ public class Solution {
 			pre(res,root.right);
 	}
 }
+
+//2016/1/9: nail it. long gone
