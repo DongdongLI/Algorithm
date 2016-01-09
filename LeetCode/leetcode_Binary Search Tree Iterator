@@ -57,3 +57,6 @@ public class BSTIterator {
  * BSTIterator i = new BSTIterator(root);
  * while (i.hasNext()) v[f()] = i.next();
  */
+
+// 2016/1/9: almost forgot.
+remember using stack
