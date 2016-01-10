@@ -1,0 +1,46 @@
+/*
+  Given preorder and inorder traversal of a tree, construct the binary tree.
+*/
+
+/*
+  Idea:
+    pre order:
+      ROOT [      left-subtree      ]   [     right-subtree      ]
+      
+    in order:
+      [   left-subtree    ] ROOT [right-subtree]
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        return help(preorder,inorder,0,0,inorder.length-1);
+    }
+    public TreeNode help(int[] preorder,int[] inorder, int preStart,int inStart, int inEnd){
+        if(preStart>preorder.length || inStart>inEnd)
+            return null;
+        
+        // get the root;
+        TreeNode root=new TreeNode(preorder[preStart]);
+        int rootIndex=0;
+        for(int i=inStart;i<=inEnd;i++){
+            if(inorder[i]==root.val){
+                rootIndex=i;
+                break;
+            }
+        }
+        root.left=help(preorder,inorder,preStart+1,inStart,rootIndex-1);
+        root.right=help(preorder,inorder,preStart+rootIndex-inStart+1,rootIndex+1,inEnd);
+        return root;
+    }
+}
+
+// 2016/1/10: almost forgot. now understand
