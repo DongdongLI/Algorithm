@@ -1,0 +1,49 @@
+/*
+  Given a non-empty array of integers, return the k most frequent elements.
+
+  For example,
+  Given [1,1,1,2,2,3] and k = 2, return [1,2].
+  
+  Note: 
+  You may assume k is always valid, 1 ≤ k ≤ number of unique elements.
+  Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+*/
+
+/*
+  Time complexity here basically indicates that we should not use any sorting algorithm
+  Somehow we can use the index of an array to sort each integers
+  
+  the index is the frequencies, while the value at that spot is the integer itself
+*/
+
+class Solution {
+    public List<Integer> topKFrequent(final int[] nums, final int k) {
+        final Map<Integer, Integer> map = new HashMap();
+        final List<Integer>[] frequencies = new List[nums.length+1]; // two integer could have same frequencies
+
+        for(int i=0;i<nums.length;i++){
+            if(map.containsKey(nums[i]) ){
+                map.put(nums[i], map.get(nums[i])+1);
+            }
+            else{
+                map.put(nums[i],1);
+            }
+        }
+        System.out.println(map);
+        for(final int n: map.keySet() ){
+            if(frequencies[map.get(n)] ==null )
+            	frequencies[map.get(n)] = new ArrayList();
+            frequencies[map.get(n)].add(n);
+        }
+
+        final List<Integer> res = new ArrayList();
+
+        for(int i=frequencies.length-1,j=0;i>=0 && res.size()<k;i--){
+            if(frequencies[i]==null)
+            	continue;
+            res.addAll(frequencies[i]);
+
+        }
+        return res;
+    }
+}
