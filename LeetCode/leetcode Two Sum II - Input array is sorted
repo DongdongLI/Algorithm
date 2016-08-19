@@ -11,6 +11,17 @@
 
 /*
   Two cursors moving towards each other from two ends. Each of them only moves in one direction, no way back.
+
+  Proof that it would work:
+    [][]: since there will always be exactly one solution, it would work.
+    [][][]: l start at index 0, r starts at index 2. Their sums are either too big or too small or just right, and each one of them leads
+          to unique results, which are the only three possible results of this case.
+    [i][][][j]: 
+          i+j==tar? done
+          i+j<tar [][i][][j]
+            back to [][][] case...
+          i+j>tar [i][][j][]
+            back to [][][] case...
 */
 
 public class Solution {
