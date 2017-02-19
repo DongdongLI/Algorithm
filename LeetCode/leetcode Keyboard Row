@@ -1,0 +1,70 @@
+/*
+  Given a List of words, return the words that can be typed using letters of alphabet on only one row's of American keyboard like the image below.
+
+  Example 1:
+  Input: ["Hello", "Alaska", "Dad", "Peace"]
+  Output: ["Alaska", "Dad"]
+  Note:
+  You may use one character in the keyboard more than once.
+  You may assume the input string will only contain letters of alphabet.
+*/
+
+public class Solution {
+    public String[] findWords(String[] words) {
+        
+        Map<Character, Integer> map = new HashMap<Character, Integer>();
+        map.put('a',2);
+        map.put('b',3);
+        map.put('c',3);
+        map.put('d',2);
+        map.put('e',1);
+        map.put('f',2);
+        map.put('g',2);
+        map.put('h',2);
+        map.put('i',1);
+        map.put('j',2);
+        map.put('k',2);
+        map.put('l',2);
+        map.put('m',3);
+        map.put('n',3);
+        map.put('o',1);
+        map.put('p',1);
+        map.put('q',1);
+        map.put('r',1);
+        map.put('s',2);
+        map.put('t',1);
+        map.put('u',1);
+        map.put('v',3);
+        map.put('w',1);
+        map.put('x',3);
+        map.put('y',1);
+        map.put('z',3);
+        
+        List<Integer> indexses = new ArrayList<Integer>();
+        for(int i=0;i<words.length;i++){
+            if(helper(words[i],map))
+                indexses.add(i);
+        }
+        
+        String[] res = new String[indexses.size()];
+        int j=0;
+        for(int i: indexses)
+            res[j++]=words[i];
+            
+        return res;
+            
+    }
+    
+    public boolean helper(String word, Map map){
+        int rowNum=0;
+
+        for(char c: word.toLowerCase().toCharArray() ){
+            int newRowNum = (int)map.get(c);
+            if(rowNum==0)
+                rowNum = newRowNum;
+            else if(rowNum!= newRowNum)
+                return false;
+        }
+        return true;
+    }
+}
