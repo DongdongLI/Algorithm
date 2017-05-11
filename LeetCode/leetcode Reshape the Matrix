@@ -1,0 +1,65 @@
+/*
+  In MATLAB, there is a very useful function called 'reshape', which can reshape a matrix into a new one with different size but keep its original data.
+
+  You're given a matrix represented by a two-dimensional array, and two positive integers r and c representing the row number and column number of the wanted reshaped matrix, respectively.
+
+  The reshaped matrix need to be filled with all the elements of the original matrix in the same row-traversing order as they were.
+
+  If the 'reshape' operation with given parameters is possible and legal, output the new reshaped matrix; Otherwise, output the original matrix.
+
+  Example 1:
+  Input: 
+  nums = 
+  [[1,2],
+   [3,4]]
+  r = 1, c = 4
+  Output: 
+  [[1,2,3,4]]
+  Explanation:
+  The row-traversing of nums is [1,2,3,4]. The new reshaped matrix is a 1 * 4 matrix, fill it row by row by using the previous list.
+  Example 2:
+  Input: 
+  nums = 
+  [[1,2],
+   [3,4]]
+  r = 2, c = 4
+  Output: 
+  [[1,2],
+   [3,4]]
+  Explanation:
+  There is no way to reshape a 2 * 2 matrix to a 2 * 4 matrix. So output the original matrix.
+*/
+
+/*
+    1. it is only legal only when m1*n1 == m2*n2
+    2. to make sure it runs fast, I should not use a temporary third array to store the data and read it again later.
+*/
+
+public class Solution {
+    public int[][] matrixReshape(int[][] nums, int r, int c) {
+        int rows = nums.length;
+        int columns = nums[0].length;
+        
+        if(rows*columns != r*c)
+            return nums;
+            
+        int[][] res = new int[r][c];
+        
+        // the variables used in the final result array to figure out what is the next available spot
+        int m=0;
+        int n=0;
+        
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<columns;j++){
+                // hit the end of one row, so move to the next row and start from the beginning
+                if(n == c){
+                    n=0;
+                    m++;
+                }
+                // put the data in and move to the next spot
+                res[m][n++] = nums[i][j];
+            }
+        }
+        return res;
+    }
+}
