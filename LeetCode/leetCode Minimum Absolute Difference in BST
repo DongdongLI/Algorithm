@@ -58,3 +58,32 @@ public class Solution {
         traverse(root.right, list);
     }
 }
+
+/*
+  For better performance, we can skip the traverse of the list of elements.
+  
+*/
+
+public class Solution {
+    int min = Integer.MAX_VALUE;
+    TreeNode preNode = null;
+    
+    public int getMinimumDifference(TreeNode root) {
+        traverse(root);
+        return min;
+    }
+    
+    public void traverse(TreeNode root){
+        if(root == null)
+            return;
+        
+        traverse(root.left);
+        
+        if(preNode != null)
+            min = Math.min(min, Math.abs(root.val - preNode.val));
+            
+        preNode = root;
+        
+        traverse(root.right);
+    }
+}
