@@ -1,0 +1,60 @@
+/*
+  Given a binary search tree with non-negative values, find the minimum absolute difference between values of any two nodes.
+
+  Example:
+
+  Input:
+
+     1
+      \
+       3
+      /
+     2
+
+  Output:
+  1
+
+  Explanation:
+  The minimum absolute difference is 1, which is the difference between 2 and 1 (or between 2 and 3).
+  
+*/
+
+/*
+  Trivial solution:
+  1. get all the elements of the tree and sort them from low to high
+     Easiest way to accomplish this step is to do the inorder traverse (left-middle-right)
+  2. traverse the list of elements and find out the smallest Absolute Distance.
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int getMinimumDifference(TreeNode root) {
+        List<Integer> nodes = new ArrayList<Integer>();
+        traverse(root, nodes);
+        
+        int min=nodes.get(1)-nodes.get(0);
+        
+        for(int i=1;i<nodes.size()-1;i++){
+            int temp = nodes.get(i+1) - nodes.get(i);
+            if(temp<min)
+                min=temp;
+        }
+        return min;
+    }
+    
+    public void traverse(TreeNode root, List<Integer> list){
+        if(root == null)
+            return;
+        traverse(root.left, list);
+        list.add(root.val);
+        traverse(root.right, list);
+    }
+}
