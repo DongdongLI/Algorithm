@@ -1,0 +1,90 @@
+/*
+  In the "100 game," two players take turns adding, to a running total, any integer from 1..10. The player who first causes the running total to reach or exceed 100 wins.
+
+  What if we change the game so that players cannot re-use integers?
+
+  For example, two players might take turns drawing from a common pool of numbers of 1..15 without replacement until they reach a total >= 100.
+
+  Given an integer maxChoosableInteger and another integer desiredTotal, determine if the first player to move can force a win, assuming both players play optimally.
+
+  You can always assume that maxChoosableInteger will not be larger than 20 and desiredTotal will not be larger than 300.
+
+  Example
+
+  Input:
+  maxChoosableInteger = 10
+  desiredTotal = 11
+
+  Output:
+  false
+
+  Explanation:
+  No matter which integer the first player choose, the first player will lose.
+  The first player can choose an integer from 1 up to 10.
+  If the first player choose 1, the second player can only choose integers from 2 up to 10.
+  The second player will win by choosing 10 and get a total = 11, which is >= desiredTotal.
+  Same with other integers chosen by the first player, the second player will always win.
+*/
+/*
+  Dynamic Programming
+  
+  can I win with the current options leads to
+    if I made any one of the available choices, can my opponents win?
+      if he can, I will lose
+      if he can't, I will win
+  
+*/
+public class Solution {
+    
+    Map<String, Boolean> states = new HashMap<String, Boolean>();
+    
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        int sum = (1+maxChoosableInteger)*maxChoosableInteger/2;
+        if(sum < desiredTotal ) // can never reach the result
+            return false;
+    
+        if(desiredTotal <= 0) // the game is finished when it starts
+            return true;
+    
+        boolean[] used = new boolean[maxChoosableInteger];
+        return dp(desiredTotal, used);
+    }
+    
+    public boolean dp(int leftOver, boolean[] used){
+        if(leftOver <= 0) // the game is already over
+            return false;
+        else {
+            String currentStatus = convertUsedArrayToString(used);
+            char[] usedChar = currentStatus.toCharArray();
+            
+            if(!states.containsKey(currentStatus)){ // don't know the outcome of the current situation
+                for(int i=0;i<usedChar.length;i++){
+                    if(usedChar[i] == '0'){ // for each available choices, choose it and see will the opponent win
+                        used[i] = true;
+                        if(!dp(leftOver-i-1, used)) { // means the other player lost if this player make this move
+                            states.put(currentStatus, true);
+                            used[i] = false;
+                            return true;
+                        }
+                        used[i] = false;
+                    }
+                }
+                // none of the choices can lead to victory, then it is not working out.
+                states.put(currentStatus, false);
+            }
+            return states.get(currentStatus);
+        }
+    }
+    
+    // use string to mark which number has been used
+    public String convertUsedArrayToString(boolean[] used){
+        StringBuilder sb = new StringBuilder();
+        for(boolean token: used){
+            if(token)
+                sb.append(1);
+            else
+                sb.append(0);
+        }
+        return sb.toString();
+    }
+}
