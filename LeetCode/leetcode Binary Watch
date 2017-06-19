@@ -1,0 +1,98 @@
+/*
+  A binary watch has 4 LEDs on the top which represent the hours (0-11), and the 6 LEDs on the bottom represent the minutes (0-59).
+
+  Each LED represents a zero or one, with the least significant bit on the right.
+
+
+  For example, the above binary watch reads "3:25".
+
+  Given a non-negative integer n which represents the number of LEDs that are currently on, return all possible times the watch could represent.
+
+  Example:
+
+  Input: n = 1
+  Return: ["1:00", "2:00", "4:00", "8:00", "0:01", "0:02", "0:04", "0:08", "0:16", "0:32"]
+  Note:
+  The order of output does not matter.
+  The hour must not contain a leading zero, for example "01:00" is not valid, it should be "1:00".
+  The minute must be consist of two digits and may contain a leading zero, for example "10:2" is not valid, it should be "10:02".
+*/
+/*
+  to build every single one of the possible result is far more complicated than listing all of them and start filtering them out.
+  
+  Plus, remember Integer.countBit()
+*/
+
+public class Solution {
+    public List<String> readBinaryWatch(int num) {
+        List<String> res = new ArrayList();
+        if(num<0||num>10)return res;
+        
+        for(int hour = 0;hour<=11;hour++){
+            for(int minute = 0;minute<=59;minute++){
+                // if(howManyOne(hour)+howManyOne(minute)==num ){
+                //     String resString = hour+":"+ ((minute<10)? ("0"+minute) : minute);
+                //     res.add(resString);
+                // }
+                if(Integer.bitCount(hour) + Integer.bitCount(minute) == num ){
+                    String resString = hour+":"+ ((minute<10)? ("0"+minute) : minute);
+                    res.add(resString);
+                }
+            }
+        }
+        return res;
+    }
+    
+    int howManyOne(int n) {
+        String binaryStr = getBinary(n);
+        int ones = 0;
+        for(int i=0;i<binaryStr.length();i++){
+            if(binaryStr.charAt(i) == '1')
+                ones++;
+        }
+        return ones;
+    }
+    
+    String getBinary(int n){
+        StringBuilder sb = new StringBuilder();
+        int res = n;
+        int leftOver = 0;
+        while(res!=0){
+            leftOver = n%2;
+            res = n/2;
+            sb.append(leftOver);
+        }
+        return sb.reverse().toString();
+    }
+}
+
+/*
+  I somehow made this easy problem into a medium one at first.
+*/
+
+public class Solution {
+    public List<String> readBinaryWatch(int num) {
+        List<String> res = new ArrayList();
+        if(num<0||num>10)return res;
+        
+        for(int numOfHour = 0;numOfHour<=4 && numOfHour<=num;numOfHour++){
+            int numOfMinute = num - numOfHour;
+            
+            
+        }
+    }
+    
+    void help(int available, int[] cur, int start) {
+            if(available == 0){
+                // one possibility
+                return;
+            }
+            if(available != 0 && start == cur.length-1)
+                return;
+            for(int i=start;i<cur.length;i++){
+                cur[i] = 1;
+                help(available-1, cur, start+1);
+                cur[i] = 0;
+            }
+    }
+}
