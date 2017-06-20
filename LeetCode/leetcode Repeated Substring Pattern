@@ -1,0 +1,90 @@
+/*
+  Given a non-empty string check if it can be constructed by taking a substring of it and appending multiple copies of the substring together. You may assume the given string consists of lowercase English letters only and its length will not exceed 10000.
+
+  Example 1:
+  Input: "abab"
+
+  Output: True
+
+  Explanation: It's the substring "ab" twice.
+  Example 2:
+  Input: "aba"
+
+  Output: False
+  Example 3:
+  Input: "abcabcabcabc"
+
+  Output: True
+
+  Explanation: It's the substring "abc" four times. (And the substring "abcabc" twice.)
+*/
+
+/*
+  Trivial solution that is slow as hell(won't pass).
+  
+  The key point is, other than detecting it, try building it.
+  
+  But you got this part "if(len%i==0){" my friend.
+*/
+public class Solution {
+    public boolean repeatedSubstringPattern(String s) {
+
+        int len = s.length();
+        
+        for(int i=len/2;i>=1;i--){
+            if(len%i==0){
+                String potentialPattern = s.substring(0, i);
+                StringBuilder sb= new StringBuilder();
+                for(int j=0;j<len/i;j++)
+                    sb.append(potentialPattern);
+                
+                if(s.equals(sb.toString() ))return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+public class Solution {
+    public boolean repeatedSubstringPattern(String s) {
+        String pattern;
+        int len = 0;
+        
+        if(s.length() == 1 ) return false;
+        
+        char[] token = s.toCharArray();
+        
+        for(int i=0;i<token.length-1;i++){
+            StringBuilder sb = new StringBuilder();
+            char startLetter = token[i];
+            sb.append(""+token[i]);
+            for(int j=i+1;j<token.length;j++){
+                if(token[j]!=startLetter)
+                    sb.append(""+token[j]);
+                else{
+                    if(s.length()%sb.length() != 0 ){// don't bother to try
+                        sb.append(""+token[j]);
+                        continue;
+                    }
+                    else{
+                        if(testSequence(s, sb.toString() ))
+                            return true;
+                        else{
+                            sb.append(""+token[j]);
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean testSequence(String ori, String pattern) {
+        if(ori.length()==0 )return true;
+        if(!ori.contains(pattern) || ori.indexOf(pattern)!=0)
+            return false;
+        return testSequence(ori.substring(ori.indexOf(pattern)+pattern.length() ), pattern );
+    }
+}
