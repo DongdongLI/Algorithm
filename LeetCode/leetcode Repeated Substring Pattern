@@ -31,11 +31,11 @@ public class Solution {
 
         int len = s.length();
         
-        for(int i=len/2;i>=1;i--){
+        for(int i=len/2;i>=1;i--){ // i is the length of the pattern, varies from 1 to half of the original string
             if(len%i==0){
                 String potentialPattern = s.substring(0, i);
                 StringBuilder sb= new StringBuilder();
-                for(int j=0;j<len/i;j++)
+                for(int j=0;j<len/i;j++) // try building the string with the potential pattern
                     sb.append(potentialPattern);
                 
                 if(s.equals(sb.toString() ))return true;
