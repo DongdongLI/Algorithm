@@ -1,0 +1,48 @@
+/*
+  Given a string, find the first non-repeating character in it and return it's index. If it doesn't exist, return -1.
+
+  Examples:
+
+  s = "leetcode"
+  return 0.
+
+  s = "loveleetcode",
+  return 2.
+  Note: You may assume the string contain only lowercase letters.
+*/
+
+/*
+  array access is pretty fast, plus we only have 26 letters. 
+  
+  set the original status -1 to mark a letter that hasn't shown before
+  
+  set the status to -2 to mark the letter as a dup.
+  
+  final round go find the first letter that shows up only once.
+*/
+
+public class Solution {
+    public int firstUniqChar(String s) {
+        int[] letters = new int[26];
+        
+        for(int i=0;i<letters.length;i++){
+            letters[i]=-1;
+        }
+        
+        char[] token = s.toCharArray();
+        
+        for(int i=0;i<token.length;i++ ){
+            if(letters[token[i]-'a'] == -1 )
+                letters[token[i]-'a'] = i;
+            else if(letters[token[i]-'a'] != -2)
+                letters[token[i]-'a'] = -2;
+        }
+        
+        for(int i=0;i<token.length;i++ ){
+            if(letters[token[i]-'a']>=0)
+                return i;
+        }
+        
+        return -1;
+    }
+}
