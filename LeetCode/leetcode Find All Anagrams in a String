@@ -1,0 +1,130 @@
+/*
+  Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
+
+  Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 20,100.
+
+  The order of output does not matter.
+
+  Example 1:
+
+  Input:
+  s: "cbaebabacd" p: "abc"
+
+  Output:
+  [0, 6]
+
+  Explanation:
+  The substring with start index = 0 is "cba", which is an anagram of "abc".
+  The substring with start index = 6 is "bac", which is an anagram of "abc".
+  Example 2:
+
+  Input:
+  s: "abab" p: "ab"
+
+  Output:
+  [0, 1, 2]
+
+  Explanation:
+  The substring with start index = 0 is "ab", which is an anagram of "ab".
+  The substring with start index = 1 is "ba", which is an anagram of "ab".
+  The substring with start index = 2 is "ab", which is an anagram of "ab".
+*/
+
+/*
+  Dumb solution: doesn't work
+*/
+
+public class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        
+        List<Integer> res = new ArrayList<Integer>();
+        
+        if(s==null||p==null||s.length()==0 ||p.length()==0 )
+            return res;
+        // match, when there's one match to the letter in p, decrease. If it is 0, then we found a anagram
+        int match = p.length();
+        int size = p.length();
+        int left=0,right=0;
+        
+        int[] dic = new int[26];
+        // use p to build the first dictionary. 
+        for(int i=0;i<size;i++){
+            dic[p.charAt(i)-'a']++;
+        }
+        
+        // left and right both start at 0
+        while(right<s.length() ){
+            // if a letter in s also showed up in p (because the count of that character is larger than 1!), that means we hit one letter
+            if(dic[s.charAt(right) - 'a' ] >=1 )
+                match--;
+        
+            dic[s.charAt(right) - 'a' ]--; // we will decrease the count to all the letters no matter what, 
+            //being minus shows it was not there
+            right++;
+            
+            // one anagram
+            if(match == 0)
+                res.add(left);
+            
+            // window is full. 
+            // so left needs to move right
+            if(right -left == size){
+                // letter at 'left' spot exist in dictionary, but since left is moving on, we need to give that match back
+                if(dic[s.charAt(left)-'a'] >= 0)
+                    match++;
+                
+                dic[s.charAt(left) - 'a' ]++;
+                left++;
+            }
+        }
+        
+        return res;
+    }
+}
+
+//-------------------
+
+public class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        int lenS= s.length();
+        int lenP= p.length();
+        
+        List<Integer> res = new ArrayList();
+        
+        for(int i=0;i<=lenS - lenP;i++){
+            if(isAnagrams(s.substring(i, i+lenP), p ) )
+                res.add(i);
+                
+        }
+        
+        return res;
+    }
+    
+    public boolean isAnagrams(String s, String p){
+        if(s.equals(p) )return true;
+        
+        Map<Character, Integer> ss = new HashMap();
+        
+        char[] sChar = s.toCharArray();
+        char[] pChar = p.toCharArray();
+        
+        for(char c: sChar){
+            if(!ss.containsKey(c) )
+                ss.put(c, 1);
+            else
+                ss.put(c, ss.get(c)+1);
+        }
+        
+        for(char c: pChar){
+            if(!ss.containsKey(c) )
+                return false;
+            int count = ss.get(c);
+            
+            if(count == 0)return false;
+            
+            ss.put(c, count - 1);
+        }
+        
+        return true;
+    }
+}
