@@ -1,0 +1,49 @@
+/*
+  Given a string and an integer k, you need to reverse the first k characters for every 2k characters counting from the start of the string. If there are less than k characters left, reverse all of them. If there are less than 2k but greater than or equal to k characters, then reverse the first k characters and left the other as original.
+  Example:
+  Input: s = "abcdefg", k = 2
+  Output: "bacdfeg"
+  Restrictions:
+  The string consists of lower English letters only.
+  Length of the given string and k will in the range [1, 10000]
+*/
+
+/*
+  Two pointers
+*/
+
+public class Solution {
+    public String reverseStr(String s, int k) {
+        if(s == null||s.length()==0)  
+            return s;
+        
+        char[] arr = s.toCharArray();
+        for(int i=0;i<arr.length;i++){
+            int j=i;
+            if(j+k-1<arr.length){
+                reverse(arr,j, j+k-1);
+                i=j+2*k -1; // there's an i++ at the end of the loop!
+            }
+            else if(arr.length-1 - j +1 < k ){
+                reverse(arr, j, arr.length-1);
+                break;
+            }
+            
+        }
+        
+        return String.valueOf(arr);
+    }
+    
+    public void reverse(char[] arr, int l, int r) {
+        int i=l;
+        int j=r;
+        while(i<j){
+            char t = arr[i];
+            arr[i] = arr[j];
+            arr[j] = t;
+            
+            i++;
+            j--;
+        }
+    }
+}
