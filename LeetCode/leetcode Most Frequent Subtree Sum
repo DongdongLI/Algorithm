@@ -1,0 +1,74 @@
+/*
+  Given the root of a tree, you are asked to find the most frequent subtree sum. The subtree sum of a node is defined as the sum of all the node values formed by the subtree rooted at that node (including the node itself). So what is the most frequent subtree sum value? If there is a tie, return all the values with the highest frequency in any order.
+
+  Examples 1
+  Input:
+
+    5
+   /  \
+  2   -3
+  return [2, -3, 4], since all the values happen only once, return all of them in any order.
+  Examples 2
+  Input:
+
+    5
+   /  \
+  2   -5
+  return [2], since 2 happens twice, however -5 only occur once.
+  Note: You may assume the sum of values in any subtree is in the range of 32-bit signed integer.
+*/
+
+/*
+  if we calculate the subSum of the root, and the subSum of the left child (if any), we will notice we have calculated the subsum
+  of many nodes twice.
+  
+  That being said, we can store the subsum every time after we are done with one node.
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    Map<Integer, Integer> map = new HashMap();
+    public int[] findFrequentTreeSum(TreeNode root) {
+        getSum(root);
+        int max = Integer.MIN_VALUE;
+        
+        List<Integer> resList = new ArrayList();
+        
+        for(Integer i: map.keySet() ){
+            if(map.get(i)>max){
+                resList.clear();
+                max = map.get(i);
+                resList.add(i);
+            }
+            else if(map.get(i)==max)
+                resList.add(i);
+        }
+        
+        int[] res = new int[resList.size()];
+        for(int i=0;i<resList.size();i++){
+            res[i] = resList.get(i);
+        }
+        
+        return res;
+    }
+    
+    public int getSum(TreeNode node){
+        if(node == null)
+            return 0;
+        
+        int subSum = node.val+getSum(node.left)+getSum(node.right);
+        if(!map.containsKey(subSum) )
+            map.put(subSum, 0);
+        map.put(subSum, map.get(subSum)+1);
+        
+        return subSum;
+    }
+}
