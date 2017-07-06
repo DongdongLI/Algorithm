@@ -1,0 +1,77 @@
+/*
+  Given two non-negative integers num1 and num2 represented as string, return the sum of num1 and num2.
+
+  Note:
+
+  The length of both num1 and num2 is < 5100.
+  Both num1 and num2 contains only digits 0-9.
+  Both num1 and num2 does not contain any leading zero.
+  You must not use any built-in BigInteger library or convert the inputs to integer directly.
+*/
+
+/*
+  Reverse them both, so it is easier to line them up digit by digit.
+  
+  Commonly, the for loop will end when the shorter number is finished, then we need to take the carry over and keep going 
+  with the longer number.
+  
+  in the end, if the first digit of the char array is not number, set it to '0' and get rid of it when converting it to the final 
+  String result.
+*/
+
+public class Solution {
+    public String addStrings(String num1, String num2) {
+        String n1 = new StringBuilder(num1).reverse().toString();
+        String n2 = new StringBuilder(num2).reverse().toString();
+        
+        char[] n1arr = n1.toCharArray();
+        char[] n2arr = n2.toCharArray();
+        char[] resArr = new char[Math.max(n1arr.length, n2arr.length)+1];
+        
+        int i=0;
+        int forNext=0;
+        for(;i<n1arr.length && i<n2arr.length;i++){
+            int sum = n1arr[i]-'0'+n2arr[i]-'0';
+            if(resArr[i]>='0' && resArr[i]<='9')
+                sum+= (resArr[i]-'0');
+            
+            int leftOver = (sum >= 10 ? sum-10 : sum);
+            forNext = (sum>=10 ? sum/10:0);
+            
+            resArr[i] = (char)(leftOver + '0');
+            resArr[i+1] = (char)(forNext + '0');
+            
+        }
+        if(i < n1arr.length ){
+            while(i<n1arr.length){
+                int sum = n1arr[i] -'0'+forNext;
+                int leftOver = (sum >= 10 ? sum-10 : sum);
+                forNext = (sum>=10 ? sum/10:0);
+
+                resArr[i] = (char)(leftOver + '0');
+                resArr[i+1] = (char)(forNext + '0');
+                i++;
+            }
+        }
+        else if(i<n2arr.length){
+            while(i<n2arr.length){
+                int sum = n2arr[i] -'0'+forNext;
+                int leftOver = (sum >= 10 ? sum-10 : sum);
+                forNext = (sum>=10 ? sum/10:0);
+
+                resArr[i] = (char)(leftOver + '0');
+                resArr[i+1] = (char)(forNext + '0');
+                i++;
+            }
+        }
+            
+        if(resArr[resArr.length -1]<'0' || resArr[resArr.length -1]>'9')
+            resArr[resArr.length -1] = '0';
+        
+        String resReverse = String.valueOf(resArr);
+        return 
+                resReverse.charAt(resReverse.length()-1 )=='0'?
+            (new StringBuilder(resReverse.substring(0,resReverse.length()-1)).reverse().toString()):
+            (new StringBuilder(resReverse).reverse().toString());
+    }
+}
