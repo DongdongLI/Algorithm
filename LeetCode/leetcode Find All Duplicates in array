@@ -1,0 +1,44 @@
+/*
+  Given an array of integers, 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+
+  Find all the elements that appear twice in this array.
+
+  Could you do it without extra space and in O(n) runtime?
+
+  Example:
+  Input:
+  [4,3,2,7,8,2,3,1]
+
+  Output:
+  [2,3]
+
+*/
+
+/*
+  A element of the array should belong to index val-1 (since 1<=a[i]<=n)
+  
+  so we make the number in that spot negative to mark the occurance of the number.
+*/
+
+public class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> res = new ArrayList();
+        
+        if(nums == null || nums.length ==0)
+            return res;
+        
+        for(int i=0;i<nums.length;i++){
+            int element = Math.abs(nums[i]);
+            int newIndex = element-1;
+            
+            if(nums[newIndex]<0){
+                res.add(element);
+                continue;
+            }
+            
+            nums[newIndex] = -nums[newIndex];
+        }
+        
+        return res;
+    }
+}
