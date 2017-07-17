@@ -1,0 +1,60 @@
+/*
+  Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+  Example:
+  Given a binary tree 
+            1
+           / \
+          2   3
+         / \     
+        4   5    
+  Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].
+*/
+
+/*
+  the length of the longest path through one node is the sum of height of its left sub-tree and right sub-tree
+  
+  but for one tree, the longest path may not be going through root node.
+  
+  so basically we need to find the longest path of every single sub-tree
+    basically comparing the path going through root and the max of left sub and right sub
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int diameterOfBinaryTree(TreeNode root) {
+        if(root==null)
+            return 0;
+        
+        return helper(root);
+        
+    }
+    
+    public int helper(TreeNode root){
+        if(root==null)return 0;
+        return Math.max(longestPathThroughHere(root), 
+                    Math.max(helper(root.left), helper(root.right)));
+    }
+    
+    public int longestPathThroughHere(TreeNode node){
+        if(node==null)
+            return 0;
+        
+        return depthOfTree(node.left)+depthOfTree(node.right);
+    }
+    
+    public int depthOfTree(TreeNode root) {
+        if(root == null)
+            return 0;
+        
+        return Math.max(1+depthOfTree(root.left) , 1+depthOfTree(root.right));
+    }
+}
