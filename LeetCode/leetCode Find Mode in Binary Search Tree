@@ -1,0 +1,78 @@
+/*
+  Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST.
+
+  Assume a BST is defined as follows:
+
+  The left subtree of a node contains only nodes with keys less than or equal to the node's key.
+  The right subtree of a node contains only nodes with keys greater than or equal to the node's key.
+  Both the left and right subtrees must also be binary search trees.
+  For example:
+  Given BST [1,null,2,2],
+     1
+      \
+       2
+      /
+     2
+  return [2].
+
+  Note: If a tree has more than one mode, you can return them in any order.
+
+  Follow up: Could you do that without using any extra space? (Assume that the implicit stack space incurred due to recursion does not count)
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    public int[] findMode(TreeNode root) {
+        
+        if(root == null)
+            return new int[0];
+        
+        inorder(root);
+        
+        PriorityQueue<Map.Entry<Integer, Integer>> queue = new PriorityQueue(map.size(), new Comparator<Map.Entry<Integer, Integer>>(){
+            public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2){
+                return o2.getValue()-o1.getValue();
+            } 
+        });
+        
+        for(Map.Entry<Integer, Integer> entry: map.entrySet())
+            queue.offer(entry);
+        
+        Map.Entry<Integer, Integer> entry = queue.poll();
+        List<Integer> resList = new ArrayList<Integer>();
+        
+        resList.add(entry.getKey());
+        int times = entry.getValue();
+        
+        while(!queue.isEmpty()){
+            entry = queue.poll();
+            if(entry.getValue() == times)
+                resList.add(entry.getKey());
+            else
+                break;
+        }
+        
+        int[] res = resList.stream().mapToInt(i->i).toArray();
+        
+        return res;
+    }
+    
+    public void inorder(TreeNode node) {
+        if(node==null) return;
+        inorder(node.left);
+        if(map.containsKey(node.val))
+            map.put(node.val, map.get(node.val)+1);
+        else
+            map.put(node.val, 1);
+        inorder(node.right);
+    }
+}
