@@ -1,0 +1,72 @@
+/*
+  Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.
+
+  Example 1:
+  Input:
+      3
+     / \
+    9  20
+      /  \
+     15   7
+  Output: [3, 14.5, 11]
+  Explanation:
+  The average value of nodes on level 0 is 3,  on level 1 is 14.5, and on level 2 is 11. Hence return [3, 14.5, 11].
+  Note:
+  The range of node's value is in the range of 32-bit signed integer.
+
+*/
+
+/*
+  Two queues, one is for current level, the other is for the next.
+  
+  while polling one node from the current level, add its val to the level sum, also keep track of how many nodes are there in this level.
+  add its children into the next level.
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> res = new ArrayList<Double>();
+        if(root == null)
+            return res;
+        
+        Queue<TreeNode> cur = new LinkedList<TreeNode>();
+        Queue<TreeNode> next = new LinkedList<TreeNode>();
+        
+        cur.offer(root);
+        long levelSum = 0;
+        long levelNodeCount = 0;
+        while(true){
+            if(!cur.isEmpty()){
+                TreeNode node = cur.poll();
+
+                levelSum += node.val;
+                levelNodeCount++;
+
+                if(node.left!=null)next.offer(node.left);
+                if(node.right!=null)next.offer(node.right);
+            }
+            else{
+                res.add(levelSum*1.0/levelNodeCount);
+
+                levelSum = 0;
+                levelNodeCount = 0;
+
+                if(next.isEmpty())break;
+
+                cur = new LinkedList(next);
+                next.clear();
+            }
+        }
+        
+        return res;
+    }
+}
