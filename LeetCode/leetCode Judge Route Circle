@@ -1,0 +1,39 @@
+/*
+  Initially, there is a Robot at position (0, 0). Given a sequence of its moves, judge if this robot makes a circle, which means it moves back to the original place.
+
+  The move sequence is represented by a string. And each move is represent by a character. The valid robot moves are R (Right), L (Left), U (Up) and D (down). The output should be true or false representing whether the robot makes a circle.
+
+  Example 1:
+  Input: "UD"
+  Output: true
+  Example 2:
+  Input: "LL"
+  Output: false
+*/
+
+/*
+  In order to get back to the original spot, the robot need to move right for the same distance as it moves left, same as up and down
+*/
+
+class Solution {
+    public boolean judgeCircle(String moves) {
+        char[] tokens = moves.toCharArray();
+        int uCount = 0;
+        int dCount = 0;
+        int lCount = 0;
+        int rCount = 0;
+        
+        for(char c: tokens){
+            if(c=='U')
+                uCount++;
+            else if(c=='D')
+                dCount++;
+            else if(c=='L')
+                lCount++;
+            else
+                rCount++;
+        }
+        
+        return rCount==lCount && uCount==dCount;
+    }
+}
