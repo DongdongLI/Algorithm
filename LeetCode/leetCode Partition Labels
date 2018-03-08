@@ -1,0 +1,50 @@
+/*
+  A string S of lowercase letters is given. We want to partition this string into as many parts as possible so that each letter appears in at most one part, and return a list of integers representing the size of these parts.
+
+  Example 1:
+  Input: S = "ababcbacadefegdehijhklij"
+  Output: [9,7,8]
+  Explanation:
+  The partition is "ababcbaca", "defegde", "hijhklij".
+  This is a partition so that each letter appears in at most one part.
+  A partition like "ababcbacadefegde", "hijhklij" is incorrect, because it splits S into less parts.
+  Note:
+
+  S will have length in range [1, 500].
+  S will consist of lowercase letters ('a' to 'z') only.
+*/
+
+/*
+  first pass:
+  Figure out the index of the apprearance of each letter,
+  
+  second pass:
+  cut the string when the index gets to the spot of the last appearance of that letter.
+*/
+
+class Solution {
+    public List<Integer> partitionLabels(String S) {
+        int[] lastInd = new int[26];
+        
+        char[] charArr = S.toCharArray();
+        
+        for(int i=0;i<charArr.length;i++) {
+            lastInd[charArr[i]-'a'] = i;
+        }
+        
+        List<Integer> result = new ArrayList<>();
+        
+        int last = 0;
+        int start = 0;
+        
+        for(int i=0;i<charArr.length;i++){
+            last = Math.max(last, lastInd[charArr[i]-'a']);
+            if(last == i){
+                result.add(last-start+1);
+                start = last+1;
+                last = 0;
+            }
+        }
+        return result;
+    }
+}
