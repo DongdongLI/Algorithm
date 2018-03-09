@@ -1,0 +1,67 @@
+/*
+  S and T are strings composed of lowercase letters. In S, no letter occurs more than once.
+
+  S was sorted in some custom order previously. We want to permute the characters of T so that they match the order that S was sorted. More specifically, if x occurs before y in S, then x should occur before y in the returned string.
+
+  Return any permutation of T (as a string) that satisfies this property.
+
+  Example :
+  Input: 
+  S = "cba"
+  T = "abcd"
+  Output: "cbad"
+  Explanation: 
+  "a", "b", "c" appear in S, so the order of "a", "b", "c" should be "c", "b", and "a". 
+  Since "d" does not appear in S, it can be at any position in T. "dcba", "cdba", "cbda" are also valid outputs.
+
+
+  Note:
+
+  S has length at most 26, and no character is repeated in S.
+  T has length at most 200.
+  S and T consist of lowercase letters only.
+*/
+
+/*
+  Going through the second string, 
+  if a character appears in S
+    Keep it in an array so we know how many times it appeared
+  else
+    put it in "leftOver" since its order doesn't really matter
+    
+  re-organize S, remove all the letters that does not appear in T
+  
+  
+*/
+
+class Solution {
+    public String customSortString(String S, String T) {
+        
+        if(T == null || T.length()==0)return "";
+        
+        Set<Character> sSet = new HashSet<>();
+        for(int i=0;i<S.length();i++){
+            sSet.add(S.charAt(i));
+        }
+        
+        int[] letters = new int[26];
+               
+        StringBuilder leftOver = new StringBuilder();
+        for(int i=0;i<T.length();i++){
+            if(!sSet.contains(T.charAt(i)))
+                leftOver.append(T.charAt(i));
+            else
+                letters[T.charAt(i)-'a']+=1;
+        }
+        
+        StringBuilder sleftOver = new StringBuilder();
+        for(int i=0;i<S.length();i++){
+            while(letters[S.charAt(i)-'a']>0){
+                sleftOver.append(S.charAt(i));
+                letters[S.charAt(i)-'a']--;
+            }
+        }
+        
+        return leftOver.toString()+sleftOver.toString();
+    }
+}
