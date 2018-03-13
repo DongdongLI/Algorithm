@@ -41,3 +41,27 @@ class Solution {
         return res;
     }
 }
+
+// Method 2
+/*
+  Stack is used to store the indexs in order,
+  
+  when a new temperature, it will check the stack from the top and find any temperature that is lower 
+  then current temperature (answer found for those ones)
+*/
+
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int[] res = new int[temperatures.length];
+        
+        Stack<Integer> stack = new Stack();
+        for(int i=0;i<temperatures.length;i++){
+            while(!stack.isEmpty() && temperatures[stack.peek()]<temperatures[i]){
+                int index = stack.pop();
+                res[index] = i - index;
+            }
+            stack.push(i);
+        }
+        return res;
+    }
+}
