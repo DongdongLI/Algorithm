@@ -1,0 +1,43 @@
+/*
+  Given a list of daily temperatures, produce a list that, for each day in the input, tells you how many days you would have to wait until a warmer temperature. If there is no future day for which this is possible, put 0 instead.
+
+  For example, given the list temperatures = [73, 74, 75, 71, 69, 72, 76, 73], your output should be [1, 1, 4, 2, 1, 1, 0, 0].
+
+  Note: The length of temperatures will be in the range [1, 30000]. Each temperature will be an integer in the range [30, 100].
+*/
+
+/*
+  working backward:
+  The last never has a chance to get warmer, so zero
+  if a day is warmer than its previous day, assign 0 to it
+  else, have another cursor moving till the end of the array to find its next warmer day
+*/
+
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int[] res = new int[temperatures.length];
+        
+        // that's always the case..
+        res[res.length-1]=0;
+        for(int i=res.length-2;i>=0;i--) {
+            if(temperatures[i]<temperatures[i+1])
+                res[i] = 1;
+            else {
+                int temp = 0;
+                int j=i+1;
+                while(j<temperatures.length && temperatures[j]<=temperatures[i])
+                    j++;
+                
+                else
+                    res[i] = res[j]+1;//Math.min(temp, j-i);*/
+                
+                if(j==temperatures.length)
+                    res[i] = 0;
+                else
+                    res[i] = j-i;//res[j]+1+(j-i);
+            }
+        }
+        
+        return res;
+    }
+}
