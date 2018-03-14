@@ -1,0 +1,114 @@
+/*
+  TinyURL is a URL shortening service where you enter a URL such as https://leetcode.com/problems/design-tinyurl and it returns a short URL such as http://tinyurl.com/4e9iAk.
+
+  Design the encode and decode methods for the TinyURL service. There is no restriction on how your encode/decode algorithm should work. You just need to ensure that a URL can be encoded to a tiny URL and the tiny URL can be decoded to the original URL.
+*/
+
+/*
+  Method 1: As simple as to create some kind of mapping
+*/
+
+public class Codec {
+
+    Integer counter = 1;
+    Map<Integer, String> map = new HashMap();
+    
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        map.put(counter, longUrl);
+        return "http://tinyurl.com/"+counter++;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        return map.get(Integer.valueOf(shortUrl.substring(shortUrl.indexOf("com")+4, shortUrl.length())));
+    }
+}
+
+/*
+Method 2:
+  We need to maintain the length of the shortURL
+*/
+public class Codec {
+
+    Integer counter = 1;
+    Map<String, String> map = new HashMap();
+    String dic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+    
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        String shortUrl = "http://tinyurl.com/"+encrypt(longUrl);
+        map.put(shortUrl, longUrl);
+        return shortUrl;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        return map.get(shortUrl);
+    }
+    
+    public String encrypt(String input){
+        int c = counter++;
+        StringBuilder sb = new StringBuilder();
+        // use the counter only to determine the characters, and put in the map.
+        while(c!=0){
+            sb.append(dic.charAt(c%dic.length()));
+            c--;
+        }
+        return sb.toString();
+    }
+}
+
+/*
+  Use hashCode  (String.hashCode())
+*/
+public class Codec {
+
+    Map<Integer,String> map = new HashMap();
+    
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        Integer hashCode = longUrl.hashCode();
+        map.put(hashCode, longUrl);
+        return "http://tinyurl.com/"+hashCode;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        return map.get(Integer.parseInt(shortUrl.substring(shortUrl.indexOf("com")+4,shortUrl.length())));
+    }
+}
+
+/*
+  My favorite:
+  Fix length
+  Random number to determine which character in the dic it is going to use
+*/
+public class Codec {
+
+    String dic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+    Map<String,String> map = new HashMap();
+    Random rand = new Random();
+    
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        String encr = encrypt(longUrl);
+        map.put(encr, longUrl);
+        return "http://tinyurl.com/"+encr;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        return map.get(shortUrl.substring(shortUrl.indexOf("com")+4, shortUrl.length()));
+    }
+    
+    public String encrypt(String input){
+        StringBuilder sb = new StringBuilder();
+        // length of 8
+        for(int i=0;i<8;i++){
+            int t = rand.nextInt(dic.length());// find the char
+            sb.append(dic.charAt(t));
+        }
+        return sb.toString();
+    }
+}
