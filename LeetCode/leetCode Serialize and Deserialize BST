@@ -1,0 +1,95 @@
+/*
+  Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+
+  Design an algorithm to serialize and deserialize a binary search tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary search tree can be serialized to a string and this string can be deserialized to the original tree structure.
+*/
+
+/*
+  Preorder: root, left1, left2, left3,...|...,right1,right2,right3...
+  Another feature of BST is: left < root < right
+  
+  Iterative preorder the tree using stack. 
+  
+  push the root
+  while(not empty){
+    pop one
+    get the value
+    push the left
+    push the right
+  }
+  
+  the interesting part of rebuild
+  
+  get the queue contains of all the node,
+  
+  get the first will be the root
+  
+  split the rest to the left sub-tree queue and right sub-stree queue
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root == null)return "";
+        StringBuilder sb = new StringBuilder();
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        
+        while(!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            sb.append(node.val+",");
+            if(node.left!=null)stack.push(node.left);
+            if(node.right!=null)stack.push(node.right);
+        }
+        
+        sb.deleteCharAt(sb.length()-1);
+        return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if(data.equals(""))return null;
+        
+        Queue<Integer> queue = new LinkedList<>();
+        String[] dataArr = data.split(",");
+        for(String str: dataArr){
+            queue.offer(Integer.parseInt(str));
+        }
+        
+        return getNode(queue);
+    }
+    
+    public TreeNode getNode(Queue<Integer> queue) {
+        if(queue.isEmpty())return null;
+        
+        Integer rootVal = queue.poll();
+        Queue<Integer> leftQueue = new LinkedList<>();
+        Queue<Integer> rightQueue = new LinkedList<>();
+        while(!queue.isEmpty()) {
+            if(queue.peek() < rootVal)
+                leftQueue.offer(queue.poll());
+            else
+                rightQueue.offer(queue.poll());
+        }
+        
+        TreeNode root = new TreeNode(rootVal);
+        root.left = getNode(leftQueue);
+        root.right = getNode(rightQueue);
+        
+        return root;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));
