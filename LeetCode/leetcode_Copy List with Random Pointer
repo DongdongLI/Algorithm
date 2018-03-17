@@ -61,3 +61,114 @@ public class Solution {
     	return newList;
     }
 }
+
+/*
+    Method 2:
+    
+    Go through the original map, creating new nodes one by one, put them into the map <oldNode, newNode>
+    
+    another round,
+    newNode.next is "the corresponding new node mapped to the old node which is the next"
+    
+    map.get(n).next = map.get(n.next);
+*/
+public class Solution {
+    public RandomListNode copyRandomList(RandomListNode head) {
+        // intuitive solution
+        
+        if(head == null)return head;
+        
+        Map<RandomListNode, RandomListNode> map = new HashMap();
+        RandomListNode n = head;
+        while(n!=null){
+            map.put(n, new RandomListNode(n.label));
+            n=n.next;
+        }
+        
+        n = head;
+        while(n!=null){
+            map.get(n).next = map.get(n.next);
+            map.get(n).random = map.get(n.random);
+            n = n.next;
+        }
+        
+        return map.get(head);
+    }
+}
+
+/*
+    Method 3;
+    
+    step 1: copy all nodes
+    
+    old->copy->old->copy...
+    
+    step 2: add random link
+    for each old node, find its random link node, then node after that is the one we want!
+    
+    node.next.random        =     node.random.next;
+    copy 's random value    is     the oringinal's random's copy
+    
+    step 3: seperate 2 list, restore 
+    find the original's next node
+    
+    next = node.next.next;
+    
+    find the copy
+    copy = node.next;
+    
+    link it to the dummy
+    copyItr.next=copy;
+    copyItr = copyItr.next;
+    
+    // restore the original
+    node.next = next
+*/
+
+public class Solution {
+    public RandomListNode copyRandomList(RandomListNode head) {
+        if(head == null)return head;
+     
+        RandomListNode node = head;
+        RandomListNode next;
+        
+        while(node != null){
+            next = node.next;
+            RandomListNode copy = new RandomListNode(node.label);
+            
+            node.next = copy;
+            copy.next = next;
+            
+            node=node.next.next;
+        }
+        
+        node = head;
+        while(node != null){
+            if(node.random != null){
+        //                node.random.next// put .next behind it means that is a copy cat
+                node.next.random = node.random.next;
+            }
+            node = node.next.next;
+        }
+        
+        node = head;
+        RandomListNode dummyHead = new RandomListNode(99);
+        
+        
+        RandomListNode copyNode;
+        RandomListNode copyItr = dummyHead;
+            
+        while(node != null){
+            next = node.next.next;
+            // find the copy node
+            copyNode = node.next;
+            copyItr.next = copyNode;
+            copyItr = copyItr.next;
+            
+            // restore the original
+            node.next = next;
+            node = node.next;
+        }
+        return dummyHead.next;
+    }
+}
