@@ -49,3 +49,54 @@ class MinStack {
 	    	else return -1;
 	    }
 }
+
+/*
+	Method 2: only one stack
+	keep the latest min in the stack
+	
+	every time pushing x into the stack
+	if(min>=x){
+		stack.push(min);
+		min = x;
+	}
+	push(x)
+	
+	every time pop() something
+	if(min == stack.pop())min = stack.pop();
+	
+	pop it once for the top element that supposed to be popped, if it is also the latest min, means we should pop the one below it
+	to get latest min
+*/
+
+class MinStack {
+
+    Stack<Integer> stack = new Stack<>();;
+    int min = Integer.MAX_VALUE;;
+    
+    /** initialize your data structure here. */
+    public MinStack() {
+    }
+    
+    public void push(int x) {
+        if(min >= x){
+            stack.push(min);
+            min = x;
+        }
+            
+        stack.push(x);
+    }
+    
+    public void pop() {
+        if(stack.pop() == min)
+            min = stack.pop();
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int getMin() {
+        return min;
+    }
+}
+
