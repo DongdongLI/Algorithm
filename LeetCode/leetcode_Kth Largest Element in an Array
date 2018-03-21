@@ -55,3 +55,27 @@ public class Solution {
 		return i+1;
 	}
 }
+
+/*
+	Use priority queue: need to pass in the comparator because by default the smallest will on the top
+*/
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> queue = new PriorityQueue(new Comparator<Integer>(){
+            @Override
+            public int compare(Integer n1, Integer n2){
+                return -(n1-n2);
+            }
+        });
+        
+        for(int num:nums)
+            queue.offer(num);
+        
+        int i=0;
+        while(i<k-1){
+            queue.poll();
+            i++;
+        }
+        return queue.poll();
+    }
+}
