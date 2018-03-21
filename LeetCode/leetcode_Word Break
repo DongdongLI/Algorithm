@@ -83,3 +83,29 @@ public class Solution {
     }
     
 }
+/*
+    Dynamic programming: dp[i]: can the sub-string from 0 to i be splited into words from the dictionary?
+*/
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        
+        // dp[i]: from 0 to i index, can it be split into words in dic?
+        boolean[] dp = new boolean[s.length()+1];
+        dp[0] = true;
+        
+        for(int i=1;i<=s.length();i++){
+            for(String str: wordDict){
+                if(str.length()<=i){
+                    if(dp[i-str.length()] == true){
+                        if(s.substring(i-str.length(),i).equals(str)){
+                            dp[i] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return dp[s.length()];
+    }
+    
+}
