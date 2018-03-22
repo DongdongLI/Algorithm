@@ -73,7 +73,7 @@ public class Solution {
                         unit.add(num[high]);
                         
                         res.add(unit);
-                        
+                        // the reason to move both is, if we just move 1, the result will not be 0 for sure.
                         low++;
                         high--;
                         // this two while loops can only be put here
