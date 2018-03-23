@@ -49,20 +49,22 @@ public class Solution {
     2. If let it goes down it self, the right path is among the longest path.
 */
 
-public class Solution {
+class Solution {
     public List<Integer> rightSideView(TreeNode root) {
-        List<Integer> res=new LinkedList<Integer>();
-        goDeeper(0, res, root);
+        List<Integer> res = new ArrayList<>();
+        if(root == null)return res;
+        helper(root, 0, res);
         return res;
     }
-    public void goDeeper(int depth, List<Integer> result,TreeNode node){
-    	if(node==null)
-    		return;
-    	if(result.size()==depth){ // for example, at the beginning, there is nothing in "res", the node level is 0 as well
-    		result.add(node.val);
-    	}// it is important to explore the righ sub-tree here.
-    	goDeeper(depth+1, result, node.right);
-    	goDeeper(depth+1, result, node.left);
+    
+    public void helper(TreeNode root, int depth, List<Integer> res){
+        if(root==null)
+            return;
+        // this means that res has one node for the previous levels, need one for this level
+        if(depth == res.size())
+            res.add(root.val);
+        helper(root.right, depth+1, res);// this will make sure if there a right node it will be added first
+        helper(root.left, depth+1, res);// if the right one is added then the left one will be ignored. because by then depth<res.size
     }
 }
 
