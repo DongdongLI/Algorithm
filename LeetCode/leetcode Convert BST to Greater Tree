@@ -50,3 +50,26 @@ public class Solution {
         convert(node.left);
     }
 }
+
+// cleaner code
+/*
+  If going left, root, right, we will get a increasing sequence
+  so going right, root, left, we get a decreasing,
+  
+  we want each element get an increment of the sum of all the nodes to its right
+*/
+class Solution {
+    int sum=0;
+    public TreeNode convertBST(TreeNode root) {
+        inorder(root);
+        return root;
+    }
+    
+    public void inorder(TreeNode node){
+        if(node == null)return;
+        inorder(node.right);
+        node.val+=sum;
+        sum = node.val;
+        inorder(node.left);
+    }
+}
