@@ -36,40 +36,32 @@
        if result > Integer.MAX_VALUE/10, then we can stop
        if result==Integer.MAX_VALUE/10 && Integer.MAX_VALUE%10<a[i]-'0', we can also stop
 */
-
-public class Solution{
-	public int myAtoi(String str) {
-		if(str==null || str.trim().length()==0)
-			return 0;
-		int result=0;
-		str=str.trim();
-		char[] a=str.toCharArray();
-		
-		// find '+' or '-'
-		char pORn=' ';
-		boolean positive=true;
-		int i=0;
-		
-		if(a[0]=='-'){
-			pORn='-';
-			positive=false;
-			i++;
-		}else if(a[0]=='+')
-		{
-			pORn='+';
-			i++;
-		}
-		if(pORn==' ')pORn='+';
-		// start from here, sum them up
-		while(i<a.length && a[i]<='9' && a[i]>='0')
-		{
-			if(result>Integer.MAX_VALUE/10 || (result==Integer.MAX_VALUE/10 && Integer.MAX_VALUE%10<a[i]-'0'))
-				return pORn=='+' ? Integer.MAX_VALUE:Integer.MIN_VALUE;
-			
-			result=result*10+a[i]-'0';
-			i++;
-		}
-		return pORn=='+' ? result:-result;
+// cleaner code
+class Solution {
+    public int myAtoi(String str) {
+        if(str==null || str.length()==0)return 0;
+        
+        str = str.trim();
+        int i=0;
+        int res=0;
+        boolean positive = true;
+        
+        if(str.charAt(0)=='+'){
+            positive = true;
+            i++;
+        }
+        else if(str.charAt(0)=='-'){
+            positive = false;
+            i++;
+        }
+        while(i<str.length() && Character.isDigit(str.charAt(i))){
+            if(res>Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE/10 && str.charAt(i)-'0' > Integer.MAX_VALUE%10))
+                return positive ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            res = res*10 + str.charAt(i)-'0';
+            i++;
+        }
+        
+        return positive ? res : -res;
     }
 }
 //2015/10/20: remember most part, but not in a good mood.
