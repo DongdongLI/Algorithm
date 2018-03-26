@@ -1,0 +1,79 @@
+/*
+  Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+
+  For example,
+  S = "ADOBECODEBANC"
+  T = "ABC"
+  Minimum window is "BANC".
+
+  Note:
+  If there is no such window in S that covers all characters in T, return the empty string "".
+
+  If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+*/
+
+/*
+  build a hashMap containing all the letter and how many time they show up.
+  count is the number of total match
+  
+  right pointer, start from 0, when current letter also exit in the map
+    if(map.get(s.charAt(i)) > 0 )
+        // try to make the current match invalid
+        count --
+    decrease it in the map
+    
+    when count is 0, a match is found
+    while(count ==0 )// start moving the left pointer
+      update optimal solution// Math.min...
+      
+    if(map.get(s.charAt(i)) >= 0 )
+        // try to make the current match valid
+        count ++
+    increase it in the map
+*/
+
+class Solution {
+    public String minWindow(String s, String t) {
+        
+        Map<Character, Integer> map = new HashMap<>();
+        for(Character c: t.toCharArray()){
+            if(!map.containsKey(c))
+                map.put(c, 0);
+            map.put(c, map.get(c)+1);
+        }
+        
+        int count = t.length();
+        
+        int minLen = Integer.MAX_VALUE;
+        
+        int resLeft = -1;
+        int left = 0;
+        for(int i=0;i<s.length();i++){
+            
+            if(map.containsKey(s.charAt(i))){
+                if(map.get(s.charAt(i)) > 0)
+                    count--;
+                
+                map.put(s.charAt(i), map.get(s.charAt(i)) - 1);
+            }
+            
+            while(count == 0 && left<s.length()){
+                if(minLen > i-left +1 ){
+                    minLen = i-left+1;
+                    resLeft = left;
+                }                    
+                
+                if(map.containsKey(s.charAt(left))){
+                    if(map.get(s.charAt(left)) >= 0)
+                        count++;
+                    
+                    map.put(s.charAt(left), map.get(s.charAt(left)) + 1);    
+                }
+                left++;
+            }
+            
+        }
+        if(resLeft == -1)return "";
+        return s.substring(resLeft, resLeft+minLen);
+    }
+}
