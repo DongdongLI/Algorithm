@@ -74,3 +74,64 @@ class WordNode {
 		this.steps = steps;
 	}
 }
+
+/*
+	2018/03/28: cleaner code:
+	start from the begin word, find its next possible words(only change one char) among the wordList,
+		if end word is in it. found, return level number
+		
+		push all these next possible words into the queue, do the same for each one of them
+*/
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        
+        Queue<String> queue = new LinkedList<>();
+        
+        queue.add(beginWord);
+        
+        Set<String> wordListSet = new HashSet<>();
+        for(String str: wordList)
+            wordListSet.add(str);
+        
+        int level = 1;
+        
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            for(int i=0;i<size;i++) {
+                String word = queue.poll();
+                if(word.equals(endWord))
+                    return level;
+                
+                Set<String> possible = possibleNextWord(word, wordListSet);
+                for(String str: possible){
+                    queue.offer(str);                   
+                }
+            }
+            level++;
+        }
+        return 0;
+    }
+    
+    public Set<String> possibleNextWord(String word, Set<String> wordListSet) {
+        
+        Set<String> res = new HashSet<>();
+        
+        char[] charArr = word.toCharArray();
+        
+        for(int i=0;i<charArr.length;i++) {
+            char old = charArr[i];
+            for(char c = 'a';c<='z';c++){
+                if(c == old)continue;
+                
+                charArr[i] = c;
+                String temp = new String(charArr);
+                if(wordListSet.contains(temp)){
+                    wordListSet.remove(temp);
+                    res.add(temp);
+                }
+                charArr[i] = old;
+            }
+        }
+        return res;
+    }
+}
