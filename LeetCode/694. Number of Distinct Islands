@@ -1,0 +1,72 @@
+/*
+  Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
+
+  Count the number of distinct islands. An island is considered to be the same as another if and only if one island can be translated (and not rotated or reflected) to equal the other.
+
+  Example 1:
+  11000
+  11000
+  00011
+  00011
+  Given the above grid map, return 1.
+  Example 2:
+  11011
+  10000
+  00001
+  11011
+  Given the above grid map, return 3.
+
+  Notice that:
+  11
+  1
+  and
+   1
+  11
+  are considered different island shapes, because we do not consider reflection / rotation.
+*/
+
+/*
+  On top of looking for different islands, build the path when exploring an island.
+  Since the path will be the same with the islands with the same shape.
+*/
+class Solution {
+    public int numDistinctIslands(int[][] grid) {
+        
+        if(grid == null || grid.length == 0||grid[0].length == 0)
+            return 0;
+        int m = grid.length;
+        int n = grid[0].length;
+        
+        boolean[][] visited = new boolean[m][n];
+        
+        Set<String> routes = new HashSet<>();
+        
+        for(int i = 0;i<m;i++){
+            for(int j=0;j<n;j++)
+                if(grid[i][j]==1 && visited[i][j] != true){
+                    StringBuilder route = new StringBuilder();
+                    // mark as start
+                    visit(i, j, grid, visited, route, "s");
+                    if(!route.toString().trim().equals(""))
+                        routes.add(route.toString());
+                    
+                    visited[i][j] = true;
+                }
+        }
+        return routes.size();
+    }
+    
+    public void visit(int x, int y, int[][] grid, boolean[][] visited, StringBuilder route, String nextMove){
+        if(x<0||x>grid.length-1 || y<0 || y>grid[0].length-1 || visited[x][y] || grid[x][y] == 0)return;
+        // if current node is a valid move, then add the direction into path, marked as visited.
+        visited[x][y] = true;
+        route.append(nextMove);
+        
+        visit(x-1,y, grid,visited, route, "u");
+        visit(x+1,y, grid,visited, route, "d");
+        visit(x,y+1, grid,visited, route, "r");
+        visit(x,y-1, grid,visited, route, "l");
+        // mark as end
+        route.append("e");
+    }
+}
