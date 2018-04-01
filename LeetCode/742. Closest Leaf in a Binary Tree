@@ -1,0 +1,115 @@
+/*
+  Given a binary tree where every node has a unique value, and a target key k, find the value of the nearest leaf node to target k in the tree.
+
+  Here, nearest to a leaf means the least number of edges travelled on the binary tree to reach any leaf of the tree. Also, a node is called a leaf if it has no children.
+
+  In the following examples, the input tree is represented in flattened form row by row. The actual root tree given will be a TreeNode object.
+
+  Example 1:
+
+  Input:
+  root = [1, 3, 2], k = 1
+  Diagram of binary tree:
+            1
+           / \
+          3   2
+
+  Output: 2 (or 3)
+
+  Explanation: Either 2 or 3 is the nearest leaf node to the target of 1.
+  Example 2:
+
+  Input:
+  root = [1], k = 1
+  Output: 1
+
+  Explanation: The nearest leaf node is the root node itself.
+  Example 3:
+
+  Input:
+  root = [1,2,3,4,null,null,null,5,null,6], k = 2
+  Diagram of binary tree:
+               1
+              / \
+             2   3
+            /
+           4
+          /
+         5
+        /
+       6
+
+  Output: 3
+  Explanation: The leaf node with value 3 (and not the leaf node with value 6) is nearest to the node with value 2.
+  Note:
+*/
+
+/*
+  Find K node.
+  go along its left path
+  go along its right path
+  go back to its parent
+  
+  whichever hits a leave first, return the value
+  
+  use a map to keep tract of node and node's parent
+   
+  use a set to remember the nodes have been visited
+  
+  use a queue to keep things in order
+*/
+
+class Solution {
+    public int findClosestLeaf(TreeNode root, int k) {
+        
+        Map<TreeNode, TreeNode> map = new HashMap<>();
+        Set<TreeNode> visited = new HashSet<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        
+        TreeNode kNode = findNode(root, k, map);
+        
+        queue.offer(kNode);
+        visited.add(kNode);
+                
+        while(!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            // found a leave (this leave is the first one found. Which is the result)
+            if(node.left == null && node.right == null)
+                return node.val;
+            // go try left path if not visited yet
+            if(node.left != null && visited.add(node.left))
+                queue.offer(node.left);
+            // go try right path if not visited yet
+            if(node.right != null && visited.add(node.right))
+                queue.offer(node.right);
+            // go try back path if not visited yet
+            if(map.containsKey(node) && visited.add(map.get(node)))
+                queue.offer(map.get(node));
+        }
+        
+        return -1;
+    }
+    
+    public TreeNode findNode(TreeNode node, int k, Map<TreeNode, TreeNode> map) {
+        if(node.val == k)
+            return node;
+        
+        else{
+            if(node.left != null){
+                map.put(node.left, node);
+                TreeNode left = findNode(node.left, k, map);
+                if(left != null)
+                    return left;
+            }
+            
+            if(node.right != null){
+                map.put(node.right, node);
+                TreeNode right = findNode(node.right, k, map);
+                if(right != null)
+                    return right;
+            }
+            
+            return null;
+        }
+    }
+}
