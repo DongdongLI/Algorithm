@@ -1,0 +1,77 @@
+/*
+  Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
+
+  Strings consists of lowercase English letters only and the length of both strings s and p will not be larger than 20,100.
+
+  The order of output does not matter.
+
+  Example 1:
+
+  Input:
+  s: "cbaebabacd" p: "abc"
+
+  Output:
+  [0, 6]
+
+  Explanation:
+  The substring with start index = 0 is "cba", which is an anagram of "abc".
+  The substring with start index = 6 is "bac", which is an anagram of "abc".
+  Example 2:
+
+  Input:
+  s: "abab" p: "ab"
+
+  Output:
+  [0, 1, 2]
+
+  Explanation:
+  The substring with start index = 0 is "ab", which is an anagram of "ab".
+  The substring with start index = 1 is "ba", which is an anagram of "ab".
+  The substring with start index = 2 is "ab", which is an anagram of "ab".
+*/
+
+/*
+  sliding window:
+  the purpose is:
+  move right until count becomes 0, means all letters have been found
+  start moving left to get all those letters back
+*/
+
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> res = new ArrayList<>();
+        
+        if(s == null || s.length() == 0)
+            return res;
+        // keep the characters in p
+        int[] map = new int[26];
+        for(Character c: p.toCharArray())
+            map[c-'a']++;
+        
+        int count = p.length();
+        
+        int right = 0, left = 0;
+        
+        while(right<s.length()){
+            // only when the map[c] > 0, the match is a true match. (if it is 0, means this letter was never in p)
+            if(map[s.charAt(right) - 'a'] >= 1)
+                count--;
+            map[s.charAt(right) - 'a'] --;
+            right++;
+            
+            while(count == 0 && left<s.length()){
+                // check if is a solution
+                if(right - left == p.length())
+                    res.add(left);
+                // reconstruct
+                if(map[s.charAt(left) - 'a']>=0)
+                    count++;
+                map[s.charAt(left) - 'a']++;
+                
+                left++;
+            }
+        }
+        
+        return res;
+    }
+}
