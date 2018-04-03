@@ -51,18 +51,18 @@ public class Solution {
 */ 
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        return isValidBST(root, null, null);
+        if(root == null)return true;
+
+        return helper(root.left, null, root.val) && helper(root.right, root.val, null);
     }
     
-    public boolean isValidBST(TreeNode root, Integer max, Integer min){
-        if(root == null)
+    public boolean helper(TreeNode node, Integer min, Integer max){
+        if(node == null)
             return true;
         
-        if(max != null && root.val>=max)
-            return false;
-        if(min != null && root.val<=min)
+        if(min!= null && node.val<=min  || max!=null && node.val>=max)
             return false;
         
-        return isValidBST(root.left, root.val, min) && isValidBST(root.right, max, root.val);
+        return helper(node.left, min, node.val) && helper(node.right, node.val, max);
     }
 }
