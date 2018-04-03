@@ -109,3 +109,41 @@ class Solution {
     }
     
 }
+
+/*
+    Less optimal DP solution: dp[0][i] = dp[0][j] == true && dp[j+1][i]
+*/
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> set = new HashSet<>();
+        for(String word: wordDict)
+            set.add(word);
+        
+        int len = s.length();
+        boolean[][] dp = new boolean[len][len];
+        
+        for(int i=0;i<len;i++) {
+            for(String word:set){
+                if(s.charAt(i) == word.charAt(0)){
+                    if(i+word.length() -1 < len && s.substring(i, i+word.length() ).equals(word) ){
+                        System.out.println("match: "+word);
+                        dp[i][i+word.length() -1] = true;
+                    }
+                }
+            }
+        }
+        
+        for(int i = 1;i<len;i++){
+            if(dp[0][i])continue;
+            else{
+                for(int j=0;j<i;j++){
+                    if(dp[0][j] == true && dp[j+1][i] ){
+                        dp[0][i] = true;
+                        break;
+                    }
+                }   
+            }
+        }
+        return dp[0][len-1];
+    }
+}
