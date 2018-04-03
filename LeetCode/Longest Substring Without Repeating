@@ -8,50 +8,43 @@
   Trivial Solution: two pointers check one by one, accept but very slow.
 */
 
-public class Solution {
+class Solution {
     public int lengthOfLongestSubstring(String s) {
-    	if(s==null || s.length()==0)
-    		return 0;
-    	
-    	boolean[] used=new boolean[95]; // keep track of all the characters
-    	int length=0; // the maximum length
-    	int i;int j; // the two pointers
-    	
-    	used[s.charAt(0)-' ']=true;
-    	length=1;
-    	
-    	for(i=0,j=i+1;j<s.length() && i<s.length();){
-    		//System.out.println("i,j:"+i+" "+j);
-    		if(i+1==j&& s.charAt(i)==s.charAt(j)){ // prepared for special case like "aaa"
-    			i++;
-    			j++;
-    			continue;
-    		}
-    			
-    		
-    		char c=s.charAt(j); 
-    		if(used[(int)(c-' ')] == true){ // the duplicate appears
-    			String sub=s.substring(i,j);
-    			if(sub.length()>length) //update length if necessary
-    				length=sub.length();
-
-    			for(int g=0;g<used.length;g++) // restore used
-    				used[g]=false;
-    			i=i+1;//i=j-1;
-    			used[(int)(s.charAt(i)-' ')]=true; // first put  the first letter in 
-				j=i+1;
-    		}
-    		else{
-    			used[(int)(c-' ')]=true; // longer
-    			j++;
-    		}
-    	}
-    	if(s.substring(i,j).length()>length) // the last length may not get updated
-    		length=s.substring(i,j).length();
-    	return length;
+        if(s==null || s.length() == 0)
+            return 0;
+                
+        Set<Character> set = new HashSet<>();
+        int max = 1;
+        
+        
+        for(int i=0;i<s.length();i++){
+            
+            int len = 0;
+            
+            if(set.size() != 0){
+                max = Math.max(max, set.size());
+                set.clear();
+            }
+            
+            for(int j=i;j<s.length();j++){
+                char c = s.charAt(j);
+                
+                if(!set.contains(c)){
+                    set.add(c);
+                    len++;
+                }
+                else{
+                    max = Math.max(max, len);
+                    set.clear();
+                    break;
+                }
+            }
+        }
+        
+        
+        return max;
     }
 }
-
 /*
 	The right method to use, HashMap
 */
