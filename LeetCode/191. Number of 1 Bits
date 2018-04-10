@@ -4,7 +4,6 @@
   For example, the 32-bit integer ’11' has binary representation 00000000000000000000000000001011, so the function 
   should return 3.
 
-
 */
 
 /*
@@ -18,6 +17,11 @@
       111&110=110
       110&101=100
       100&011=000
+      
+      About max integer in Java:
+      In Java we need to put attention on the fact that the maximum integer is 2147483647. 
+      Integer type in Java is signed and there is no unsigned int. So the input 2147483648 is represented in Java as -2147483648 (in java int type has a cyclic representation, that means Integer.MAX_VALUE+1==Integer.MIN_VALUE).
+      so we have to use while(n!=0)
 */
 
 public class Solution {
@@ -37,6 +41,7 @@ public int hammingWeight(int n) {
         while(n!=0){
         	if((n&1)==1)
         		countOfOne++;
+          // unsigned shift
         	n=(n>>>1);
         }
         return countOfOne;
