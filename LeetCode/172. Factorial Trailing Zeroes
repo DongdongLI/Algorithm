@@ -1,3 +1,8 @@
+/*
+    Given an integer n, return the number of trailing zeroes in n!.
+    Note: Your solution should be in logarithmic time complexity.
+*/
+
 //the key point is to count the number of 5s
 //it is aparent that every appearance of 5 will lead to a 0.
 //10=5*2,25=5*5...
