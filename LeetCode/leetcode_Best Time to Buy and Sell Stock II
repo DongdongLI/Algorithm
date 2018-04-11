@@ -38,5 +38,28 @@ public class Solution {
        return total;
     }
 }
-//System.out.println("i:"+i);
-//System.out.println("j:"+j);
+
+/*
+  Faster way:
+*/
+class Solution {
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+        
+        if(prices == null || prices.length == 0)
+            return 0;
+        
+        for(int i = 0;i<prices.length;){
+            int j=i+1;
+            
+            while(j<prices.length && prices[j]>=prices[j-1])
+                j++;
+            
+            // price going down, sell it.
+            profit+= (prices[j-1]-prices[i]);
+            i = j;
+        }
+        
+        return profit;
+    }
+}
