@@ -1,30 +1,33 @@
-public class Solution {
+/*
+	Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+	The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
+*/
+class Solution {
     public boolean isValid(String s) {
-if(s==null||s.length()==0)
-			return true;
-		
-		char[] parent=s.toCharArray();
-		Stack<Character> stack=new Stack<>();
-		for(int i=0;i<parent.length;i++)
-		{
-			if(parent[i]=='('||parent[i]=='['||parent[i]=='{')
-				stack.add(parent[i]);
-			else
-			{
-				if(stack.isEmpty())return false;
-				else
-				{				
-				char temp=stack.pop();
-				if(temp=='('&&parent[i]!=')')
-					return false;
-				if(temp=='['&&parent[i]!=']')
-					return false;
-				if(temp=='{'&&parent[i]!='}')
-					return false;
-				}
-			}
-		}
-		return stack.isEmpty();
+        
+        if(s == null || s.length() == 0)
+            return true;
+        
+        Stack<Character> stack = new Stack<>();
+        for(char c: s.toCharArray()){
+	     // ) ] } must always pair with a left
+            if(stack.isEmpty() && (c==')' || c==']' || c=='}'))
+                return false;
+            
+            if(c=='(' || c=='[' || c=='{')
+                stack.push(c);
+            
+            else{
+                char top = stack.peek();
+		// three match cases
+                if(top=='(' && c==')' || top=='[' && c==']' || top=='{' && c=='}'  )
+                    stack.pop();
+                else
+                    stack.push(c);
+            }
+        }
+        
+        return stack.isEmpty();
     }
 }
-//2015/10/23: nail it
