@@ -48,11 +48,33 @@ public class Solution {
     	return fakeHead.next;
     }
 }
-//2015/12/5: ran into a tiny problem.
+
+//cleaner code
 /*
-  Be really careful about the check like 
-  "if(head==null)
-			return head;"
-			
-	 sometimes you check "head.next==null" but sometimes you shouldn't
+	Create a dummy header
+	Every time a node with val met, skip it and connect to the next
+	Else move n
 */
+
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if(head == null)
+            return head;
+        
+        ListNode tempHead = new ListNode(-6);
+        tempHead.next = head;
+        
+        ListNode n = tempHead;
+        
+        while(n!=null&&n.next!=null){
+            if(n.next.val == val){
+                ListNode next = n.next.next;
+                n.next = next;
+            }
+            else
+                n=n.next;
+        }
+        
+        return tempHead.next;
+    }
+}
