@@ -13,3 +13,20 @@ class Solution {
         return isPowerOfTwo(n/2);
     }
 }
+
+/*
+	Bit manipulation:
+	8 is 1000 and 7 is 0111
+	
+	1000 & 0111 == 0
+	
+	This apply to all numbers which are 2's power
+*/
+class Solution {
+    public boolean isPowerOfTwo(int n) {
+        if(n<=0)
+            return false;
+        
+        return (n&(n-1)) == 0;
+    }
+}
