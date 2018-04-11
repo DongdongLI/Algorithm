@@ -4,41 +4,50 @@
   Input is guaranteed to be within the range from 1 to 3999.
 */
 
-public class Solution {
+/*
+	subtractive notation is often used as follows:
+
+	I placed before V or X indicates one less, so four is IV (one less than 5) and 9 is IX (one less than 10).
+	X placed before L or C indicates ten less, so forty is XL (10 less than 50) and 90 is XC (ten less than a hundred).
+	C placed before D or M indicates a hundred less, so four hundred is CD (a hundred less than five hundred) and nine hundred is CM (a hundred less than a thousand).
+*/
+
+class Solution {
     public int romanToInt(String s) {
-		Map<String,Integer> map=new HashMap<String, Integer>();
-		map.put("M", 1000);
-		map.put("CM", 900);
-		map.put("D", 500);
-		map.put("CD", 400);
-		map.put("C",100);
-		map.put("XC", 90);
-		map.put("L", 50);
-		map.put("XL", 40);
-		map.put("X", 10);
-		map.put("IX", 9);
-		map.put("V", 5);
-		map.put("IV", 4);
-		map.put("I", 1);
-		
-		int res=0;
-		
-		while(s.length()>0){// always take the first or first two characters and convert it to number. until the length becomes 0
-			if(s.length()>=2){
-				if(map.containsKey(s.substring(0, 2))){
-					res+=map.get(s.substring(0, 2));
-					s=s.substring(2);
-				}else{
-					res+=map.get(s.substring(0,1));
-					s=s.substring(1);
-				}
-			}else{
-				res+=map.get(s.substring(0,1));
-				s=s.substring(1);
-			}
-		}
-		return res;
+        int res = 0;
+        
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('I',1);
+        map.put('V',5);
+        map.put('X',10);
+        map.put('L',50);
+        map.put('C',100);
+        map.put('D',500);
+        map.put('M',1000);
+        
+        char[] arr = s.toCharArray();
+        for(int i=0;i<arr.length;i++) {
+            if(i+1< arr.length && map.get(arr[i]) < map.get(arr[i+1])){
+                res += (map.get(arr[i+1]) - map.get(arr[i]) );
+                i++;
+                continue;
+            }
+            if(arr[i] == 'M')
+                res += 1000;
+            else if(arr[i] == 'D')
+                res += 500;
+            else if(arr[i] == 'C')
+                res += 100;
+            else if(arr[i] == 'L')
+                res += 50;
+            else if(arr[i] == 'X')
+                res += 10;
+            else if(arr[i] == 'V')
+                res += 5;
+            else if(arr[i] == 'I')
+                res += 1;
+        }
+        
+        return res;
     }
 }
-
-//2015/10/21: nail it.
