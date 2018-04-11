@@ -39,53 +39,48 @@ class MyStack {
     }
 }
 
-//******************* second solution
-
-package leetcodePlayground;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
+/*
+	Two queue solution
+*/
 class MyStack {
-	Queue<Integer> q1=new LinkedList<Integer>();
-	Queue<Integer> q2=new LinkedList<Integer>();
-    // Push element x onto stack.
+    // topQueue will always contain 1 element while rest will contain the rest
+    Queue<Integer> topQueue;
+    Queue<Integer> restQueue;
+    
+    /** Initialize your data structure here. */
+    public MyStack() {
+        topQueue = new LinkedList<>();
+        restQueue = new LinkedList<>();
+    }
+    
+    /** Push element x onto stack. */
     public void push(int x) {
-    	q1.add(x);
+        topQueue.offer(x);
+        // send the elements to restQueue if there's more then 1 element in top
+        if(topQueue.size()>1)
+            restQueue.offer(topQueue.poll());
     }
-
-    // Removes the element on top of the stack.
-    // Always make the last element available
-    public void pop() {
-       while(q1.size()>1){
-    	   q2.add(q1.poll());
-       }
-       q1.poll();
-       
-       Queue<Integer> temp=q1;
-       q1=q2;
-       q2=temp;
+    
+    /** Removes the element on top of the stack and returns that element. */
+    public int pop() {
+        int toReturn = topQueue.poll();
+        
+        topQueue = restQueue;
+        restQueue = new LinkedList<>();
+        
+        while(topQueue.size()>1 && !topQueue.isEmpty())
+            restQueue.offer(topQueue.poll());
+        
+        return toReturn;
     }
-
-    // Get the top element.
-    // different from pop, we will keep the top element
+    
+    /** Get the top element. */
     public int top() {
-    	while(q1.size()>1){
-     	   q2.add(q1.poll());
-        }
-        int temp=q1.peek();
-        q2.add(q1.poll());
-        Queue<Integer> t=q1;
-        q1=q2;
-        q2=t;
-        return temp;
+        return topQueue.peek();
     }
-
-    // Return whether the stack is empty.
+    
+    /** Returns whether the stack is empty. */
     public boolean empty() {
-        return (q1.size()+q2.size())==0;
+        return topQueue.isEmpty();
     }
 }
