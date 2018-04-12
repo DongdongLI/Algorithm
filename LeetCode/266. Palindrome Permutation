@@ -1,0 +1,48 @@
+/*
+  Given a string, determine if a permutation of the string could form a palindrome.
+
+  For example,
+  "code" -> False, "aab" -> True, "carerac" -> True.
+*/
+
+/*
+  Count the appearances of each character
+  if the len is even, all chars should appear for even number
+  if odd, then only one char can appear for odd number, the rest should be even
+*/
+class Solution {
+    public boolean canPermutePalindrome(String s) {
+        if(s==null || s.length() == 0)
+            return true;
+        
+        int len = s.length();
+        
+        int[] map = new int[256];
+        for(char c: s.toCharArray()){
+            map[c-' ']++;
+        }
+        
+        if(len%2==0){
+            for(int i: map)
+                if(i%2==1)
+                    return false;
+        }
+        else{
+            boolean oneOdd = false;
+            for(int i: map){
+                if(i%2==1){
+                    if(oneOdd == false)   
+                        oneOdd = true;
+                    else
+                        return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+}
+
+/*
+  Or use set
+*/
