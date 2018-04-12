@@ -53,3 +53,28 @@ public class Solution {
         
     }
 }
+/*
+  Use a boolean to mark whether a node is left child, which will be cleaner
+*/
+class Solution {
+    int sum = 0;
+    public int sumOfLeftLeaves(TreeNode root) {
+        if(root == null)
+            return 0;
+        
+        helper(root, false);
+        
+        return sum;
+    }
+    
+    public void helper(TreeNode node, boolean isLeft) {
+        if(node.left == null && node.right == null && isLeft){
+            sum+= node.val;
+            return;
+        }
+        if(node.left != null)
+            helper(node.left, true);
+        if(node.right != null)
+            helper(node.right, false);
+    }
+}
