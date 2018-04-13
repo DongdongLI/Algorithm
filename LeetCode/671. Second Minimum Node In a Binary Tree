@@ -1,0 +1,71 @@
+/*
+  Given a non-empty special binary tree consisting of nodes with the non-negative value, where each node in this tree has exactly two or zero sub-node. If the node has two sub-nodes, then this node's value is the smaller value among its two sub-nodes.
+
+  Given such a binary tree, you need to output the second minimum value in the set made of all the nodes' value in the whole tree.
+
+  If no such second minimum value exists, output -1 instead.
+
+  Example 1:
+  Input: 
+      2
+     / \
+    2   5
+       / \
+      5   7
+
+  Output: 5
+  Explanation: The smallest value is 2, the second smallest value is 5.
+  Example 2:
+  Input: 
+      2
+     / \
+    2   2
+
+  Output: -1
+  Explanation: The smallest value is 2, but there isn't any second smallest value.
+*/
+
+/*
+  root is gurarantee to have the smallest number
+  traverse the whole tree
+*/
+class Solution {
+    int rootVal = Integer.MAX_VALUE;
+    int res = Integer.MAX_VALUE;
+    public int findSecondMinimumValue(TreeNode root) {
+        if(root == null || root.left == null && root.right == null)
+            return -1;
+        
+        rootVal = root.val;
+        traverse(root);
+        if(res==Integer.MAX_VALUE)
+            return -1;
+        else
+            return res;
+    }
+    
+    public void traverse(TreeNode node){
+        if(node == null)return;
+        
+        if(node.val>rootVal)
+            res = Math.min(res, node.val);
+        traverse(node.left);
+        traverse(node.right);
+    }
+}
+
+/*
+	Smart solution:
+*/
+class Solution {
+    public int findSecondMinimumValue(TreeNode root) {
+        if(root==null || root.left == null)
+            return -1;
+        // if the left is the same as root, keep looking in left-sub
+        // because right is larger than root, and anything in right-sub will bigger than root.right, which is already larger then root.
+        int left = root.left.val == root.val ? findSecondMinimumValue(root.left) : root.left.val;
+        int right = root.right.val == root.val ? findSecondMinimumValue(root.right) : root.right.val;
+        
+        return left == -1 || right == -1 ? Math.max(left, right) : Math.min(left, right);
+    }
+}
