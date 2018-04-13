@@ -57,3 +57,27 @@ public class Solution {
             return node.val+sum(node.left)+sum(node.right);
     }
 }
+/*
+         Better solution
+*/
+class Solution {
+    int sum = 0;
+    public int findTilt(TreeNode root) {
+        traverse(root);
+        return sum;
+    }
+    
+    public int traverse(TreeNode node) {
+        if(node == null)
+            return 0;
+        
+        int left = traverse(node.left);
+        int right = traverse(node.right);
+        
+        // this calculates the tilt of node
+        sum+=Math.abs(left-right);
+        // this will make sure the sum of the whole tree start from node get returned
+        
+        return left+right+node.val;
+    }
+}
