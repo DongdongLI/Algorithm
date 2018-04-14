@@ -29,6 +29,8 @@
 /*
   better solution:
   breadth first search
+    	For every node, put its right node in first
+      So, the last node is guaranteed to be a left leaf
 */
 public class Solution {
     
@@ -48,6 +50,30 @@ public class Solution {
     }
 }
 
+/*
+  Better DFS
+*/
+class Solution {
+    int maxDepth = Integer.MIN_VALUE;
+    int val = 0;
+    public int findBottomLeftValue(TreeNode root) {
+        dfs(root, 0);
+        return val;
+    }
+    
+    public void dfs(TreeNode node, int depth) {
+        if(node == null)
+            return;
+        // we are at new depth, which depth+1, update the depth
+        if(depth+1 > maxDepth){
+            maxDepth = depth+1;
+            val = node.val;
+        }
+        
+        dfs(node.left, depth+1);
+        dfs(node.right, depth+1);
+    }
+}
 
 /*
   Find nodes layer by layer, pull out the last layer and take the first element
