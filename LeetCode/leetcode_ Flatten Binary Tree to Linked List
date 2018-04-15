@@ -90,3 +90,53 @@ public class Solution {
         }
 	}
 	}
+
+/*
+	Most straightforward solution:
+*/
+class Solution {
+    public void flatten(TreeNode root) {
+        if(root == null)return;
+        
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        
+        root.left = null;
+        // flatten both sub-tree
+        flatten(left);
+        flatten(right);
+        //snap the left sub-tree to root.right
+        root.right = left;
+        TreeNode cur = root;
+	
+	// and keep going right till the last treenode, 
+	//then the next will be the old right sub
+        while(cur.right!=null)
+            cur=cur.right;
+        
+        cur.right = right;
+    }
+}
+/*
+	Same idea: recursive solution
+*/
+class Solution {
+    public void flatten(TreeNode root) {
+        flatten(root, null);
+    }
+    
+    public TreeNode flatten(TreeNode root, TreeNode prev) {
+        if(root == null)
+            return prev;
+        
+        prev = flatten(root.right, prev);
+        prev = flatten(root.left, prev);
+        
+        root.right = prev;
+        root.left = null;
+        
+        prev = root;
+        
+        return prev;
+    }
+}
