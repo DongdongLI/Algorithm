@@ -67,3 +67,25 @@ public class Solution {
         return dp[sum];
     }
 }
+
+/*
+  Proper dfs solution
+*/
+class Solution {
+    int count = 0;
+    public int findTargetSumWays(int[] nums, int S) {
+        helper(nums, S, 0, 0);
+        
+        return count;
+    }
+    
+    public void helper(int[] nums, int target, int start, int sum){
+        if(start==nums.length){
+            if(sum==target)
+                count++;
+            return;
+        }
+        helper(nums, target, start+1, sum+nums[start]);
+        helper(nums, target, start+1, sum-nums[start]);
+    }
+}
