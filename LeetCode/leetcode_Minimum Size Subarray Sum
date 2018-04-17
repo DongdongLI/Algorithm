@@ -50,4 +50,31 @@ public class Solution {
 //o(nlogn)
 // divide and conquer
 
-//2015/12/15: almost forgot.
+/*
+	Two pointer, sliding window
+*/
+class Solution {
+    public int minSubArrayLen(int s, int[] nums) {
+        if(nums == null || nums.length==0)
+            return 0;
+        
+        int sum = 0;
+        
+        int min = Integer.MAX_VALUE;
+        
+        int l = 0, r = 0;
+        // move r first
+        for(;r<nums.length;r++){
+	    //sum up the elements along the way
+            sum+=nums[r];
+            // while the sub-array from l to r has a sum >= s
+	    // start moving left, and keep updating min length
+            while(sum>=s){
+                min = Math.min(min, r-l+1);
+                sum-=nums[l++];
+            }
+        }
+        
+        return min == Integer.MAX_VALUE ? 0 : min;
+    }
+}
