@@ -42,3 +42,41 @@ public class Solution {
 //2015/10/23 nail it
 
 //2016/1/4 nail it.
+/*
+	Back-tracking
+*/
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        
+        if(n==0)
+            return res;
+        
+        StringBuilder partial = new StringBuilder();
+        partial.append("(");
+        build(n-1, n, partial, res);
+        
+        return res;
+    }
+    
+    public void build(int left, int right, StringBuilder partial, List<String> res){
+        if(left==right && left == 0){
+            res.add(partial.toString());
+            return;
+        }
+        
+        if(left>right)
+            return;
+        
+        if(left>0){
+            partial.append("(");
+            build(left-1, right, partial, res);
+            partial.deleteCharAt(partial.length()-1);
+        }
+        if(right>0){
+            partial.append(")");
+            build(left, right-1, partial, res);
+            partial.deleteCharAt(partial.length()-1);
+        }    
+    }
+}
