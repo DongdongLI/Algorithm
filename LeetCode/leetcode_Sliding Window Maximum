@@ -19,7 +19,7 @@
 */
 
 /*
-    Trivial Solution(Very slow): use min heap to store the elements
+    Trivial Solution(Very slow): use max heap to store the elements
 */
 public class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
