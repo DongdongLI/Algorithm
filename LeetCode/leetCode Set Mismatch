@@ -34,3 +34,34 @@ public class Solution {
         return res;
     }
 }
+
+/*
+  Smart solution: use the input array as an hash table
+*/
+class Solution {
+    public int[] findErrorNums(int[] nums) {
+        int[] res = new int[2];
+        
+        for(int i=0;i<nums.length;i++){
+            // for each number num[i], set num[nums[i]-1]
+            //(num[index]) to negative to mark that the num[i]
+            // has appeared
+            int index = Math.abs(nums[i])-1;
+            if(nums[index]<0)
+                res[0] = Math.abs(nums[i]);
+            else
+                nums[index] = -nums[index];
+        }
+        
+        // the positive value will indecate the number i+1 has 
+        // never appeared before
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>0){
+                res[1] = i+1;
+                break;
+            }
+        }
+        
+        return res;
+    }
+}
