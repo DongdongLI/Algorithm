@@ -1,0 +1,57 @@
+/*
+  Given a string that consists of only uppercase English letters, you can replace any letter in the string with another letter at most k times. Find the length of a longest substring containing all repeating letters you can get after performing the above operations.
+
+  Note:
+  Both the string's length and k will not exceed 104.
+
+  Example 1:
+
+  Input:
+  s = "ABAB", k = 2
+
+  Output:
+  4
+
+  Explanation:
+  Replace the two 'A's with two 'B's or vice versa.
+  Example 2:
+
+  Input:
+  s = "AABABBA", k = 1
+
+  Output:
+  4
+
+  Explanation:
+  Replace the one 'A' in the middle with 'B' and form "AABBBBA".
+  The substring "BBBB" has the longest repeating letters, which is 4.
+*/
+
+class Solution {
+    public int characterReplacement(String s, int k) {
+        
+        int left = 0;
+        int right = left+1;
+        int len = s.length();
+        
+        int[] map = new int[26];
+        // the times of appearance of the most popular characters in this window
+        int maxCount = 0;
+        int maxLen = 0;
+        
+        for(right=0;right<s.length();right++){
+            map[s.charAt(right)-'A']++;
+            maxCount = Math.max(maxCount, map[s.charAt(right)-'A']);
+            // maxCount is the count of the letter you want to keep.
+            // this basically means with current length, we can swap k other letters to match the max letter
+            while(right-left+1 - maxCount > k) {
+                map[s.charAt(left) - 'A']--;
+                left++;
+            }
+            // update as we go
+            maxLen = Math.max(maxLen, right - left +1);
+        }
+        
+        return maxLen;
+    }
+}
