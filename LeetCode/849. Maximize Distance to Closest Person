@@ -1,0 +1,83 @@
+/*
+  In a row of seats, 1 represents a person sitting in that seat, and 0 represents that the seat is empty. 
+  There is at least one empty seat, and at least one person sitting.
+  Alex wants to sit in the seat such that the distance between him and the closest person to him is maximized. 
+  Return that maximum distance to closest person.
+  Example 1:
+  Input: [1,0,0,0,1,0,1]
+  Output: 2
+  Explanation: 
+  If Alex sits in the second open seat (seats[2]), then the closest person has distance 2.
+  If Alex sits in any other open seat, the closest person has distance 1.
+  Thus, the maximum distance to the closest person is 2.
+  Example 2:
+  Input: [1,0,0,0]
+  Output: 3
+  Explanation: 
+  If Alex sits in the last seat, the closest person is 3 seats away.
+  This is the maximum distance possible, so the answer is 3.
+  Note:
+    1. 1 <= seats.length <= 20000
+  seats contains only 0s or 1s, at least one 0, and at least one 1.
+*/
+
+//Solution 1
+// long and slow
+
+class Solution {
+    public int maxDistToClosest(int[] seats) {
+	// find out which seats are taken
+        List<Integer> index = new LinkedList<>();
+        for(int i=0;i<seats.length;i++)
+            if(seats[i]==1)
+                index.add(i);
+        
+        int maxDis = 0;
+        // there's only one person, Alex can sit at the beginning or the end
+        if(index.size() == 1)
+            return Math.max(Math.abs(index.get(0) -0), Math.abs(index.get(0) - seats.length+1));
+        
+        if(index.get(0)!=0)
+            maxDis = index.get(0)-0;
+        // for general cases, Alex should sit at the middle of two neighbors.
+        for(int i=0;i<index.size()-1;i++){
+            int distance = index.get(i+1) - index.get(i);
+            maxDis = Math.max(maxDis, distance/2);
+        }
+        // if the last person has some empty space next to him till the end, try that
+        if(index.get(index.size()-1) != 0)
+            maxDis = Math.max(maxDis, seats.length-1 - index.get(index.size()-1));
+        
+        return maxDis;
+    }
+}
+
+//solution 2
+class Solution {
+    public int maxDistToClosest(int[] seats) {
+        int left = 0;
+        int right;
+        
+        while(left<seats.length&&seats[left] !=1)
+            left++;
+        
+        int maxDis = left - 0;
+        
+        for(right=left+1;right<seats.length;right++){
+            if(seats[right] == 0)
+                continue;
+            
+            maxDis = Math.max(maxDis, (right-left)/2);
+            
+            left = right;
+            while(left<seats.length&&seats[left] !=1)
+                left++;
+            right = left+1-1;
+        }
+        
+        if(left<seats.length-1)
+            maxDis = Math.max(maxDis, seats.length-1 - left);
+        
+        return maxDis;
+    }
+}
