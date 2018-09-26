@@ -1,0 +1,38 @@
+/*
+  Consider all the leaves of a binary tree.  From left to right order, the values of those leaves form a leaf value sequence.
+
+  For example, in the given tree above, the leaf value sequence is (6, 7, 4, 9, 8).
+
+  Two binary trees are considered leaf-similar if their leaf value sequence is the same.
+
+  Return true if and only if the two given trees with head nodes root1 and root2 are leaf-similar.
+*/
+
+
+class Solution {
+    
+    List<Integer> tree1 = new ArrayList<>();
+    List<Integer> tree2 = new ArrayList<>();
+    
+    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+        getLeaves(root1, tree1);
+        getLeaves(root2, tree2);
+        // get the list of leaves of the both trees, then compare
+        if(tree1.size() != tree2.size())return false;
+        
+        for(int i=0;i<tree1.size();i++){
+            if(tree1.get(i) != tree2.get(i))return false;
+        }
+        return true;
+    }
+    
+    private void getLeaves(TreeNode node, List<Integer> list) {
+        if(node == null)return;
+        if(node.left == null && node.right == null)
+            list.add(node.val);
+        else {
+            getLeaves(node.left, list);
+            getLeaves(node.right, list);
+        }
+    }
+}
