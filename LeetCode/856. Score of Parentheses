@@ -1,0 +1,66 @@
+/*
+  Given a balanced parentheses string S, compute the score of the string based on the following rule:
+
+  () has score 1
+  AB has score A + B, where A and B are balanced parentheses strings.
+  (A) has score 2 * A, where A is a balanced parentheses string.
+
+
+  Example 1:
+
+  Input: "()"
+  Output: 1
+  Example 2:
+
+  Input: "(())"
+  Output: 2
+  Example 3:
+
+  Input: "()()"
+  Output: 2
+  Example 4:
+
+  Input: "(()(()))"
+  Output: 6
+
+
+  Note:
+
+  S is a balanced parentheses string, containing only ( and ).
+  2 <= S.length <= 50
+
+*/
+
+class Solution {
+    public int scoreOfParentheses(String S) {
+        Stack<Integer> stack = new Stack<>();
+        
+        for(Character c: S.toCharArray()){
+            if(c=='(')
+                stack.push(-1);
+            else{
+                int partialRes = 0;
+                while(stack.peek() != -1){
+                    // this is because AB results in A+B. 
+                    // So if we see an non -1 number, we should sum them up
+                    partialRes+=stack.pop();
+                }
+                stack.pop();
+                //when partialRes is 0, it means this () pair is the very inner pair
+                //since () equals to 1, 1 get pushed into the stack
+                if(partialRes == 0)
+                    stack.push(1);
+                // if it is not 0, we have the (A) which is 2*A situation.
+                // so we push 2*partialRes in
+                else
+                    stack.push(2*partialRes);
+            }
+        }
+        
+        int res = 0;
+        while(!stack.isEmpty())
+            res+=stack.pop();
+        
+        return res;
+    }
+}
