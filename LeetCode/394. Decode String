@@ -1,0 +1,104 @@
+/*
+  Given an encoded string, return it's decoded string.
+
+  The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+
+  You may assume that the input string is always valid; No extra white spaces, square brackets are well-formed, etc.
+
+  Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there won't be input like 3a or 2[4].
+
+  Examples:
+
+  s = "3[a]2[bc]", return "aaabcbc".
+  s = "3[a2[c]]", return "accaccacc".
+  s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+*/
+
+/*
+  Stack solution.
+*/
+class Solution {
+    public String decodeString(String s) {
+        Stack<String> stack = new Stack<>();
+        for(Character c: s.toCharArray()) {
+            if(c!=']')
+                stack.push(Character.toString(c));
+            else{
+                StringBuilder letterSb = new StringBuilder();
+                // when seeting a [, start popping and get a letter sequence
+                while(stack.peek().charAt(0) != '['){
+                    letterSb.append(stack.pop());
+                }
+                // pop out the [
+                stack.pop();
+                // now we need the number sequence.
+                StringBuilder numberSb = new StringBuilder();
+                while(!stack.isEmpty()&&Character.isDigit(stack.peek().charAt(0)) ){
+                    numberSb.append(stack.pop());
+                }
+                
+                if(numberSb.length()==0)
+                    stack.push(letterSb.toString());
+                else{
+                    // put the partial result back in the stack.(reverse the number sequence)
+                    int repeatTime = Integer.parseInt(numberSb.reverse().toString());
+                    String res = "";
+                    for(int i=0;i<repeatTime;i++)
+                        res+=(letterSb.toString());
+                    stack.push(res);
+                }
+            }
+        }
+        // reverse the whole result
+        StringBuilder finalRes = new StringBuilder();
+        while(!stack.isEmpty())
+            finalRes.append(stack.pop());
+        return finalRes.reverse().toString();
+    }
+}
+
+/*
+    True DFS
+*/
+
+class Solution {
+    public String decodeString(String s) {
+        if(s==null||s.length()==0)return "";
+        return helper(s, 0);
+    }
+    
+    private String helper(String s, int index) {
+        // we know a valid structure will NOT start with '['
+        
+        StringBuilder sb = new StringBuilder();
+        // start traversing from index
+        for(int i=index;i<s.length();i++) {
+            // if number found, build a repeat time number
+            if(s.charAt(i)>='0' && s.charAt(i)<='9'){
+                int repeatTimes = 0;
+                while(s.charAt(i)>='0' && s.charAt(i)<='9'){
+                    repeatTimes = repeatTimes*10+s.charAt(i)-'0';
+                    i++;
+                }
+                // the string to be repeated is right next to the number, which can be achieved by helper()
+                // ++i to skip the next '['
+                String repeatString = helper(s, ++i);
+                for(int n = 0;n<repeatTimes;n++)
+                    sb.append(repeatString);
+                
+                int left = 1;
+                // this is used to skip all the sequence that has already been converted. (by counting [])
+                while(left!=0){
+                    i++;
+                    if(s.charAt(i)=='[')left++;
+                    else if(s.charAt(i)==']')left--;
+                }
+            }
+            else if(s.charAt(i)==']')
+                return sb.toString();
+            else
+                sb.append(s.charAt(i));
+        }
+        return sb.toString();
+    }
+}
