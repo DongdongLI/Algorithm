@@ -128,3 +128,54 @@ public class Solution {
 		return true;
     }
 }
+
+/*
+	Final version: detailed comment
+*/
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        // final order of the courses
+        int[] order = new int[numCourses];
+        // indegree of the nodes, 
+        //inDegree[i] means the number of prerequisites of class i
+        int[] inDegree = new int[numCourses];
+        int index = 0;
+        
+        for(int[] prereq: prerequisites) {
+            inDegree[prereq[0]]++;
+        }
+        // queue is for classes without prerequisites or all of them have been finished
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i = 0;i<inDegree.length;i++){
+            // if a class has no prerequsites, put it in order and the queue
+            if(inDegree[i] == 0) {
+                queue.offer(i);
+                order[index++] = i;
+            }
+        }
+        
+        while(!queue.isEmpty()) {
+            // pop one finished class
+            int prereq = queue.poll();
+            // go through the prerequisite
+            for(int[] prerequisite: prerequisites) {
+                // if a class needs this finished class as prerequisite
+                if(prerequisite[1] == prereq) {
+                    // in degree can minus 1
+                    inDegree[prerequisite[0]]--;
+                    // when all cleared, it can be added to order, then put into queue
+                    if(inDegree[prerequisite[0]]==0){
+                        order[index++] = prerequisite[0];
+                        queue.offer(prerequisite[0]);
+                    }
+                }
+                    
+            }
+        }
+        
+        if(index==numCourses)
+            return order;
+        else
+            return new int[0];
+    }
+}
