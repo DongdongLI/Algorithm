@@ -100,3 +100,34 @@ class Solution {
         return true;
     }
 }
+
+// best solution (fastest)
+class Solution {
+    public boolean isMonotonic(int[] A) {
+        // use these two as markers to show the trend
+        Boolean increasing = null;
+        Boolean decreasing = null;
+        
+        if(A == null || A.length==0 || A.length==1)
+            return true;
+        
+        for(int i=0;i<A.length-1;i++) {
+            if(A[i] == A[i+1])
+                continue;
+            else {
+                if(A[i+1]<A[i]) {
+                    if(increasing!=null && increasing == true || decreasing != null &&decreasing == false)
+                        return false;
+                    decreasing = true;
+                }
+                else{
+                    if(increasing!=null &&increasing == false || decreasing != null &&decreasing == true)
+                        return false;
+                    increasing = true;
+                }
+            }
+        }
+        
+        return true;
+    }
+}
