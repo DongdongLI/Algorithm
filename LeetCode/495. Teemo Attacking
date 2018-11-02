@@ -60,3 +60,23 @@ public class Solution {
         return total;
     }
 }
+
+// better and clearer solution
+class Solution {
+    public int findPoisonedDuration(int[] timeSeries, int duration) {
+        int res = 0;
+        for(int i = 0;i<timeSeries.length;i++) {
+            // for the last attack, the effect will go for "duration" amount of second
+            // or the effect will disappear before the next attack
+            // then the total time will increase "duration" amount of second
+            if(i==timeSeries.length-1 || timeSeries[i] + duration <timeSeries[i+1])
+                res+=duration;
+            // if the next attack starts before the current effect stops, meanning there's overlapping
+            // then the effective effect produced by current attack is from this time to the next time of attack
+            else
+                res+=timeSeries[i+1]-timeSeries[i];
+        }
+        
+        return res;
+    }
+}
