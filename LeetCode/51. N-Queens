@@ -1,0 +1,68 @@
+/*
+  The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
+
+  Given an integer n, return all distinct solutions to the n-queens puzzle.
+
+  Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space respectively.
+
+  Example:
+
+  Input: 4
+  Output: [
+   [".Q..",  // Solution 1
+    "...Q",
+    "Q...",
+    "..Q."],
+
+   ["..Q.",  // Solution 2
+    "Q...",
+    "...Q",
+    ".Q.."]
+  ]
+  Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above.
+*/
+
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res = new ArrayList<>();
+        if(n==0)
+            return res;
+        
+        help(new ArrayList<>(), 0, n, res);
+        
+        return res;
+    }
+    
+    private void help(List<String> temp, int rowNum, int n, List<List<String>> res) {
+        if(rowNum == n) {
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        // we are now building row 'rowNum'
+        // we test for each position
+        // if valid, the line String is constructed and go the the next line
+        for(int i=0;i<n;i++) {
+            if(isValid(temp, rowNum, i)){
+                StringBuilder sb = new StringBuilder();
+                for(int k=0;k<i;k++)
+                    sb.append(".");
+                sb.append("Q");
+                for(int k=i+1;k<n;k++)
+                    sb.append(".");
+                
+                temp.add(sb.toString());
+                help(temp, rowNum+1, n, res);
+                temp.remove(temp.size()-1);
+            }
+        }
+    }
+    // check if putting the queen on 'desiredPos' on row 'rowNum' is valid
+    private boolean isValid(List<String> temp, int rowNum, int desiredPos) {
+        for(int i=0;i<temp.size();i++) {
+            int queenPos = temp.get(i).indexOf('Q');
+            if(queenPos == desiredPos || rowNum - i == Math.abs(desiredPos - queenPos))
+                return false;
+        }
+        return true;
+    }
+}
