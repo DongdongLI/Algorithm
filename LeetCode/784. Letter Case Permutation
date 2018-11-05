@@ -48,3 +48,37 @@ class Solution {
         }
     }
 }
+
+
+// cleaner solution
+class Solution {
+    public List<String> letterCasePermutation(String S) {
+        List<String> res= new ArrayList<>();
+        if(S==null || S.length()==0){
+            res.add("");
+            return res;
+        }
+        
+        help(0, S, res);
+        return res;
+    }
+    
+    private void help(int i, String S, List<String> res) {
+        if(i == S.length()){
+            res.add(S);
+            return;
+        }
+        
+        char c = S.charAt(i);
+        if(!Character.isDigit(c)) {
+            // if it is a letter, try with both upper case and lower case
+            help(i+1, S.substring(0, i)+Character.toLowerCase(c)+S.substring(i+1, S.length()), res);
+
+            help(i+1, S.substring(0, i)+Character.toUpperCase(c)+S.substring(i+1, S.length()), res);
+            
+        }
+        else {
+            help(i+1, S, res);
+        }
+    }
+}
