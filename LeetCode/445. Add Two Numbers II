@@ -1,0 +1,74 @@
+/*
+  You are given two non-empty linked lists representing two non-negative integers. The most significant digit comes first and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+  You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+  Follow up:
+  What if you cannot modify the input lists? In other words, reversing the lists is not allowed.
+
+  Example:
+
+  Input: (7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
+  Output: 7 -> 8 -> 0 -> 7
+*/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // reverse first to make it easier
+        ListNode list1 = reverse(l1);
+        ListNode list2 = reverse(l2);
+        ListNode res = new ListNode(-6);
+        
+        ListNode n1 = list1;
+        ListNode n2 = list2;
+        ListNode nRes = res;
+        
+        int leftOver = 0;
+        
+        while(n1!= null || n2 != null){
+            int newVal = 0;
+            newVal += leftOver;
+            if(n1!=null)newVal+=n1.val;
+            if(n2!=null)newVal+=n2.val;
+            
+            leftOver = newVal/10;
+            nRes.next = new ListNode(newVal%10);
+            
+            if(n1!=null)n1=n1.next;
+            if(n2!=null)n2=n2.next;
+            
+            nRes = nRes.next;
+        }
+        // for cases like 5+5, if leftOver is not zero, then
+        if(leftOver!=0)
+            nRes.next = new ListNode(leftOver);
+        
+        res = res.next;
+        return reverse(res);
+    }
+    
+    public ListNode reverse(ListNode node) {
+        if(node == null || node.next == null)
+            return node;
+        
+        ListNode prev = node;
+        ListNode cur = node.next;
+        while(cur != null) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            
+            prev = cur;
+            cur = next;
+        }
+        node.next = null;
+        return prev;
+    }
+}
