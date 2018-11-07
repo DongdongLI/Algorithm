@@ -50,3 +50,29 @@ public class Solution {
 	two pointers, the slower one marks the end of the list without duplicate, and the fast one marks the next node that will not 
 	cause duplicates.
 */
+
+/*
+	More concise solution.
+*/
+
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head == null || head.next == null)
+            return head;
+        
+        ListNode node = head;
+        while(node!=null) {
+            while(node.next != null && node.val == node.next.val) {
+                // in this case, the "next" node is the one to be deleted
+                ListNode next = node.next;
+                node.next = node.next.next;
+                // this is just to be thorough
+                next.next = null;
+            }
+            
+            node = node.next;
+        }
+        
+        return head;
+    }
+}
