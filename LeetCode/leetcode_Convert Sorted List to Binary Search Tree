@@ -77,3 +77,38 @@ public TreeNode sortedListToBST(ListNode head) {
 		
 		return root;
 }
+
+// by far the most concise snd intuitive way
+
+class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+        if(head == null)return null;
+        else if(head.next == null)return new TreeNode(head.val);
+        
+        ListNode fast = head, slow = head;
+        while(fast.next!=null && fast.next.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        
+        TreeNode root = new TreeNode(slow.val);
+        
+        // find the node before root;
+        ListNode node = head;
+        while(node!=null && node.next!=slow)
+            node = node.next;
+        
+        if(node!=null)
+            node.next = null;
+        
+        if(node == null)
+            root.left = null;
+        else
+            root.left = sortedListToBST(head);
+    
+        root.right = sortedListToBST(slow.next);
+        
+        return root;
+    }
+}
+
