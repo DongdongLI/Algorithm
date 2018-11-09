@@ -144,3 +144,38 @@ public class Solution {
 }
 
 //2015/12/7: nail it. Almost the same code
+
+// most concise solution ever:
+// a more concise solution
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummyHead = new ListNode(666);
+        
+        ListNode node1 = l1;
+        ListNode node2 = l2;
+        
+        ListNode pre = dummyHead;
+        
+        int leftOver = 0;
+        
+        while(node1!=null || node2!=null){
+            int newVal = leftOver;
+            
+            if(node1!=null)newVal+=node1.val;
+            if(node2!=null)newVal+=node2.val;
+            
+            pre.next = new ListNode(newVal%10);
+            leftOver = newVal/10;
+            
+            pre = pre.next;
+            if(node1!=null)
+                node1=node1.next;
+            if(node2!=null)
+                node2=node2.next;
+        }
+        
+        if(leftOver!=0)pre.next = new ListNode(leftOver);
+        
+        return dummyHead.next;
+    }
+}
