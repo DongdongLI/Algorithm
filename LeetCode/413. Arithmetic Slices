@@ -70,3 +70,43 @@ public class Solution {
         return res;
     }
 }
+
+/*
+  Faster and more concise file
+*/
+class Solution {
+    public int numberOfArithmeticSlices(int[] A) {
+        int res = 0;
+        
+        if(A == null || A.length<3)
+            return res;
+        
+        int left = 0;
+        // make sure there's enough space left
+        while(left<A.length-2) {
+            // make sure we have a triplet
+            if(A[left+1]-A[left] != A[left+2] - A[left+1]) {
+                left++;
+                continue;
+            }
+            else {
+                int diff = A[left+1] - A[left];
+                int right = left+2;
+                // start expanding to the right
+                while(right+1<A.length && A[right+1]-A[right] == diff){
+                    right++;
+                }
+                int len = right - left+1;
+                int combo = 0;
+                // C 5 3 is 6, which is 3+2+1
+                for(int i=1;i<=len-3+1;i++)
+                    combo+=i;
+                res+=combo;
+                // for sequence like 1,2,3,4,4,4,4... you want the left to start at "right"
+                left=right;
+            }
+        }
+        
+        return res;
+    }
+}
