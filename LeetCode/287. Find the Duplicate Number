@@ -38,5 +38,43 @@ public class Solution {
     			high=mid;
     	}
     	return low;
+      
+      /*
+    consider the array as a linked list
+    [1,3,4,2,2]
+    
+    first node is 1, pointing to index 1, which is 3
+    then 3 points to index 3, which is 2
+    
+    so it is 1, 3, 2, 4, 2, 4....
+    
+    then there's a loop
+    
+    use fast slow pointers to find the intersection
+    
+    slow has gone n steps, fast has gone 2*n steps.
+*/
+class Solution {
+    public int findDuplicate(int[] nums) {
+        if(nums == null || nums.length <= 1 )
+            return -1;
+        int slow = nums[0];
+        int fast = nums[nums[0]];
+        
+        while(slow != fast) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }
+        
+        fast = 0;
+        
+        while(slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        
+        return slow;
+    }
+}
     }
 }
