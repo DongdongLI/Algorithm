@@ -27,6 +27,7 @@ public class Solution {
     }
 }
 
+/////
 
 //2015/11/2
 // almost forgot
@@ -52,3 +53,37 @@ public class Solution {
 	To thing need to be noted: after swaping, the length decrease by 1;
 	Do not move the front cursor after swapping. (in case the number swapped back is also the same number)
 */
+
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        if(nums == null || nums.length==0)return 0;
+        int end = nums.length-1;
+        int len = nums.length;
+        // the end element could also be eligible to delete
+        while(end>=0 && nums[end] == val){
+            end --;
+            len --;
+        }
+        if(end<0)return 0;
+        else if(end == 0)return 1;
+        
+        int i = 0;
+        while(i<=end) {
+            if(nums[i] == val) {
+                int temp = nums[end];
+                nums[end] = nums[i];
+                nums[i] = temp;
+                len--;
+                end--;
+                
+                while(end>=0 && nums[end] == val){
+                    end --;
+                    len --;
+                }
+            }
+            i++;
+        }
+        
+        return len;
+    }
+}
