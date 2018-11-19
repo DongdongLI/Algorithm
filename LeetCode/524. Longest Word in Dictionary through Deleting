@@ -55,3 +55,47 @@ class Solution {
         return candidates.size() == 0 ? "" : candidates.get(0);
     }
 }
+
+// faster solution
+class Solution {
+    int maxLen = 0;
+    String res = "";
+    public String findLongestWord(String s, List<String> d) {
+        for(String word: d) {
+            if(help(s, word)){
+                if(maxLen< word.length()){
+                    maxLen = word.length();
+                    res = word;
+                }
+                else if(maxLen == word.length()) {
+                    if(word.compareTo(res) <0 )
+                        res = word;
+                }
+            }
+        }
+        
+        return res;
+    }
+    
+    public boolean help(String s, String word) {
+        if(word.length() > s.length())
+            return false;
+        
+        int i = 0;
+        int j = 0;
+        // check the two words with two pointers.
+        while(i<s.length() && j<word.length()) {
+            char temp = word.charAt(j);
+            while(i<s.length() && s.charAt(i) != temp)
+                i++;
+            
+            if(i==s.length())return false;
+            
+            j++;
+            i++;
+        }
+        
+        if(j==word.length())return true;
+        return false;
+    }
+}
